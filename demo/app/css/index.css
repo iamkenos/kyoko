@@ -1,0 +1,57 @@
+/* overrides */
+.card .card-panel {
+  -moz-box-shadow: none;
+  -goog-ms-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.tabs .tab a {
+  color: #009688;
+}
+
+.tabs .tab a:hover {
+  background-color: #e0f2f1;
+  color: #009688;
+}
+
+.tabs .tab a.active {
+  background-color: #e0f2f1 !important;
+  color: #009688;
+}
+
+.tabs .indicator {
+  background-color: #009688;
+}
+
+/* custom */
+.hidden {
+  display: none;
+}
+
+.no-select {
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
+.iframe-container {
+  overflow: hidden;
+  padding-top: 100%;
+  position: relative;
+}
+
+.iframe-container iframe {
+  overflow: scroll;
+  border: 0;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+#drag-drop-source {
+  cursor: move;
+  z-index: 3;
+}

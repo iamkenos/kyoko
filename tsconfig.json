@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "target": "ESNext",
+    "moduleResolution": "node",
+    "paths": {
+      "@commands": ["demo/test/fixtures/commands/index"],
+      "@commands/*": ["demo/test/fixtures/commands/*"],
+      "@conditions": ["demo/test/fixtures/conditions/index"],
+      "@conditions/*": ["demo/test/fixtures/conditions/*"],
+      "@config": ["demo/test/fixtures/config/index"],
+      "@config/*": ["demo/test/fixtures/config/*"],
+      "@generics": ["demo/test/fixtures/generics/index"],
+      "@generics/*": ["demo/test/fixtures/generics/*"],
+      "@gherkin": ["demo/test/fixtures/gherkin/index"],
+      "@gherkin/*": ["demo/test/fixtures/gherkin/*"]
+    }
+  },
+  "include": ["./**/**.ts"],
+  "exclude": ["node_modules", "build"]
+}

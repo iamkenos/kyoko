@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" type="text/css" href="css/index.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-visible/1.2.0/jquery.visible.js"></script>
+  <script src="script/index.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DGCWCSR9V1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-DGCWCSR9V1');
+  </script>
+  <title>Demo Site</title>
+</head>
+
+<body>
+  <div class="navbar-fixed no-select">
+    <nav>
+      <div class="nav-wrapper grey">
+        <a class="brand-logo">&nbsp;&nbsp;Demo Site</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li data-target="#container" data-actions='[{"navigate": "#i-mouse-actions"}]'><a>I. Mouse Actions</a></li>
+          <li data-target="#container" data-actions='[{"navigate": "#ii-form-elements"}]'><a>II. Form Elements</a></li>
+          <li data-target="#container" data-actions='[{"navigate": "#iii-browser-context"}]'><a>III. Browser Context</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+  <div id="container" class="container no-select">
+    <div id="i-mouse-actions">
+      <h5 class="center-align">I. Mouse Actions</h5>
+      <ul class="collapsible expandable">
+        <li class="active">
+          <div class="collapsible-header grey-text"><i class="material-icons">add</i>Click</div>
+          <div class="collapsible-body">
+            <div class="row">
+              <div class="col s4">
+                <div class="card small">
+                  <div class="card-content">
+                    <span class="card-title">Create element</span>
+                    <p class="grey-text">Create element on left click</p>
+                  </div>
+                  <div class="card-content">
+                    <p id="create-wrapper"></p>
+                  </div>
+                  <div class="card-action right-align">
+                    <a id="create" data-target="#create-wrapper" data-actions='[
+                    {"create": "<p>Create element result</p>"},
+                    {"add-attr": { "attr": "class", "value": "teal-text" }},
+                    {"add-attr": { "child": "p", "attr": "id", "value": "create-result" }}
+                  ]' class="waves-effect waves-light btn">Show</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col s4">
+                <div class="card small">
+                  <div class="card-content">
+                    <span class="card-title">Change element text</span>
+                    <p class="grey-text">Change element text on right click</p>
+                  </div>
+                  <div class="card-content">
+                    <p id="change-txt-result"></p>
+                  </div>
+                  <div class="card-action right-align">
+                    <a id="change-txt" data-target="#change-txt-result" data-actions='[
+                  {"set-text": "Change text result"},
+                  {"add-attr": { "attr": "class", "value": "teal-text" }}
+                ]' class="waves-effect waves-light btn">Show</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col s4">
+                <div class="card small">
+                  <div class="card-content">
+                    <span class="card-title">Change element value</span>
+                    <p class="grey-text">Change element value on middle click</p>
+                  </div>
+                  <div class="card-content">
+                    <input id="change-val-result" placeholder="This will be changed..." type="text" class="validate">
+                  </div>
+                  <div class="card-action right-align">
+                    <a id="change-val" data-target="#change-val-result" data-actions='[
+                        {"set-value": "Change value result"},
+                        {"add-attr": { "attr": "class", "value": "teal-text" }}
+                      ]' class="waves-effect waves-light btn">Show</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s4">
+                <div class="card small">
+                  <div class="card-content">
+                    <span class="card-title">Show element</span>
+                    <p class="grey-text">Show or hide element on click after a delay</p>
+                  </div>
+                  <div class="card-content">
+                    <p id="show-result" class="teal-text" hidden>Show element result</p>
+                  </div>
+                  <div class="card-action right-align">
+                    <a id="show" data-target="#show-result" data-actions='[{"show": 2000}]'
+                      class="waves-effect waves-light btn">Show</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col s4">
+                <div class="card small">
+                  <div class="card-content">
+                    <span class="card-title">Enable element</span>
+                    <p class="grey-text">Enable or disable element on click after a delay</p>
+                  </div>
+                  <div class="card-content">
+                    <a id="enable-result" class="blue-grey darken-3 btn" disabled style="width: 100%;">Enable element
+                      result</a>
+                  </div>
+                  <div class="card-action right-align">
+                    <a id="enable" data-target="#enable-result" data-actions='[{"enable": 2000}]'
+                      class="waves-effect waves-light btn">Show</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col s4">
+                <div class="card small">
+                  <div class="card-content">
+                    <span class="card-title">Resize element</span>
+                    <p class="grey-text">Resize element on click after a delay</p>
+                  </div>
+                  <div class="card-content center-align">
+                    <a id="resize-result" class="blue-grey darken-3 btn">Resize element result</a>
+                  </div>
+                  <div class="card-action right-align">
+                    <a id="resize" data-target="#resize-result" data-actions='[{"resize": 2000}]'
+                      class="waves-effect waves-light btn">Show</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12">
+                <div class="card small">
+                  <div class="card-content">
+                    <span class="card-title">Change inner html</span>
+                    <p class="grey-text">Change element inner html on double click</p>
+                  </div>
+                  <div class="card-content">
+                    <p id="change-inner-html-result" data-target="#change-inner-html"></p>
+                  </div>
+                  <div class="card-action right-align">
+                    <a id="change-inner-html" data-target="#change-inner-html-result"
+                      class="waves-effect waves-light btn">Show</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="active">
+          <div class="collapsible-header grey-text"><i class="material-icons">add</i>Drag and drop</div>
+          <div class="collapsible-body">
+            <div class="row">
+              <div class="col s4">
+                <div id="drag-drop-source" data-dropzone="#drag-drop-target" data-dropzone-text="#drag-drop-target-text"
+                  class="card small blue-grey lighten-5">
+                  <div class="card-content">
+                    <span class="card-title">Draggable box</span>
+                    <p class="grey-text">Drag and drop element</p>
+                  </div>
+                  <div class="card-content">
+                    <p id="create-wrapper"></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col s8">
+                <div id="drag-drop-target" class="card blue-grey darken-3 small">
+                  <div class="card-content">
+                    <span class="card-title white-text">Drag destination</span>
+                    <p id="drag-drop-target-text" class="grey-text">This will be changed by #drag-drop-source</p>
+                  </div>
+                  <div class="card-content">
+                    <p></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="active">
+          <div class="collapsible-header grey-text"><i class="material-icons">add</i>Move and Scroll</div>
+          <div class="collapsible-body">
+            <div class="row">
+              <div class="col s6">
+                <div class="card small">
+                  <div class="card-content">
+                    <span class="card-title">Show coordinates</span>
+                    <p class="grey-text">Show mouse coordinates on hover</p>
+                  </div>
+                  <div class="card-content">
+                    <p id="move-to-result" class="teal-text"></p>
+                  </div>
+                  <div class="card-action right-align">
+                    <a id="move-to" data-target="#move-to-result" class="waves-effect waves-light btn">Show</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col s6">
+                <div id="scroll-to" class="card small">
+                  <div class="card-content">
+                    <span class="card-title">Show element location</span>
+                    <p class="grey-text">Show element location relative to viewport</p>
+                  </div>
+                  <div class="card-content">
+                    <p id="scroll-to-result" class="teal-text"></p>
+                  </div>
+                  <div class="card-action right-align">
+                    <a class="disabled waves-effect waves-light btn">Show</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div id="ii-form-elements">
+      <h5 class="center-align">II. Form Elements</h5>
+      <ul class="collapsible expandable">
+        <li class="active">
+          <div class="collapsible-header grey-text"><i class="material-icons">add</i>Input</div>
+          <div class="collapsible-body">
+            <div class="row">
+              <div class="col s7">
+                <div class="card medium">
+                  <div class="card-content">
+                    <span class="card-title">Input element</span>
+                    <p class="grey-text">Input element variations</p>
+                  </div>
+                  <div class="card-content">
+                    <div class="col s12">
+                      <div class="input-field" style="width: 100%;">
+                        <input id="input-text" type="text" class="validate">
+                        <label for="input-text">Name</label>
+                      </div>
+                    </div>
+                    <div class="col s6">
+                      <div class="input-field inline" style="width: 100%;">
+                        <input id="input-email" type="email" class="validate">
+                        <label for="input-email">Email</label>
+                      </div>
+                    </div>
+                    <div class="col s6">
+                      <div class="input-field inline" style="width: 100%;">
+                        <input id="input-password" type="password" class="validate">
+                        <label for="input-password">Password</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-action right-align">
+                    <a id="input-submit" data-target="#input-submit-result" data-actions='[{"submit": true}]'
+                      class="waves-effect waves-light btn">Submit</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col s5">
+                <div class="card medium">
+                  <div class="card-content">
+                    <span class="card-title">Text area</span>
+                    <p class="grey-text">Larger, expandable user input</p>
+                  </div>
+                  <div class="card-content">
+                    <p id="input-submit-result" class="teal-text"></p>
+                    <textarea id="input-text-area" class="materialize-textarea"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12">
+                <div class="card small">
+                  <div class="card-content">
+                    <span class="card-title">Input file</span>
+                    <p class="grey-text">Upload a file to an input field</p>
+                  </div>
+                  <div class="card-content">
+                    <form action="#">
+                      <div class="file-field input-field">
+                        <div class="btn">
+                          <span>File</span>
+                          <input id="input-file" type="file">
+                        </div>
+                        <div class="file-path-wrapper">
+                          <input class="file-path validate" type="text">
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="active">
+          <div class="collapsible-header grey-text"><i class="material-icons">add</i>Select</div>
+          <div class="collapsible-body">
+            <div class="row">
+              <div class="col s4">
+                <div class="card small">
+                  <div class="card-content">
+                    <span class="card-title">Select option</span>
+                    <p class="grey-text">Choose an option</p>
+                  </div>
+                  <div class="card-panel">
+                    <select id="input-select">
+                      <option value="" disabled selected>Choose one</option>
+                      <option value="1">Option 1</option>
+                      <option value="2">Option 2</option>
+                      <option value="3">Option 3</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col s4">
+                <div class="card small">
+                  <div class="card-content">
+                    <span class="card-title">Multiple select</span>
+                    <p class="grey-text">Choose multiple options</p>
+                  </div>
+                  <div class="card-panel">
+                    <select id="input-select-multi" multiple>
+                      <option value="" disabled selected>Choose many</option>
+                      <option value="1">Option 1</option>
+                      <option value="2">Option 2</option>
+                      <option value="3">Option 3</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col s4">
+                <div class="card small">
+                  <div class="card-content">
+                    <span class="card-title">Option groups</span>
+                    <p class="grey-text">Choose from groups</p>
+                  </div>
+                  <div class="card-panel">
+                    <select id="input-select-groups">
+                      <optgroup label="Group 1">
+                        <option value="1">Option 1</option>
+                        <option value="2">Option 2</option>
+                      </optgroup>
+                      <optgroup label="Group 2">
+                        <option value="3">Option 3</option>
+                        <option value="4">Option 4</option>
+                      </optgroup>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="active">
+          <div class="collapsible-header grey-text"><i class="material-icons">add</i>Checkbox</div>
+          <div class="collapsible-body">
+            <div class="card small">
+              <div class="card-content">
+                <span class="card-title">Checkboxes</span>
+                <p class="grey-text">Toggle an option on or off</p>
+              </div>
+              <div class="card-content">
+                <p>
+                  <label>
+                    <input id="input-checkbox-1" type="checkbox" />
+                    <span>Red</span>
+                  </label>
+                </p>
+                <p>
+                  <label>
+                    <input id="input-checkbox-2" type="checkbox" checked="checked" />
+                    <span>Yellow</span>
+                  </label>
+                </p>
+                <p>
+                  <label>
+                    <input id="input-checkbox-3" type="checkbox" class="filled-in" checked="checked" />
+                    <span>Filled in</span>
+                  </label>
+                </p>
+                <p>
+                  <label>
+                    <input id="input-checkbox-4" type="checkbox" checked="checked" disabled="disabled" />
+                    <span>Green</span>
+                  </label>
+                </p>
+                <p>
+                  <label>
+                    <input id="input-checkbox-5" type="checkbox" disabled="disabled" />
+                    <span>Brown</span>
+                  </label>
+                </p>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="active">
+          <div class="collapsible-header grey-text"><i class="material-icons">add</i>Radio</div>
+          <div class="collapsible-body">
+            <div class="card small">
+              <div class="card-content">
+                <span class="card-title">Radio options</span>
+                <p class="grey-text">Select only one from a group of options</p>
+              </div>
+              <div class="card-content">
+                <p>
+                  <label>
+                    <input id="input-radio-1" name="group1" type="radio" checked />
+                    <span>Red</span>
+                  </label>
+                </p>
+                <p>
+                  <label>
+                    <input id="input-radio-2" name="group1" type="radio" />
+                    <span>Yellow</span>
+                  </label>
+                </p>
+                <p>
+                  <label>
+                    <input id="input-radio-3" class="with-gap" name="group1" type="radio" />
+                    <span>Green</span>
+                  </label>
+                </p>
+                <p>
+                  <label>
+                    <input id="input-radio-4" name="group1" type="radio" disabled="disabled" />
+                    <span>Brown</span>
+                  </label>
+                </p>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="active">
+          <div class="collapsible-header grey-text"><i class="material-icons">add</i>Links</div>
+          <div class="collapsible-body">
+            <div class="row">
+              <div class="col s4">
+                <div class="card">
+                  <div class="card-content">
+                    <span class="card-title">Internal path</span>
+                    <p class="grey-text">Points to an <a id="link-1" href="/iframe.html" target="_blank"
+                        class="teal-text">internal path</a></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col s4">
+                <div class="card">
+                  <div class="card-content">
+                    <span class="card-title">External path</span>
+                    <p class="grey-text">Points to an <a id="link-2" href="https://otherdomain.com/external/path"
+                        target="_parent" class="teal-text">external domain</a></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col s4">
+                <div class="card">
+                  <div class="card-content">
+                    <span class="card-title">Same page reference</span>
+                    <p class="grey-text">Points a <a id="link-3" href="#key-press" target="_self" class="teal-text">same
+                        page reference</a></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s4">
+                <div class="card">
+                  <div class="card-content">
+                    <span class="card-title">Mail to</span>
+                    <p class="grey-text">Points to an <a id="link-4" href="mailto:someone@example.com"
+                        target="framename" class="teal-text">email address</a></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col s4">
+                <div class="card">
+                  <div class="card-content">
+                    <span class="card-title">Tel</span>
+                    <p class="grey-text">Points to a <a id="link-5" href="tel:+4733378901" target="_top"
+                        class="teal-text">phone number</a></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col s4">
+                <div class="card">
+                  <div class="card-content">
+                    <span class="card-title">Javascript</span>
+                    <p class="grey-text">Triggers a <a id="link-6" href="javascript:alert('Javascript link result');"
+                        class="teal-text">javascript function</a></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div id="iii-browser-context">
+      <h5 class="center-align">III. Browser Context</h5>
+      <ul class="collapsible expandable">
+        <li class="active">
+          <div class="collapsible-header grey-text"><i class="material-icons">add</i>Keyboard events</div>
+          <div class="collapsible-body">
+            <div class="row">
+              <div class="col s6">
+                <div class="card">
+                  <div class="card-content">
+                    <span class="card-title">Show key</span>
+                    <p class="grey-text">Show the pressed key and keycode equivalent</p>
+                  </div>
+                  <div class="card-content">
+                    <input id="key-press" type="text" data-target="#key-press-result"
+                      data-actions='[{"key-press": true }]'>
+                    <span class="teal-text">Show key result: </span><span class="teal-text"
+                      id="key-press-result"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="col s6">
+                <div class="card">
+                  <div class="card-content">
+                    <span class="card-title">Key chords</span>
+                    <p class="grey-text">Use keyboard chords</p>
+                  </div>
+                  <div class="card-content">
+                    <input id="key-chords" type="text" data-target="#key-chords-result"
+                      data-actions='[{"key-chord": true }]'>
+                    <span class="teal-text">Key chords result: </span><span class="teal-text"
+                      id="key-chords-result"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="active">
+          <div class="collapsible-header grey-text"><i class="material-icons">add</i>Browser prompts</div>
+          <div class="collapsible-body">
+            <div class="row">
+              <div class="col s4">
+                <div class="card">
+                  <div class="card-content">
+                    <span class="card-title">Show alert prompt</span>
+                    <p class="grey-text">Show an alert prompt on click</p>
+                  </div>
+                  <div class="card-content">
+                    <span class="teal-text">Result: </span><span id="show-alert-prompt-result" class="teal-text"></span>
+                  </div>
+                  <div class="card-action right-align">
+                    <a id="show-alert-prompt" data-target="#show-alert-prompt-result" data-actions='[
+                    {"show-alert-prompt": "Show alert prompt result"}
+                  ]' class="waves-effect waves-light btn">Show</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col s4">
+                <div class="card">
+                  <div class="card-content">
+                    <span class="card-title">Show confirm prompt</span>
+                    <p class="grey-text">Show a confirm prompt on click</p>
+                  </div>
+                  <div class="card-content">
+                    <span class="teal-text">Result: </span><span id="show-confirm-prompt-result"
+                      class="teal-text"></span>
+                  </div>
+                  <div class="card-action right-align">
+                    <a id="show-confirm-prompt" data-target="#show-confirm-prompt-result" data-actions='[
+                    {"show-confirm-prompt": "Show confirm prompt result"}
+                  ]' class="waves-effect waves-light btn">Show</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col s4">
+                <div class="card">
+                  <div class="card-content">
+                    <span class="card-title">Show input prompt</span>
+                    <p class="grey-text">Show an input prompt on click</p>
+                  </div>
+                  <div class="card-content">
+                    <span class="teal-text">Result: </span><span id="show-input-prompt-result" class="teal-text"></span>
+                  </div>
+                  <div class="card-action right-align">
+                    <a id="show-input-prompt" data-target="#show-input-prompt-result" data-actions='[
+                    {"show-input-prompt": "Show input prompt result"}
+                  ]' class="waves-effect waves-light btn">Show</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="active">
+          <div class="collapsible-header grey-text"><i class="material-icons">add</i>Browser storage</div>
+          <div class="collapsible-body">
+            <div class="row">
+              <div class="col s12">
+                <div class="card">
+                  <div class="card-content">
+                    <span class="card-title">Show cookies</span>
+                    <p class="grey-text">Show site cookies on click</p>
+                  </div>
+                  <div class="card-content">
+                    <p id="show-cookies-result" class="teal-text">Show cookies result</p>
+                  </div>
+                  <div class="card-action right-align">
+                    <a id="show-cookies" data-target="#show-cookies-result" data-actions='[{"show-cookies": true}]'
+                      class="waves-effect waves-light btn">Show</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s6">
+                <div class="card">
+                  <div class="card-content">
+                    <span class="card-title">Show local storage</span>
+                    <p class="grey-text">Show local storage content on click</p>
+                  </div>
+                  <div class="card-content">
+                    <p id="show-lstorage-result" class="teal-text">Show local storage result</p>
+                  </div>
+                  <div class="card-action right-align">
+                    <a id="show-lstorage" data-target="#show-lstorage-result" data-actions='[{"show-lstorage": true}]'
+                      class="waves-effect waves-light btn">Show</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col s6">
+                <div class="card">
+                  <div class="card-content">
+                    <span class="card-title">Show session storage</span>
+                    <p class="grey-text">Show session storage content on click</p>
+                  </div>
+                  <div class="card-content">
+                    <p id="show-sstorage-result" class="teal-text">Show session storage result</p>
+                  </div>
+                  <div class="card-action right-align">
+                    <a id="show-sstorage" data-target="#show-sstorage-result" data-actions='[{"show-sstorage": true}]'
+                      class="waves-effect waves-light btn">Show</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="active">
+          <div class="collapsible-header grey-text"><i class="material-icons">add</i>Browser windows</div>
+          <div class="collapsible-body">
+            <div class="row">
+              <div class="col s6">
+                <div class="card">
+                  <div class="card-content">
+                    <span class="card-title">Open on same window</span>
+                    <p class="grey-text">Open link on the same window on click</p>
+                  </div>
+                  <div class="card-action right-align">
+                    <a id="open-same-window" href="./iframe.html" class="waves-effect waves-light btn">Show</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col s6">
+                <div class="card">
+                  <div class="card-content">
+                    <span class="card-title">Open on new window</span>
+                    <p class="grey-text">Open link on the new window on click</p>
+                  </div>
+                  <div class="card-action right-align">
+                    <a id="open-new-window" href="./iframe.html" target="_blank"
+                      class="waves-effect waves-light btn">Show</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="active">
+          <div class="collapsible-header grey-text"><i class="material-icons">add</i>iFrame</div>
+          <div class="collapsible-body iframe-container">
+            <iframe id="iframe" src="./iframe.html"></iframe>
+          </div>
+        </li>
+      </ul>
+    </div>
+</body>
+
+</html>

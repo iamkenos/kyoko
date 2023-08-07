@@ -1,0 +1,38 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "autoAttachChildProcesses": true,
+      "name": "debug test:demo",
+      "type": "node",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "${env:HOME}/.nvm/versions/node/v18.17.0/bin/npm",
+      "runtimeArgs": ["run-script", "test:demo"],
+      "env": {
+        "HEADLESS": "false",
+        "PARALLEL": "${input:parallel}",
+        "TAGS": "${input:tags}"
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "tags",
+      "type": "promptString",
+      "default": "@debug",
+      "description": "Cucumber tag expression"
+    },
+    {
+      "id": "parallel",
+      "type": "pickString",
+      "default": "0",
+      "description": "Browsers running in parallel",
+      "options": ["0", "5"]
+    }
+  ]
+}
