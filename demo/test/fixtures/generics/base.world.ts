@@ -66,7 +66,7 @@ export abstract class BaseWorld extends World {
     this.page.config = this.config;
   }
 
-  async launchNewPageContext() {
+  async createNewContext() {
     const launchOptions: playwright.LaunchOptions = { headless: this.config.headless };
     const contextOptions: playwright.BrowserContextOptions = {
       baseURL: this.config.baseURL,
@@ -80,6 +80,10 @@ export abstract class BaseWorld extends World {
 
     this.page = await context.newPage() as any;
     this.addPageCommands();
+  }
+
+  async createNewPage() {
+
   }
 
   loadPageObjects() {

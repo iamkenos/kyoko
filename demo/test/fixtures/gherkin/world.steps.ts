@@ -17,7 +17,7 @@ setDefaultTimeout(process.env.DEBUG === "true" ? -1 : undefined);
 setWorldConstructor(This);
 
 Before({}, async function(this: This) {
-  await this.launchNewPageContext();
+  await this.createNewContext();
 });
 
 AfterStep({}, async function(this: This, params: ITestStepHookParameter) {

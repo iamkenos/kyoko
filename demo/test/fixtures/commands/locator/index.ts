@@ -1,14 +1,14 @@
 import * as path from "path";
 
-import { Locator } from "@playwright/test";
+import { Locator as PlaywrightLocator } from "@playwright/test";
 
 import { ExpectedConditionOptions, LocatorConditions } from "@conditions";
-import { Page } from "./base.world";
+import { Page } from "@generics";
 
-export class BaseLocator implements Locator {
-  private _locator: Locator;
+export class Locator implements PlaywrightLocator {
+  private _locator: PlaywrightLocator;
 
-  constructor(locator: Locator) {
+  constructor(locator: PlaywrightLocator) {
     Object.assign(this, locator);
     this._locator = locator;
   }
@@ -21,7 +21,7 @@ export class BaseLocator implements Locator {
     return { x, y };
   }
 
-  async dragAndDrop(target: BaseLocator) {
+  async dragAndDrop(target: Locator) {
     const page = this.page();
     await this.hoverIntoView();
     await page.mouse.down();
@@ -34,7 +34,7 @@ export class BaseLocator implements Locator {
     const hasGroup = !!group;
     const option = hasGroup ? this.locator("//optgroup").nth(group.index).locator("//option") : this.locator("//option");
     const count = await option.count();
-    const options: { label: string, index: number, value: string, locator: BaseLocator }[] = [];
+    const options: { label: string, index: number, value: string, locator: Locator }[] = [];
 
     for (let i = 0; i < count; i++) {
       const locator = option.nth(i);
@@ -112,21 +112,21 @@ export class BaseLocator implements Locator {
 
   // locator actions ---------------------------------------------------------------------------------------------------
 
-  evaluate(...args: Parameters<Locator["evaluate"]>) {
+  evaluate(...args: Parameters<PlaywrightLocator["evaluate"]>) {
     return this._locator.evaluate(...args);
   }
 
-  evaluateAll(...args: Parameters<Locator["evaluateAll"]>) {
+  evaluateAll(...args: Parameters<PlaywrightLocator["evaluateAll"]>) {
     return this._locator.evaluateAll(...args);
   }
 
-  elementHandle(...args: Parameters<Locator["elementHandle"]>) {
+  elementHandle(...args: Parameters<PlaywrightLocator["elementHandle"]>) {
     return this._locator.elementHandle(...args);
   }
 
   async all() {
     const list = await this._locator.all();
-    return list.map(i => new BaseLocator(i));
+    return list.map(i => new Locator(i));
   }
 
   allInnerTexts() {
@@ -137,27 +137,27 @@ export class BaseLocator implements Locator {
     return this._locator.allTextContents();
   }
 
-  and(...args: Parameters<Locator["and"]>) {
-    return new BaseLocator(this._locator.and(...args));
+  and(...args: Parameters<PlaywrightLocator["and"]>) {
+    return new Locator(this._locator.and(...args));
   }
 
-  blur(...args: Parameters<Locator["blur"]>) {
+  blur(...args: Parameters<PlaywrightLocator["blur"]>) {
     return this._locator.blur(...args);
   }
 
-  boundingBox(...args: Parameters<Locator["boundingBox"]>) {
+  boundingBox(...args: Parameters<PlaywrightLocator["boundingBox"]>) {
     return this._locator.boundingBox(...args);
   }
 
-  check(...args: Parameters<Locator["check"]>) {
+  check(...args: Parameters<PlaywrightLocator["check"]>) {
     return this._locator.check(...args);
   }
 
-  clear(...args: Parameters<Locator["clear"]>) {
+  clear(...args: Parameters<PlaywrightLocator["clear"]>) {
     return this._locator.clear(...args);
   }
 
-  click(...args: Parameters<Locator["click"]>) {
+  click(...args: Parameters<PlaywrightLocator["click"]>) {
     return this._locator.click(...args);
   }
 
@@ -165,15 +165,15 @@ export class BaseLocator implements Locator {
     return this._locator.count();
   }
 
-  dblclick(...args: Parameters<Locator["dblclick"]>) {
+  dblclick(...args: Parameters<PlaywrightLocator["dblclick"]>) {
     return this._locator.dblclick(...args);
   }
 
-  dispatchEvent(...args: Parameters<Locator["dispatchEvent"]>) {
+  dispatchEvent(...args: Parameters<PlaywrightLocator["dispatchEvent"]>) {
     return this._locator.dispatchEvent(...args);
   }
 
-  dragTo(...args: Parameters<Locator["dragTo"]>) {
+  dragTo(...args: Parameters<PlaywrightLocator["dragTo"]>) {
     return this._locator.dragTo(...args);
   }
 
@@ -181,171 +181,171 @@ export class BaseLocator implements Locator {
     return this._locator.elementHandles();
   }
 
-  evaluateHandle(...args: Parameters<Locator["evaluateHandle"]>) {
+  evaluateHandle(...args: Parameters<PlaywrightLocator["evaluateHandle"]>) {
     return this._locator.evaluateHandle(...args);
   }
 
-  fill(...args: Parameters<Locator["fill"]>) {
+  fill(...args: Parameters<PlaywrightLocator["fill"]>) {
     return this._locator.fill(...args);
   }
 
-  filter(...args: Parameters<Locator["filter"]>) {
+  filter(...args: Parameters<PlaywrightLocator["filter"]>) {
     return this._locator.filter(...args);
   }
 
   first() {
-    return new BaseLocator(this._locator.first());
+    return new Locator(this._locator.first());
   }
 
-  focus(...args: Parameters<Locator["focus"]>) {
+  focus(...args: Parameters<PlaywrightLocator["focus"]>) {
     return this._locator.focus(...args);
   }
 
-  frameLocator(...args: Parameters<Locator["frameLocator"]>) {
+  frameLocator(...args: Parameters<PlaywrightLocator["frameLocator"]>) {
     return this._locator.frameLocator(...args);
   }
 
-  getAttribute(...args: Parameters<Locator["getAttribute"]>) {
+  getAttribute(...args: Parameters<PlaywrightLocator["getAttribute"]>) {
     return this._locator.getAttribute(...args);
   }
 
-  getByAltText(...args: Parameters<Locator["getByAltText"]>) {
-    return new BaseLocator(this._locator.getByAltText(...args));
+  getByAltText(...args: Parameters<PlaywrightLocator["getByAltText"]>) {
+    return new Locator(this._locator.getByAltText(...args));
   }
 
-  getByLabel(...args: Parameters<Locator["getByLabel"]>) {
-    return new BaseLocator(this._locator.getByLabel(...args));
+  getByLabel(...args: Parameters<PlaywrightLocator["getByLabel"]>) {
+    return new Locator(this._locator.getByLabel(...args));
   }
 
-  getByPlaceholder(...args: Parameters<Locator["getByPlaceholder"]>) {
-    return new BaseLocator(this._locator.getByPlaceholder(...args));
+  getByPlaceholder(...args: Parameters<PlaywrightLocator["getByPlaceholder"]>) {
+    return new Locator(this._locator.getByPlaceholder(...args));
   }
 
-  getByRole(...args: Parameters<Locator["getByRole"]>) {
-    return new BaseLocator(this._locator.getByRole(...args));
+  getByRole(...args: Parameters<PlaywrightLocator["getByRole"]>) {
+    return new Locator(this._locator.getByRole(...args));
   }
 
-  getByTestId(...args: Parameters<Locator["getByTestId"]>) {
-    return new BaseLocator(this._locator.getByTestId(...args));
+  getByTestId(...args: Parameters<PlaywrightLocator["getByTestId"]>) {
+    return new Locator(this._locator.getByTestId(...args));
   }
 
-  getByText(...args: Parameters<Locator["getByText"]>) {
-    return new BaseLocator(this._locator.getByText(...args));
+  getByText(...args: Parameters<PlaywrightLocator["getByText"]>) {
+    return new Locator(this._locator.getByText(...args));
   }
 
-  getByTitle(...args: Parameters<Locator["getByTitle"]>) {
-    return new BaseLocator(this._locator.getByTitle(...args));
+  getByTitle(...args: Parameters<PlaywrightLocator["getByTitle"]>) {
+    return new Locator(this._locator.getByTitle(...args));
   }
 
   highlight() {
     return this._locator.highlight();
   }
 
-  hover(...args: Parameters<Locator["hover"]>) {
+  hover(...args: Parameters<PlaywrightLocator["hover"]>) {
     return this._locator.hover(...args);
   }
 
-  innerHTML(...args: Parameters<Locator["innerHTML"]>) {
+  innerHTML(...args: Parameters<PlaywrightLocator["innerHTML"]>) {
     return this._locator.innerHTML(...args);
   }
 
-  innerText(...args: Parameters<Locator["innerText"]>) {
+  innerText(...args: Parameters<PlaywrightLocator["innerText"]>) {
     return this._locator.innerText(...args);
   }
 
-  inputValue(...args: Parameters<Locator["inputValue"]>) {
+  inputValue(...args: Parameters<PlaywrightLocator["inputValue"]>) {
     return this._locator.inputValue(...args);
   }
 
-  isChecked(...args: Parameters<Locator["isChecked"]>) {
+  isChecked(...args: Parameters<PlaywrightLocator["isChecked"]>) {
     return this._locator.isChecked(...args);
   }
 
-  isDisabled(...args: Parameters<Locator["isDisabled"]>) {
+  isDisabled(...args: Parameters<PlaywrightLocator["isDisabled"]>) {
     return this._locator.isDisabled(...args);
   }
 
-  isEditable(...args: Parameters<Locator["isEditable"]>) {
+  isEditable(...args: Parameters<PlaywrightLocator["isEditable"]>) {
     return this._locator.isEditable(...args);
   }
 
-  isEnabled(...args: Parameters<Locator["isEnabled"]>) {
+  isEnabled(...args: Parameters<PlaywrightLocator["isEnabled"]>) {
     return this._locator.isEnabled(...args);
   }
 
-  isHidden(...args: Parameters<Locator["isHidden"]>) {
+  isHidden(...args: Parameters<PlaywrightLocator["isHidden"]>) {
     return this._locator.isHidden(...args);
   }
 
-  isVisible(...args: Parameters<Locator["isVisible"]>) {
+  isVisible(...args: Parameters<PlaywrightLocator["isVisible"]>) {
     return this._locator.isVisible(...args);
   }
 
   last() {
-    return new BaseLocator(this._locator.last());
+    return new Locator(this._locator.last());
   }
 
-  locator(...args: Parameters<Locator["locator"]>) {
-    return new BaseLocator(this._locator.locator(...args));
+  locator(...args: Parameters<PlaywrightLocator["locator"]>) {
+    return new Locator(this._locator.locator(...args));
   }
 
-  nth(...args: Parameters<Locator["nth"]>) {
-    return new BaseLocator(this._locator.nth(...args));
+  nth(...args: Parameters<PlaywrightLocator["nth"]>) {
+    return new Locator(this._locator.nth(...args));
   }
 
-  or(...args: Parameters<Locator["or"]>) {
-    return new BaseLocator(this._locator.or(...args));
+  or(...args: Parameters<PlaywrightLocator["or"]>) {
+    return new Locator(this._locator.or(...args));
   }
 
   page() {
     return this._locator.page() as Page;
   }
 
-  press(...args: Parameters<Locator["press"]>) {
+  press(...args: Parameters<PlaywrightLocator["press"]>) {
     return this._locator.press(...args);
   }
 
-  screenshot(...args: Parameters<Locator["screenshot"]>) {
+  screenshot(...args: Parameters<PlaywrightLocator["screenshot"]>) {
     return this._locator.screenshot(...args);
   }
 
-  scrollIntoViewIfNeeded(...args: Parameters<Locator["scrollIntoViewIfNeeded"]>) {
+  scrollIntoViewIfNeeded(...args: Parameters<PlaywrightLocator["scrollIntoViewIfNeeded"]>) {
     return this._locator.scrollIntoViewIfNeeded(...args);
   }
 
-  selectOption(...args: Parameters<Locator["selectOption"]>) {
+  selectOption(...args: Parameters<PlaywrightLocator["selectOption"]>) {
     return this._locator.selectOption(...args);
   }
 
-  selectText(...args: Parameters<Locator["selectText"]>) {
+  selectText(...args: Parameters<PlaywrightLocator["selectText"]>) {
     return this._locator.selectText(...args);
   }
 
-  setChecked(...args: Parameters<Locator["setChecked"]>) {
+  setChecked(...args: Parameters<PlaywrightLocator["setChecked"]>) {
     return this._locator.setChecked(...args);
   }
 
-  setInputFiles(...args: Parameters<Locator["setInputFiles"]>) {
+  setInputFiles(...args: Parameters<PlaywrightLocator["setInputFiles"]>) {
     return this._locator.setInputFiles(...args);
   }
 
-  tap(...args: Parameters<Locator["tap"]>) {
+  tap(...args: Parameters<PlaywrightLocator["tap"]>) {
     return this._locator.tap(...args);
   }
 
-  textContent(...args: Parameters<Locator["textContent"]>) {
+  textContent(...args: Parameters<PlaywrightLocator["textContent"]>) {
     return this._locator.textContent(...args);
   }
 
-  type(...args: Parameters<Locator["type"]>) {
+  type(...args: Parameters<PlaywrightLocator["type"]>) {
     return this._locator.type(...args);
   }
 
-  uncheck(...args: Parameters<Locator["uncheck"]>) {
+  uncheck(...args: Parameters<PlaywrightLocator["uncheck"]>) {
     return this._locator.uncheck(...args);
   }
 
-  waitFor(...args: Parameters<Locator["waitFor"]>) {
+  waitFor(...args: Parameters<PlaywrightLocator["waitFor"]>) {
     return this._locator.waitFor(...args);
   }
 }
