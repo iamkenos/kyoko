@@ -7,7 +7,7 @@ export class TitleContains extends ExpectedCondition {
   }
 
   async evaluate() {
-    this.actual = this.page.title();
+    this.actual = await this.page.title();
     this.passed = this.actual.includes(this.expected);
 
     return super.evaluate();

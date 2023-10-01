@@ -6,18 +6,33 @@ import { IWorldOptions, World } from "@cucumber/cucumber";
 import { IConfiguration } from "@cucumber/cucumber/lib/configuration";
 
 import {
+  addPageCommands,
+  closeLastPage,
+  closeOtherPages,
+  lastPage,
+  newPage
+} from "@commands/context";
+import {
   expect,
   given,
   locator,
   scrollTo,
   scrollToBottom,
-  scrollToTop,
-  then
+  scrollToTop
 } from "@commands/page";
 
 import { BasePage } from "./base.page";
 
+export interface BrowserContext extends playwright.BrowserContext {
+  addPageCommands: typeof addPageCommands;
+  closeLastPage: typeof closeLastPage;
+  closeOtherPages: typeof closeOtherPages;
+  lastPage: typeof lastPage;
+  newPage: typeof newPage;
+}
+
 export interface Page extends playwright.Page {
+  context: () => BrowserContext;
   expect: typeof expect;
   given: typeof given;
   /** Playwright's page locator extended with custom actions */
@@ -25,7 +40,6 @@ export interface Page extends playwright.Page {
   scrollToBottom: typeof scrollToBottom;
   scrollToTop: typeof scrollToTop;
   scrollTo: typeof scrollTo;
-  then: typeof then;
   config: Config;
 }
 
@@ -40,12 +54,44 @@ export interface Config extends Omit<IConfiguration, "worldParameters"> {
   headless: boolean;
   pages: string[];
   resultsDir: string;
+  snapshots: Snapshots;
   timeout: number;
 }
+
+type SnapshotDirectories = {
+  /** Directory under `outDir` where actual files are stored for comparison */
+  actualDir?: string;
+  /** Directory under `outDir` where expected files are stored for comparison */
+  expectedDir?: string;
+  /** Directory under `outDir` where differences are stored for comparison */
+  diffDir?: string;
+};
+
+type SnapshotOptions = {
+  /** Directory to store the output of this comparable object in, relative to the config file */
+  outDir?: string;
+  /** Skip comparison, just save the actual files */
+  skipCompare?: boolean;
+} & SnapshotDirectories;
+
+type ImageSnapshotOptions = {
+  maxDiffPixelRatio?: number;
+  mask?: Locator[];
+} & SnapshotOptions
+
+export type LocatorSnapshotOptions = ImageSnapshotOptions;
+
+export type PageSnapshotOptions = { fullPage?: boolean } & ImageSnapshotOptions;
+
+type Snapshots = {
+  /** Options used for comparing images */
+  images?: ImageSnapshotOptions;
+};
 
 export abstract class BaseWorld extends World {
   private pageObjects: string[];
   private pageObject: BasePage;
+  context: BrowserContext;
   page: Page;
   config: Config;
 
@@ -55,38 +101,7 @@ export abstract class BaseWorld extends World {
     this.pageObjects = this.loadPageObjects();
   }
 
-  private addPageCommands() {
-    this.page[expect.name] = (...args: Parameters<typeof expect>) => expect.call(this.page, ...args);
-    this.page[given.name] = () => given.call(this.page);
-    this.page[locator.name] = (...args: Parameters<typeof locator>) => locator.call(this.page, ...args);
-    this.page[scrollToBottom.name] = (...args: Parameters<typeof scrollToBottom>) => scrollToBottom.call(this.page, ...args);
-    this.page[scrollToTop.name] = (...args: Parameters<typeof scrollToTop>) => scrollToTop.call(this.page, ...args);
-    this.page[scrollTo.name] = (...args: Parameters<typeof scrollTo>) => scrollTo.call(this.page, ...args);
-    this.page[then.name] = () => then.call(this.page);
-    this.page.config = this.config;
-  }
-
-  async createNewContext() {
-    const launchOptions: playwright.LaunchOptions = { headless: this.config.headless };
-    const contextOptions: playwright.BrowserContextOptions = {
-      baseURL: this.config.baseURL,
-      ignoreHTTPSErrors: false,
-      viewport: { width: 1675, height: 1020 }
-    };
-
-    const browserType: playwright.BrowserType = playwright[this.config.browser];
-    const browser: playwright.Browser = await browserType.launch(launchOptions);
-    const context = await browser.newContext(contextOptions);
-
-    this.page = await context.newPage() as any;
-    this.addPageCommands();
-  }
-
-  async createNewPage() {
-
-  }
-
-  loadPageObjects() {
+  private loadPageObjects() {
     const resolved = new Set<string>();
     const paths = this.config.pages;
 
@@ -127,7 +142,7 @@ export abstract class BaseWorld extends World {
     let locator: Locator;
     try {
       const pageObject = this.pageObject || this.findPageObject(page);
-      locator = pageObject.locators[element];
+      locator = pageObject[element];
 
       if (!locator) throw new Error();
     } finally {
@@ -135,5 +150,23 @@ export abstract class BaseWorld extends World {
       locator = index ? locator.nth(index - 1) : locator;
       return locator;
     }
+  }
+
+  async createBrowserContext() {
+    const browserType: playwright.BrowserType = playwright[this.config.browser];
+    const launchOptions: playwright.LaunchOptions = { headless: this.config.headless };
+    const contextOptions: playwright.BrowserContextOptions = {
+      baseURL: this.config.baseURL,
+      ignoreHTTPSErrors: false,
+      viewport: { width: 1675, height: 1020 }
+    };
+    const browser = await browserType.launch(launchOptions) as any;
+    const context = await browser.newContext(contextOptions);
+    context[addPageCommands.name] = (...args: Parameters<typeof addPageCommands>) => addPageCommands.call({ ...context, config: this.config }, ...args);
+    context[closeLastPage.name] = () => closeLastPage.call(context);
+    context[closeOtherPages.name] = () => closeOtherPages.call(context);
+    context[lastPage.name] = () => lastPage.call(context);
+    context[newPage.name] = () => newPage.call(context);
+    return context;
   }
 }

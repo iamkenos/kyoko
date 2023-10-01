@@ -1,6 +1,6 @@
 import type { ExpectedConditionOptions } from "../types";
 
-import { Locator } from "@generics";
+import { Locator, LocatorSnapshotOptions } from "@generics";
 import { Axis, SizeContext } from "@gherkin";
 import { ExpectedConditions } from "../expected-conditions";
 import { AttributeContains } from "./attribute-contains";
@@ -16,6 +16,7 @@ import { DisplayedInViewport } from "./displayed-in-viewport";
 import { Enabled } from "./enabled";
 import { Exists } from "./exists";
 import { Selected } from "./selected";
+import { SnapshotMatch } from "./snapshot-match";
 import { TextContains } from "./text-contains";
 import { TextEquals } from "./text-equals";
 import { ValueContains } from "./value-contains";
@@ -79,6 +80,10 @@ export class LocatorConditions extends ExpectedConditions {
 
   selected(preferred?: boolean) {
     return this.addCondition(new Selected(preferred).setLocator(this.locator));
+  }
+
+  snapshotMatch(filename: string, options?: LocatorSnapshotOptions, preferred?: boolean) {
+    return this.addCondition(new SnapshotMatch(filename, options, preferred).setLocator(this.locator));
   }
 
   textContains(expected: string, preferred?: boolean) {

@@ -14,6 +14,8 @@ export class ExpectedConditions {
 
   private timeout: number;
 
+  private action: Function;
+
   private soft: boolean;
 
   constructor(options?: ExpectedConditionOptions) {
@@ -57,9 +59,20 @@ export class ExpectedConditions {
     return this;
   }
 
+  setAction(action: Function) {
+    this.action = action;
+    return this;
+  }
+
+  setName(name: string) {
+    this.name = name;
+    return this;
+  }
+
   async poll() {
     try {
       await expect.poll(async() => {
+        this.action !== undefined && await this.action();
         await this.evaluateAll();
         return this.result.passed;
       }, { intervals: [250], timeout: this.timeout }).toBe(true);

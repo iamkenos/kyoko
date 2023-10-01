@@ -1,3 +1,4 @@
+import { string } from "@common/utils";
 import { ExpectedCondition } from "@conditions/expected-condition";
 
 export class UrlContains extends ExpectedCondition {
@@ -8,6 +9,7 @@ export class UrlContains extends ExpectedCondition {
 
   async evaluate() {
     this.actual = this.page.url();
+    this.expected = string.isURL(this.expected) ? this.expected : new URL(this.expected, this.page.config.baseURL).href;
     this.passed = this.actual.includes(this.expected);
 
     return super.evaluate();

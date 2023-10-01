@@ -10,6 +10,11 @@ export enum ClickAction {
   DOUBLE = "double"
 }
 
+export enum SelectAction {
+  SELECT = "select",
+  DESELECT = "deselect"
+}
+
 export enum SelectOptionContext {
   LABEL = "label",
   VALUE = "value",
@@ -104,6 +109,15 @@ When(
 );
 
 When(
+  /^I (select|deselect) the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:element|option|check box|toggle item|radio button)$/,
+  async function(this: This, action: SelectAction, page: string, index: number, element: string) {
+    const locator = this.findPageObjectLocator(page, element, index);
+    const conditions = locator.expect().checked(action === SelectAction.SELECT);
+    await locator.clickUntil(conditions, { force: true });
+  }
+);
+
+When(
   /^I select the(?: (\d+)(?:st|nd|rd|th))? option(?: with (label|value) "([^"]*)?")? from the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" dropdown$/,
   async function(this: This, optIndex: number, context: SelectOptionContext, option: string, page: string, index: number, element: string) {
     const locator = this.findPageObjectLocator(page, element, index);
@@ -187,7 +201,7 @@ Then(
   /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:field|element) "([^"]*)?" attribute to( not)? contain "([^"]*)?"$/,
   async function(this: This, page: string, index: number, element: string, attribute: string, not: boolean, expected: string) {
     const locator = this.findPageObjectLocator(page, element, index);
-    await locator.then().attributeContains(attribute, expected, !not).poll();
+    await locator.expect().attributeContains(attribute, expected, !not).poll();
   }
 );
 
@@ -195,7 +209,7 @@ Then(
   /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:field|element) "([^"]*)?" attribute to( not)? be "([^"]*)?"$/,
   async function(this: This, page: string, index: number, element: string, attribute: string, not: boolean, expected: string) {
     const locator = this.findPageObjectLocator(page, element, index);
-    await locator.then().attributeEquals(attribute, expected, !not).poll();
+    await locator.expect().attributeEquals(attribute, expected, !not).poll();
   }
 );
 
@@ -203,7 +217,7 @@ Then(
   /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:field|element) "([^"]*)?" attribute to( not)? exist$/,
   async function(this: This, page: string, index: number, element: string, expected: string, not: boolean) {
     const locator = this.findPageObjectLocator(page, element, index);
-    await locator.then().attributeExists(expected, !not).poll();
+    await locator.expect().attributeExists(expected, !not).poll();
   }
 );
 
@@ -211,7 +225,7 @@ Then(
   /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element location at (x|y) axis to( not)? be (\d*\.?\d+)$/,
   async function(this: This, page: string, index: number, element: string, axis: Axis, not: boolean, expected: number) {
     const locator = this.findPageObjectLocator(page, element, index);
-    await locator.then().axisLocationEquals(axis, expected, !not).poll();
+    await locator.expect().axisLocationEquals(axis, expected, !not).poll();
   }
 );
 
@@ -219,7 +233,7 @@ Then(
   /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:field|element) "([^"]*)?" css property to( not)? exist$/,
   async function(this: This, page: string, index: number, element: string, expected: string, not: boolean) {
     const locator = this.findPageObjectLocator(page, element, index);
-    await locator.then().cssPropertyExists(expected, !not).poll();
+    await locator.expect().cssPropertyExists(expected, !not).poll();
   }
 );
 
@@ -227,7 +241,7 @@ Then(
   /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element to( not)? be (\d*\.?\d+)px in width and (\d*\.?\d+)px in height$/,
   async function(this: This, page: string, index: number, element: string, not: boolean, width: number, height: number) {
     const locator = this.findPageObjectLocator(page, element, index);
-    await locator.then().dimensionEquals(width, height, !not).poll();
+    await locator.expect().dimensionEquals(width, height, !not).poll();
   }
 );
 
@@ -235,7 +249,7 @@ Then(
   /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element to( not)? be (\d*\.?\d+)px in (width|height)$/,
   async function(this: This, page: string, index: number, element: string, not: boolean, expected: number, side: SizeContext) {
     const locator = this.findPageObjectLocator(page, element, index);
-    await locator.then().dimensionSideEquals(side, expected, !not).poll();
+    await locator.expect().dimensionSideEquals(side, expected, !not).poll();
   }
 );
 
@@ -243,7 +257,7 @@ Then(
   /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element to( not)? be displayed$/,
   async function(this: This, page: string, index: number, element: string, not: boolean) {
     const locator = this.findPageObjectLocator(page, element, index);
-    await locator.then().displayed(!not).poll();
+    await locator.expect().displayed(!not).poll();
   }
 );
 
@@ -251,7 +265,7 @@ Then(
   /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element to( not)? be displayed within the viewport$/,
   async function(this: This, page: string, index: number, element: string, not: boolean) {
     const locator = this.findPageObjectLocator(page, element, index);
-    await locator.then().displayedInViewport(!not).poll();
+    await locator.expect().displayedInViewport(!not).poll();
   }
 );
 
@@ -259,7 +273,7 @@ Then(
   /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element to( not)? be enabled$/,
   async function(this: This, page: string, index: number, element: string, not: boolean) {
     const locator = this.findPageObjectLocator(page, element, index);
-    await locator.then().enabled(!not).poll();
+    await locator.expect().enabled(!not).poll();
   }
 );
 
@@ -267,7 +281,15 @@ Then(
   /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element to( not)? exist$/,
   async function(this: This, page: string, index: number, element: string, not: boolean) {
     const locator = this.findPageObjectLocator(page, element, index);
-    await locator.then().exists(!not).poll();
+    await locator.expect().exists(!not).poll();
+  }
+);
+
+Then(
+  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:element|option|check box|toggle item|radio button) to( not)? be (?:checked|selected)$/,
+  async function(this: This, page: string, index: number, element: string, not: boolean) {
+    const locator = this.findPageObjectLocator(page, element, index);
+    await locator.expect().checked(!not).poll();
   }
 );
 
@@ -279,15 +301,15 @@ Then(
 
     switch (context) {
       case SelectOptionContext.LABEL: {
-        await options.find(i => i.label === expected).locator.then().selected(!not).poll();
+        await options.find(i => i.label === expected).locator.expect().selected(!not).poll();
         break;
       }
       case SelectOptionContext.VALUE: {
-        await options.find(i => i.value === expected).locator.then().selected(!not).poll();
+        await options.find(i => i.value === expected).locator.expect().selected(!not).poll();
         break;
       }
       default: {
-        await options.find(i => i.index === optIndex - 1).locator.then().selected(!not).poll();
+        await options.find(i => i.index === optIndex - 1).locator.expect().selected(!not).poll();
         break;
       }
     }
@@ -322,10 +344,18 @@ Then(
 );
 
 Then(
+  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element to( not)? match the snapshot "([^"]*)?"$/,
+  async function(this: This, page: string, index: number, element: string, not: boolean, filename: string) {
+    const locator = this.findPageObjectLocator(page, element, index);
+    await locator.expect().snapshotMatch(filename, undefined, !not).poll();
+  }
+);
+
+Then(
   /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element text to( not)? contain "([^"]*)?"$/,
   async function(this: This, page: string, index: number, element: string, not: boolean, expected: string) {
     const locator = this.findPageObjectLocator(page, element, index);
-    await locator.then().textContains(expected, !not).poll();
+    await locator.expect().textContains(expected, !not).poll();
   }
 );
 
@@ -333,7 +363,7 @@ Then(
   /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element text to( not)? contain:$/,
   async function(this: This, page: string, index: number, element: string, not: boolean, expected: string) {
     const locator = this.findPageObjectLocator(page, element, index);
-    await locator.then().textContains(expected, !not).poll();
+    await locator.expect().textContains(expected, !not).poll();
   }
 );
 
@@ -341,7 +371,7 @@ Then(
   /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element text to( not)? be empty$/,
   async function(this: This, page: string, index: number, element: string, not: boolean) {
     const locator = this.findPageObjectLocator(page, element, index);
-    await locator.then().textEmpty(!not).poll();
+    await locator.expect().textEmpty(!not).poll();
   }
 );
 
@@ -349,7 +379,7 @@ Then(
   /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element text to( not)? be "([^"]*)?"$/,
   async function(this: This, page: string, index: number, element: string, not: boolean, expected: string) {
     const locator = this.findPageObjectLocator(page, element, index);
-    await locator.then().textEquals(expected, !not).poll();
+    await locator.expect().textEquals(expected, !not).poll();
   }
 );
 
@@ -357,7 +387,7 @@ Then(
   /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element text to( not)? be:$/,
   async function(this: This, page: string, index: number, element: string, not: boolean, expected: string) {
     const locator = this.findPageObjectLocator(page, element, index);
-    await locator.then().textEquals(expected, !not).poll();
+    await locator.expect().textEquals(expected, !not).poll();
   }
 );
 
@@ -365,7 +395,7 @@ Then(
   /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:field|element) value to( not)? contain "([^"]*)?"$/,
   async function(this: This, page: string, index: number, element: string, not: boolean, expected: string) {
     const locator = this.findPageObjectLocator(page, element, index);
-    await locator.then().valueContains(expected, !not).poll();
+    await locator.expect().valueContains(expected, !not).poll();
   }
 );
 
@@ -373,7 +403,7 @@ Then(
   /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:field|element) value to( not)? contain:$/,
   async function(this: This, page: string, index: number, element: string, not: boolean, expected: string) {
     const locator = this.findPageObjectLocator(page, element, index);
-    await locator.then().valueContains(expected, !not).poll();
+    await locator.expect().valueContains(expected, !not).poll();
   }
 );
 
@@ -381,7 +411,7 @@ Then(
   /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:field|element) value to( not)? be empty$/,
   async function(this: This, page: string, index: number, element: string, not: boolean) {
     const locator = this.findPageObjectLocator(page, element, index);
-    await locator.then().valueEmpty(!not).poll();
+    await locator.expect().valueEmpty(!not).poll();
   }
 );
 
@@ -389,7 +419,7 @@ Then(
   /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:field|element) value to( not)? be "([^"]*)?"$/,
   async function(this: This, page: string, index: number, element: string, not: boolean, expected: string) {
     const locator = this.findPageObjectLocator(page, element, index);
-    await locator.then().valueEquals(expected, !not).poll();
+    await locator.expect().valueEquals(expected, !not).poll();
   }
 );
 
@@ -397,6 +427,6 @@ Then(
   /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:field|element) value to( not)? be:$/,
   async function(this: This, page: string, index: number, element: string, not: boolean, expected: string) {
     const locator = this.findPageObjectLocator(page, element, index);
-    await locator.then().valueEquals(expected, !not).poll();
+    await locator.expect().valueEquals(expected, !not).poll();
   }
 );

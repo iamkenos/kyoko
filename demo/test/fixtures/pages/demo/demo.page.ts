@@ -1,15 +1,14 @@
 import { BasePage } from "@generics";
 
 export class DemoPage extends BasePage {
-  public url = "/index.html";
-  public title = "Demo Site";
-  public locators = {
-    hSectionHeader: this.page.locator("//h5"),
-    navBar: this.page.locator("//nav")
-  };
+  url = "/index.html";
+  title = "Demo Site";
+
+  hSectionHeader = this.page.locator("//h5");
+  navBar = this.page.locator("//nav");
 
   private givenNavItem(text: string) {
-    return this.locators.navBar.locator("//ul/li", { hasText: text });
+    return this.navBar.locator("//ul/li", { hasText: text });
   }
 
   async whenClickNavItem(text: string) {

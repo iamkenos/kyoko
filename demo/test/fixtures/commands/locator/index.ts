@@ -2,7 +2,7 @@ import * as path from "path";
 
 import { Locator as PlaywrightLocator } from "@playwright/test";
 
-import { ExpectedConditionOptions, LocatorConditions } from "@conditions";
+import { ExpectedConditionOptions, ExpectedConditions, LocatorConditions } from "@conditions";
 import { Page } from "@generics";
 
 export class Locator implements PlaywrightLocator {
@@ -79,6 +79,11 @@ export class Locator implements PlaywrightLocator {
     await this.evaluate((node: HTMLElement) => node.click());
   }
 
+  async clickUntil(conditions: ExpectedConditions, ...args: Parameters<PlaywrightLocator["click"]>) {
+    const fn = async() => await this.click(...args);
+    await this.doUntil({ name: this.clickUntil.name, fn }, conditions);
+  }
+
   async location() {
     // gets element location relative to the top of the document
     // see: https://stackoverflow.com/a/51283627/2285470
@@ -93,10 +98,6 @@ export class Locator implements PlaywrightLocator {
     await this.evaluate((node: HTMLElement) => node.scrollIntoView({ behavior: "auto", block: "center", inline: "center" }));
   }
 
-  then() {
-    return this.expect();
-  }
-
   toString() {
     return `${(this._locator as any)._selector}`;
   }
@@ -108,6 +109,10 @@ export class Locator implements PlaywrightLocator {
     const fileChooser = await fileChooserPromise;
     const mapped = files.length > 0 ? files.map(file => path.join(this.page().config.baseDir, file)) : files;
     await fileChooser.setFiles(mapped);
+  }
+
+  async doUntil(action: { fn: Function, name: string }, conditions: ExpectedConditions) {
+    await conditions.setName(action.name).setAction(action.fn).poll();
   }
 
   // locator actions ---------------------------------------------------------------------------------------------------

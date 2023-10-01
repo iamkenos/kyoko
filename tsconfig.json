@@ -4,6 +4,8 @@
     "target": "ESNext",
     "moduleResolution": "node",
     "paths": {
+      "@common": ["demo/test/fixtures/common/index"],
+      "@common/*": ["demo/test/fixtures/common/*"],
       "@commands": ["demo/test/fixtures/commands/index"],
       "@commands/*": ["demo/test/fixtures/commands/*"],
       "@conditions": ["demo/test/fixtures/conditions/index"],

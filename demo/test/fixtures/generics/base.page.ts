@@ -1,4 +1,4 @@
-import { BaseWorld, Locator, Page } from "./base.world";
+import { BaseWorld, Page } from "./base.world";
 
 interface IBasePage {
   /** Playwright's context page created in cucumber's world scope */
@@ -10,7 +10,6 @@ interface IBasePage {
   /** This page's title */
   title: string;
   /** This page's locators */
-  locators: { [key: string]: Locator };
 }
 
 export class BasePage implements IBasePage {
@@ -18,15 +17,9 @@ export class BasePage implements IBasePage {
   readonly world: BaseWorld;
   url: string;
   title: string;
-  locators: { [key: string]: Locator };
 
   constructor(world: BaseWorld) {
     this.world = world;
     this.page = world.page;
-  }
-
-  async whenNavigate() {
-    await this.page.goto(this.url);
-    await this.page.expect().domContentLoaded().poll();
   }
 }

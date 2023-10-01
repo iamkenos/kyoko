@@ -1,4 +1,5 @@
 const callsites = require('callsites');
+const fs = require('fs-extra');
 const path = require('path');
 
 /**
@@ -11,6 +12,8 @@ function configure(overrides) {
   require('dotenv').config();
   const baseDir = path.dirname(callsites()[1].getFileName());
   const resultsDir = path.join(baseDir, process.env.RESULTS_DIR || overrides?.resultsDir || 'results/');
+  const snapshotsDir = path.join(baseDir, process.env.SNAPSHOTS_DIR || overrides?.snapshotsDir || 'snapshots/');
+
   const config = {
     format: [
       `html:${resultsDir}report.html`,
@@ -29,6 +32,7 @@ function configure(overrides) {
     strict: false,
     tags: process.env.TAGS || overrides?.tags
   };
+
   config.worldParameters = {
     config: {
       ...config,
@@ -39,10 +43,31 @@ function configure(overrides) {
       headless: process.env.HEADLESS === 'true' || overrides?.headless || false,
       pages: (overrides?.pages || ['fixtures/pages/**/*.page.ts']).map(i => path.join(baseDir, i)),
       resultsDir,
+      snapshots: {
+        images: {
+          outDir: 'images',
+          skipCompare: false,
+          mask: [],
+          maxDiffPixelRatio: 0
+        }
+      },
       timeout: +process.env.TIMEOUT || overrides?.timeout || 30000,
       ...overrides?.worldParameters
     }
   };
+
+  // resolve and prepare snapshot directories
+  const { snapshots } = config.worldParameters.config;
+  fs.removeSync(resultsDir);
+  Object.keys(snapshots).forEach(key => {
+    snapshots[key].outDir = path.resolve(snapshotsDir, snapshots[key].outDir);
+    snapshots[key].actualDir = path.resolve(snapshots[key].outDir, 'actual');
+    snapshots[key].expectedDir = path.resolve(snapshots[key].outDir, 'expected');
+    snapshots[key].diffDir = path.resolve(snapshots[key].outDir, 'diff');
+    fs.removeSync(snapshots[key].actualDir);
+    fs.removeSync(snapshots[key].diffDir);
+    fs.mkdirsSync(snapshots[key].expectedDir);
+  });
 
   return config;
 }
