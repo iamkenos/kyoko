@@ -30,7 +30,7 @@ export class SnapshotMatch extends ExpectedCondition {
   }
 
   async evaluate() {
-    const { browser, snapshots } = this.page.config;
+    const { browser, snapshots } = this.page.context().config;
     const { actualDir, expectedDir, diffDir, maxDiffPixelRatio, mask, skipCompare } = snapshots.images;
     const actualFilePath = path.join(actualDir, browser, this.filename);
     const diffFilePath = path.join(diffDir, browser, this.filename);

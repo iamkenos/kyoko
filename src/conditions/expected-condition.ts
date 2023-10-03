@@ -1,4 +1,5 @@
-import type { Locator, Page } from "../generics/base.world";
+import type { Page } from "@commands/page/types";
+import type { Locator } from "@commands/locator/types";
 import type { ExpectedConditionResult } from "./types";
 
 export abstract class ExpectedCondition {

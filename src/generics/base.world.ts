@@ -5,46 +5,12 @@ import * as path from "path";
 import { IWorldOptions, World } from "@cucumber/cucumber";
 import { IConfiguration } from "@cucumber/cucumber/lib/configuration";
 
-import {
-  addPageCommands,
-  closeLastPage,
-  closeOtherPages,
-  lastPage,
-  newPage
-} from "@commands/context";
-import {
-  expect,
-  given,
-  locator,
-  scrollTo,
-  scrollToBottom,
-  scrollToTop
-} from "@commands/page";
-
 import { BasePage } from "./base.page";
+import { BrowserContext as BrowserContextClass } from "@commands/browsercontext/browsercontext";
 
-export interface BrowserContext extends playwright.BrowserContext {
-  addPageCommands: typeof addPageCommands;
-  closeLastPage: typeof closeLastPage;
-  closeOtherPages: typeof closeOtherPages;
-  lastPage: typeof lastPage;
-  newPage: typeof newPage;
-}
-
-export interface Page extends playwright.Page {
-  context: () => BrowserContext;
-  expect: typeof expect;
-  given: typeof given;
-  /** Playwright's page locator extended with custom actions */
-  locator: typeof locator;
-  scrollToBottom: typeof scrollToBottom;
-  scrollToTop: typeof scrollToTop;
-  scrollTo: typeof scrollTo;
-  config: Config;
-}
-
-export interface Locator extends ReturnType<Page["locator"]> {
-}
+import type { BrowserContext } from "@commands/browsercontext/types";
+import type { Locator } from "@commands/locator/types";
+import type { Page } from "@commands/page/types";
 
 export interface Config extends Omit<IConfiguration, "worldParameters"> {
   baseDir: string;
@@ -161,12 +127,8 @@ export abstract class BaseWorld extends World {
       viewport: { width: 1675, height: 1020 }
     };
     const browser = await browserType.launch(launchOptions) as any;
-    const context = await browser.newContext(contextOptions);
-    context[addPageCommands.name] = (...args: Parameters<typeof addPageCommands>) => addPageCommands.call({ ...context, config: this.config }, ...args);
-    context[closeLastPage.name] = () => closeLastPage.call(context);
-    context[closeOtherPages.name] = () => closeOtherPages.call(context);
-    context[lastPage.name] = () => lastPage.call(context);
-    context[newPage.name] = () => newPage.call(context);
+    const context = new BrowserContextClass(await browser.newContext(contextOptions)) as BrowserContext;
+    context.config = this.config;
     return context;
   }
 }

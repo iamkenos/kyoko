@@ -1,6 +1,7 @@
 import type { ExpectedConditionOptions } from "../types";
+import type { Locator } from "@commands/locator/types";
 
-import { Locator, LocatorSnapshotOptions } from "@generics";
+import { LocatorSnapshotOptions } from "@generics";
 import { Axis, SizeContext } from "@gherkin";
 import { ExpectedConditions } from "../expected-conditions";
 import { AttributeContains } from "./attribute-contains";

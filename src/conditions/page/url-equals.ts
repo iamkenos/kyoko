@@ -9,7 +9,7 @@ export class UrlEquals extends ExpectedCondition {
 
   async evaluate() {
     this.actual = this.page.url();
-    this.expected = string.isURL(this.expected) ? this.expected : new URL(this.expected, this.page.config.baseURL).href;
+    this.expected = string.isURL(this.expected) ? this.expected : new URL(this.expected, this.page.context().config.baseURL).href;
     this.passed = this.actual === this.expected;
 
     return super.evaluate();

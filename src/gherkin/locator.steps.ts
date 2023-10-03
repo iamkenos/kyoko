@@ -6,7 +6,7 @@ export enum ClickAction {
   LEFT = "left",
   MIDDLE = "middle",
   RIGHT = "right",
-  SCRIPT = "script",
+  FORCE = "force",
   DOUBLE = "double"
 }
 
@@ -45,13 +45,13 @@ When(
 );
 
 When(
-  /^I (?:(double|script|middle|right) )?click the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:link|button|element)(?: (\d+) (?:times))?(?: again)?$/,
+  /^I (?:(double|force|middle|right) )?click the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:link|button|element)(?: (\d+) (?:times))?(?: again)?$/,
   async function(this: This, action: ClickAction, page: string, index: number, element: string, count: number) {
     const locator = this.findPageObjectLocator(page, element, index);
     const clickCount = count || 1;
     switch (action) {
-      case ClickAction.SCRIPT: {
-        await locator.jsClick();
+      case ClickAction.FORCE: {
+        await locator.click({ clickCount, force: true });
         break;
       }
       case ClickAction.DOUBLE: {

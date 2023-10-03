@@ -1,6 +1,7 @@
 import type { ExpectedConditionOptions } from "../types";
+import type { Page } from "@commands/page/types";
 
-import { Page, PageSnapshotOptions } from "@generics";
+import { PageSnapshotOptions } from "@generics";
 import { ExpectedConditions } from "../expected-conditions";
 import { DomContentLoaded } from "./dom-content-loaded";
 import { SnapshotMatch } from "./snapshot-match";
