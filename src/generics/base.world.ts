@@ -1,6 +1,6 @@
 import * as playwright from "@playwright/test";
-import * as glob from "glob";
 import * as path from "path";
+import * as files from "@common/utils/files";
 
 import { IWorldOptions, World } from "@cucumber/cucumber";
 import { IConfiguration } from "@cucumber/cucumber/lib/configuration";
@@ -64,19 +64,16 @@ export abstract class BaseWorld extends World {
   constructor(options: IWorldOptions) {
     super(options);
     this.config = options.parameters.config;
-    this.pageObjects = this.loadPageObjects();
+    this.loadPageObjects();
+    this.loadCommands();
   }
 
   private loadPageObjects() {
-    const resolved = new Set<string>();
-    const paths = this.config.pages;
+    this.pageObjects = files.fromGlob(this.config.pages);
+  }
 
-    paths.filter(Boolean).forEach((i: string): void => {
-      const files = glob.sync(i);
-      files.filter(Boolean).forEach((i) => resolved.add(path.resolve(i)));
-    });
-
-    return [...resolved];
+  private loadCommands() {
+    files.fromGlob([path.join(path.dirname(__dirname), "commands/**/command/*.ts")]).filter(Boolean).forEach(file => require(file));
   }
 
   findPageObject(page: string, persist = false) {
@@ -128,6 +125,7 @@ export abstract class BaseWorld extends World {
     };
     const browser = await browserType.launch(launchOptions) as any;
     const context = new BrowserContextClass(await browser.newContext(contextOptions)) as BrowserContext;
+    context.setDefaultTimeout(this.config.timeout);
     context.config = this.config;
     return context;
   }
