@@ -1,4 +1,3 @@
-
 import { Fixture } from "@commands/fixture";
 
 import type { Page as PlaywrightPageType } from "@playwright/test";

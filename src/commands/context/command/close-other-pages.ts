@@ -1,4 +1,4 @@
-import type { BrowserContext } from "@commands/browsercontext/types";
+import type { BrowserContext } from "@commands/context/types";
 
 export async function closeOtherPages(this: BrowserContext) {
   let pages = this.pages();

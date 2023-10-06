@@ -6,9 +6,9 @@ import { IWorldOptions, World } from "@cucumber/cucumber";
 import { IConfiguration } from "@cucumber/cucumber/lib/configuration";
 
 import { BasePage } from "./base.page";
-import { BrowserContext as BrowserContextClass } from "@commands/browsercontext/browsercontext";
+import { BrowserContext as BrowserContextClass } from "@commands/context/context";
 
-import type { BrowserContext } from "@commands/browsercontext/types";
+import type { BrowserContext } from "@commands/context/types";
 import type { Locator } from "@commands/locator/types";
 import type { Page } from "@commands/page/types";
 

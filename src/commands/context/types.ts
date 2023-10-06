@@ -1,11 +1,11 @@
 import type { BrowserContext as PlaywrightBrowserContextType } from "@playwright/test";
 import type { Config } from "@generics/base.world";
 import type { Page } from "@commands/page/types";
-import type { BrowserContext as BrowserContextClassType } from "./browsercontext";
-import type { closeLastPage } from "./command/closeLastPage";
-import type { closeOtherPages } from "./command/closeOtherPages";
-import type { lastPage } from "./command/lastPage";
-import type { newPage } from "./command/newPage";
+import type { BrowserContext as BrowserContextClassType } from "./context";
+import type { closeLastPage } from "./command/close-last-page";
+import type { closeOtherPages } from "./command/close-other-pages";
+import type { lastPage } from "./command/last-page";
+import type { newPage } from "./command/new-page";
 
 // @ts-ignore
 export interface BrowserContext extends PlaywrightBrowserContextType, BrowserContextClassType {

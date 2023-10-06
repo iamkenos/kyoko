@@ -1,6 +1,8 @@
 import * as glob from "glob";
 import * as path from "path";
 
+import { changecase } from "@common/utils/string";
+
 /** Allows the addition of custom commands to the following Playwright fixtures:
  * - Context
  * - Page
@@ -19,13 +21,15 @@ export class Fixture<T> {
 
   private addCommands(instance: any) {
     const ext = ".ts";
-    const files = glob.sync(path.join(__dirname, this.constructor.name.toLowerCase(), "command", `*${ext}`));
+    const parts = changecase.split(this.constructor.name);
+    const fixtureDir = parts.length > 1 ? `{${parts.join()}}` : parts[0];
+    const files = glob.sync(path.join(__dirname, fixtureDir, "command", `*${ext}`));
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      const name = path.basename(file, ext);
+      const name = changecase.camelCase(path.basename(file, ext));
       const fn = require(file)[name];
-      instance[fn.name] = (...args: any) => fn.call(instance, ...args);
+      instance[name] = (...args: any) => fn.call(instance, ...args);
     }
 
     instance.__proto = this.__proto;
