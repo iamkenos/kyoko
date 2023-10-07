@@ -1,6 +1,6 @@
-import { BasePage } from "@generics";
+import { PageObject } from "@iamkenos/kyoko/core";
 
-export class DemoPage extends BasePage {
+export class DemoPage extends PageObject {
   url = "/index.html";
   title = "Demo Site";
 

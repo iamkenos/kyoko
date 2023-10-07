@@ -11,6 +11,7 @@ import { Displayed } from "./condition/displayed";
 import { DisplayedInViewport } from "./condition/displayed-in-viewport";
 import { Enabled } from "./condition/enabled";
 import { Exists } from "./condition/exists";
+import { Focused } from "./condition/focused";
 import { Selected } from "./condition/selected";
 import { SnapshotMatch } from "./condition/snapshot-match";
 import { TextContains } from "./condition/text-contains";
@@ -18,10 +19,10 @@ import { TextEquals } from "./condition/text-equals";
 import { ValueContains } from "./condition/value-contains";
 import { ValueEquals } from "./condition/value-equals";
 
-import type { ExpectedConditionOptions } from "../types";
 import type { Locator } from "@commands/locator/types";
-import type { LocatorSnapshotOptions } from "@generics";
-import type { Axis, SizeContext } from "@gherkin";
+import type { LocatorSnapshotOptions } from "@config/types";
+import type { Axis, SizeContext } from "@core/gherkin/enums";
+import type { ExpectedConditionOptions } from "../types";
 
 export class LocatorConditions extends ExpectedConditions {
   protected locator: Locator;
@@ -78,6 +79,10 @@ export class LocatorConditions extends ExpectedConditions {
 
   exists(preferred?: boolean) {
     return this.addCondition(new Exists(preferred));
+  }
+
+  focused(preferred?: boolean) {
+    return this.addCondition(new Focused(preferred));
   }
 
   selected(preferred?: boolean) {

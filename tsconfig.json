@@ -4,18 +4,13 @@
     "target": "ESNext",
     "moduleResolution": "node",
     "paths": {
-      "@common": ["src/common/index"],
-      "@common/*": ["src/common/*"],
-      "@commands": ["src/commands/index"],
+      "@iamkenos/kyoko": ["src/index"],
+      "@iamkenos/kyoko/*": ["src/*"],
       "@commands/*": ["src/commands/*"],
-      "@conditions": ["src/conditions/index"],
+      "@common/*": ["src/common/*"],
       "@conditions/*": ["src/conditions/*"],
-      "@config": ["src/config/index"],
       "@config/*": ["src/config/*"],
-      "@generics": ["src/generics/index"],
-      "@generics/*": ["src/generics/*"],
-      "@gherkin": ["src/gherkin/index"],
-      "@gherkin/*": ["src/gherkin/*"]
+      "@core/*": ["src/core/*"]
     }
   },
   "include": ["./**/**.ts"],

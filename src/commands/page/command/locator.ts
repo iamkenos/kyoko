@@ -5,6 +5,6 @@ import type { Page } from "@commands/page/types";
 import type { Locator } from "@commands/locator/types";
 
 export function locator(this: Page, ...args: Parameters<PlaywrightPageType["locator"]>) {
-  const locator = this.mainFrame().locator(...args);
-  return new LocatorClass(locator) as Locator;
+  const from = this.__proto.locator(...args);
+  return new LocatorClass(from) as Locator;
 }

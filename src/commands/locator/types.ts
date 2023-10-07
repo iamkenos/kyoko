@@ -19,6 +19,7 @@ import type { getByText } from "./command/get-by-text";
 import type { getByTitle } from "./command/get-by-title";
 import type { given } from "./command/given";
 import type { hoverIntoView } from "./command/hover-into-view";
+import type { isFocused } from "./command/is-focused";
 import type { isSelected } from "./command/is-selected";
 import type { last } from "./command/last";
 import type { location } from "./command/location";
@@ -48,6 +49,7 @@ export interface Locator extends PlaywrightLocatorType, LocatorClassType {
   getByTitle: typeof getByTitle;
   given: typeof given;
   hoverIntoView: typeof hoverIntoView;
+  isFocused: typeof isFocused;
   isSelected: typeof isSelected;
   last: typeof last;
   location: typeof location;

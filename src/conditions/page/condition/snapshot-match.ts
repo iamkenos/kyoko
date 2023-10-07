@@ -4,7 +4,7 @@ import * as path from "path";
 import { PageCondition } from "@conditions/page/page-condition";
 
 import type { Locator } from "@commands/locator/types";
-import type { PageSnapshotOptions } from "@generics";
+import type { PageSnapshotOptions } from "@config/types";
 
 export class SnapshotMatch extends PageCondition {
   private readonly filename: string;

@@ -1,8 +1,3 @@
-
-import type { Page } from "@commands/page/types";
-import type { PageSnapshotOptions } from "@generics";
-import type { ExpectedConditionOptions } from "../types";
-
 import { ExpectedConditions } from "../expected-conditions";
 import { DomContentLoaded } from "./condition/dom-content-loaded";
 import { SnapshotMatch } from "./condition/snapshot-match";
@@ -13,6 +8,10 @@ import { UrlEquals } from "./condition/url-equals";
 import { WindowCountEquals } from "./condition/window-count-equals";
 import { WindowCountLessThan } from "./condition/window-count-less-than";
 import { WindowCountMoreThan } from "./condition/window-count-more-than";
+
+import type { Page } from "@commands/page/types";
+import type { PageSnapshotOptions } from "@config/types";
+import type { ExpectedConditionOptions } from "../types";
 
 export class PageConditions extends ExpectedConditions {
   protected page: Page;

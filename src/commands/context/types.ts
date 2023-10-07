@@ -1,6 +1,6 @@
 import type { BrowserContext as PlaywrightBrowserContextType } from "@playwright/test";
-import type { Config } from "@generics/base.world";
 import type { Page } from "@commands/page/types";
+import type { Config } from "@config/types";
 import type { BrowserContext as BrowserContextClassType } from "./context";
 import type { closeLastPage } from "./command/close-last-page";
 import type { closeOtherPages } from "./command/close-other-pages";

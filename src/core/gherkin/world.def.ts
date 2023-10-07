@@ -10,8 +10,7 @@ import {
   setWorldConstructor,
   Status
 } from "@cucumber/cucumber";
-
-import { BaseWorld as This } from "@generics";
+import { World as This } from "../world";
 
 setDefaultTimeout(process.env.DEBUG === "true" ? -1 : undefined);
 setWorldConstructor(This);

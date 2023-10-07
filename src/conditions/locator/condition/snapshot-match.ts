@@ -1,6 +1,6 @@
 import { SnapshotMatch as LocatorCondition } from "@conditions/page/condition/snapshot-match";
 
-import type { LocatorSnapshotOptions } from "@generics";
+import type { LocatorSnapshotOptions } from "@config/types";
 
 export class SnapshotMatch extends LocatorCondition {
 

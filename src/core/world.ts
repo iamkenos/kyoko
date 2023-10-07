@@ -2,61 +2,19 @@ import * as playwright from "@playwright/test";
 import * as path from "path";
 import * as files from "@common/utils/files";
 
-import { IWorldOptions, World } from "@cucumber/cucumber";
-import { IConfiguration } from "@cucumber/cucumber/lib/configuration";
-
-import { BasePage } from "./base.page";
+import { World as CucumberWorld } from "@cucumber/cucumber";
 import { BrowserContext as BrowserContextClass } from "@commands/context/context";
+import { PageObject } from "./page-object";
 
+import type { IWorldOptions } from "@cucumber/cucumber";
 import type { BrowserContext } from "@commands/context/types";
 import type { Locator } from "@commands/locator/types";
 import type { Page } from "@commands/page/types";
+import type { Config } from "@config/types";
 
-export interface Config extends Omit<IConfiguration, "worldParameters"> {
-  baseDir: string;
-  baseURL: string;
-  browser: string;
-  debug: boolean;
-  headless: boolean;
-  pages: string[];
-  resultsDir: string;
-  snapshots: Snapshots;
-  timeout: number;
-}
-
-type SnapshotDirectories = {
-  /** Directory under `outDir` where actual files are stored for comparison */
-  actualDir?: string;
-  /** Directory under `outDir` where expected files are stored for comparison */
-  expectedDir?: string;
-  /** Directory under `outDir` where differences are stored for comparison */
-  diffDir?: string;
-};
-
-type SnapshotOptions = {
-  /** Directory to store the output of this comparable object in, relative to the config file */
-  outDir?: string;
-  /** Skip comparison, just save the actual files */
-  skipCompare?: boolean;
-} & SnapshotDirectories;
-
-type ImageSnapshotOptions = {
-  maxDiffPixelRatio?: number;
-  mask?: Locator[];
-} & SnapshotOptions
-
-export type LocatorSnapshotOptions = ImageSnapshotOptions;
-
-export type PageSnapshotOptions = { fullPage?: boolean } & ImageSnapshotOptions;
-
-type Snapshots = {
-  /** Options used for comparing images */
-  images?: ImageSnapshotOptions;
-};
-
-export abstract class BaseWorld extends World {
+export abstract class World extends CucumberWorld {
   private pageObjects: string[];
-  private pageObject: BasePage;
+  private pageObject: PageObject;
   context: BrowserContext;
   page: Page;
   config: Config;
@@ -77,7 +35,7 @@ export abstract class BaseWorld extends World {
   }
 
   findPageObject(page: string, persist = false) {
-    const file = this.pageObjects.find(i => path.basename(i).split(".")[0].toLowerCase() === page.toLowerCase());
+    const file = this.pageObjects.find(i => path.basename(i).split(".").shift().toLowerCase() === page.toLowerCase());
 
     if (!file) {
       throw new Error(`\n  Unable to resolve "${page}" from any of the available page object files:
@@ -91,8 +49,8 @@ export abstract class BaseWorld extends World {
       throw new Error(`"${file}" doesn't have an exported page object class`);
     }
 
-    const Clazz = entries[1] as typeof BasePage;
-    const pageObject = new Clazz(this);
+    const PageObj = entries[1] as typeof PageObject;
+    const pageObject = new PageObj(this);
 
     if (persist) {
       this.pageObject = pageObject;
@@ -124,7 +82,8 @@ export abstract class BaseWorld extends World {
       viewport: { width: 1675, height: 1020 }
     };
     const browser = await browserType.launch(launchOptions) as any;
-    const context = new BrowserContextClass(await browser.newContext(contextOptions)) as BrowserContext;
+    const contextFrom = await browser.newContext(contextOptions);
+    const context = new BrowserContextClass(contextFrom) as BrowserContext;
     context.setDefaultTimeout(this.config.timeout);
     context.config = this.config;
     return context;

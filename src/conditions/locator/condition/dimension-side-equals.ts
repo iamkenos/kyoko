@@ -1,5 +1,5 @@
 import { LocatorCondition } from "@conditions/locator/locator-condition";
-import { SizeContext } from "@gherkin";
+import { SizeContext } from "@core/gherkin/enums";
 
 export class DimensionSideEquals extends LocatorCondition {
   public constructor(side: SizeContext, expected: number, preferred?: boolean) {

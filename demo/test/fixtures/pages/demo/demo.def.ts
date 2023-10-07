@@ -1,9 +1,9 @@
 import { Before, Then, When } from "@cucumber/cucumber";
 
-import { BaseWorld as BaseThis } from "@generics";
+import { World } from "@iamkenos/kyoko/core";
 import { DemoPage } from "./demo.page";
 
-interface This extends BaseThis {
+interface This extends World {
   demoPage: DemoPage;
 }
 

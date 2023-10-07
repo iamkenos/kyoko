@@ -1,40 +1,21 @@
 import { DataTable, Then, When } from "@cucumber/cucumber";
+import {
+  AnchorAttributes,
+  Axis,
+  ClickAction,
+  HrefScheme,
+  HrefSchemeContext,
+  HrefTarget,
+  HrefTargetContext,
+  SelectAction,
+  SelectOptionContext,
+  SetValueAction,
+  SizeContext
+} from "./enums";
+import { XPathBuilder } from "../utils/xpath-builder";
 
-import { Locator, BaseWorld as This } from "@generics";
-
-export enum ClickAction {
-  LEFT = "left",
-  MIDDLE = "middle",
-  RIGHT = "right",
-  FORCE = "force",
-  DOUBLE = "double"
-}
-
-export enum SelectAction {
-  SELECT = "select",
-  DESELECT = "deselect"
-}
-
-export enum SelectOptionContext {
-  LABEL = "label",
-  VALUE = "value",
-  INDEX = "index",
-}
-
-export enum SetValueAction {
-  TYPE = "type",
-  APPEND = "append"
-}
-
-export enum SizeContext {
-  WIDTH = "width",
-  HEIGHT = "height"
-}
-
-export enum Axis {
-  X = "x",
-  Y = "y"
-}
+import type { World as This } from "../world";
+import type { Locator } from "@commands/locator/types";
 
 When(
   /^I clear the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:field|element)$/,
@@ -45,9 +26,10 @@ When(
 );
 
 When(
-  /^I (?:(double|force|middle|right) )?click the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:link|button|element)(?: (\d+) (?:times))?(?: again)?$/,
-  async function(this: This, action: ClickAction, page: string, index: number, element: string, count: number) {
-    const locator = this.findPageObjectLocator(page, element, index);
+  /^I (?:(double|force|middle|right) )?click the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:(?:element|button)|(link))(?: (\d+) (?:times))?(?: again)?$/,
+  async function(this: This, action: ClickAction, page: string, index: number, element: string, link: boolean, count: number) {
+    const selector = link ? new XPathBuilder().textEquals(element).hasExactAttribute(AnchorAttributes.HREF).build() : element;
+    const locator = this.findPageObjectLocator(page, selector, index);
     const clickCount = count || 1;
     switch (action) {
       case ClickAction.FORCE: {
@@ -290,6 +272,79 @@ Then(
   async function(this: This, page: string, index: number, element: string, not: boolean) {
     const locator = this.findPageObjectLocator(page, element, index);
     await locator.expect().checked(!not).poll();
+  }
+);
+
+Then(
+  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element to( not)? be focused$/,
+  async function(this: This, page: string, index: number, element: string, not: boolean) {
+    const locator = this.findPageObjectLocator(page, element, index);
+    await locator.expect().focused(!not).poll();
+  }
+);
+
+Then(
+  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:(?:element)|(link)) to( not)? open (?:on (?:a|the)? )?(new window|same frame|parent frame|top frame|without a target)$/,
+  async function(this: This, page: string, index: number, element: string, link: boolean, not: boolean, target: HrefTargetContext) {
+    const selector = link ? new XPathBuilder().textEquals(element).hasExactAttribute(AnchorAttributes.HREF).build() : element;
+    const locator = this.findPageObjectLocator(page, selector, index);
+
+    switch (target) {
+      case HrefTargetContext.BLANK:
+      case HrefTargetContext.SELF:
+      case HrefTargetContext.PARENT:
+      case HrefTargetContext.TOP: {
+        const [context] = Object.entries(HrefTargetContext).find(([, value]) => value === target);
+        const expected = HrefTarget[context];
+        await locator.expect().attributeEquals(AnchorAttributes.TARGET, expected, !not).poll();
+        break;
+      }
+      default: {
+        await locator.expect().attributeExists(AnchorAttributes.TARGET, not).poll();
+        break;
+      }
+    }
+  }
+);
+
+Then(
+  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:(?:element)|(link)) to( not)? open on a named frame "([^"]*)?"$/,
+  async function(this: This, page: string, index: number, element: string, link: boolean, not: boolean, target: string) {
+    const selector = link ? new XPathBuilder().textEquals(element).hasExactAttribute(AnchorAttributes.HREF).build() : element;
+    const locator = this.findPageObjectLocator(page, selector, index);
+    await locator.expect().attributeEquals(AnchorAttributes.TARGET, target, !not).poll();
+  }
+);
+
+Then(
+  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:(?:element)|(link)) to( not)? point (?:to (?:a|an)? |to )?(?:(path|section|absolute url|mail|tel)? )?"([^"]*)?"$/,
+  async function(this: This, page: string, index: number, element: string, link: boolean, not: boolean, scheme: HrefSchemeContext, value: string) {
+    const selector = link ? new XPathBuilder().textEquals(element).hasExactAttribute(AnchorAttributes.HREF).build() : element;
+    const locator = this.findPageObjectLocator(page, selector, index);
+
+    switch (scheme) {
+      case HrefSchemeContext.MAIL:
+      case HrefSchemeContext.TEL: {
+        const [context] = Object.entries(HrefSchemeContext).find(([, value]) => value === scheme);
+        const expected = `${HrefScheme[context]}${value}`;
+        await locator.expect().attributeEquals(AnchorAttributes.HREF, expected, !not).poll();
+        break;
+      }
+      default: {
+        await locator.expect().attributeEquals(AnchorAttributes.HREF, value, !not).poll();
+        break;
+      }
+    }
+  }
+);
+
+Then(
+  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:(?:element)|(link)) to( not)? point to the "([^"]*)?" page$/,
+  async function(this: This, page: string, index: number, element: string, link: boolean, not: boolean, target: string) {
+    const selector = link ? new XPathBuilder().textEquals(element).hasExactAttribute(AnchorAttributes.HREF).build() : element;
+    const locator = this.findPageObjectLocator(page, selector, index);
+    const expected = this.findPageObject(target).url;
+    await locator.expect().attributeEquals(AnchorAttributes.HREF, expected, !not).poll();
   }
 );
 

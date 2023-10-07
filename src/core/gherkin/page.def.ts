@@ -1,25 +1,7 @@
 import { Given, Then, When } from "@cucumber/cucumber";
+import { Count, WindowDirection, WindowNavigation } from "./enums";
 
-import { BaseWorld as This } from "@generics";
-
-export enum Count {
-  LESS = "less",
-  MORE = "more",
-  EQUAL = "equal"
-}
-
-export enum WindowDirection {
-  TOP = "top",
-  BOTTOM = "bottom",
-  CENTER = "center",
-  LEFT = "left",
-  RIGHT = "right"
-}
-
-export enum WindowNavigation {
-  BACK = "back",
-  FORWARD = "forward"
-}
+import type { World as This } from "../world";
 
 Given(
   /^I am on the "([^"]*)?" (?:page|site|portal)$/,
@@ -44,7 +26,7 @@ When(
 );
 
 When(
-  /^I press the "([^"]*)?" key(?: (\d+) times)?$/,
+  /^I press the "([^"]*)?" key(?:s)?(?: (\d+) times)?$/,
   async function(this: This, key: string, count: number) {
     const repeats = +count || 1;
     for (let i = 0; i < repeats; i++) {

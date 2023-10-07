@@ -1,5 +1,5 @@
 const { configure } = require('../../src/config');
 
 exports.default = configure({
-  require: ['fixtures/pages/**/*.steps.ts']
+  require: ['fixtures/pages/**/*.def.ts']
 });
