@@ -10,4 +10,3 @@ export async function uploadFiles(this: Locator, ...files: string[]) {
   const mapped = files.length > 0 ? files.map(file => path.join(this.page().context().config.baseDir, file)) : files;
   await fileChooser.setFiles(mapped);
 }
-

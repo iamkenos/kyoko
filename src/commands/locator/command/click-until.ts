@@ -6,4 +6,3 @@ export async function clickUntil(this: Locator, conditions: ExpectedConditions, 
   const fn = async() => await this.click(...args);
   await this.doUntil(fn, conditions.setName(clickUntil.name));
 }
-

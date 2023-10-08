@@ -75,15 +75,9 @@ export abstract class World extends CucumberWorld {
 
   async createBrowserContext() {
     const browserType: playwright.BrowserType = playwright[this.config.browser];
-    const launchOptions: playwright.LaunchOptions = { headless: this.config.headless };
-    const contextOptions: playwright.BrowserContextOptions = {
-      baseURL: this.config.baseURL,
-      ignoreHTTPSErrors: false,
-      viewport: { width: 1675, height: 1020 }
-    };
-    const browser = await browserType.launch(launchOptions) as any;
-    const contextFrom = await browser.newContext(contextOptions);
-    const context = new BrowserContextClass(contextFrom) as BrowserContext;
+    const browser = await browserType.launch(this.config.browserOptions) as any;
+    const from = await browser.newContext(this.config.contextOptions);
+    const context = new BrowserContextClass(from) as BrowserContext;
     context.setDefaultTimeout(this.config.timeout);
     context.config = this.config;
     return context;

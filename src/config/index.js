@@ -12,7 +12,6 @@ function configure(overrides) {
   require('dotenv').config();
   const baseDir = path.dirname(callsites()[1].getFileName());
   const resultsDir = path.join(baseDir, process.env.RESULTS_DIR || overrides?.resultsDir || 'results/');
-  const snapshotsDir = path.join(baseDir, process.env.SNAPSHOTS_DIR || overrides?.snapshotsDir || 'snapshots/');
 
   const config = {
     format: [
@@ -31,14 +30,28 @@ function configure(overrides) {
     tags: process.env.TAGS || overrides?.tags
   };
 
+  const baseURL = process.env.BASE_URL || overrides?.baseURL || '';
+  const snapshotsDir = path.join(baseDir, process.env.SNAPSHOTS_DIR || overrides?.snapshotsDir || 'snapshots/');
+  const headless = process.env.HEADLESS === 'true' || overrides?.headless || false;
+
   config.worldParameters = {
     config: {
       ...config,
       baseDir,
-      baseURL: process.env.BASE_URL || overrides?.baseURL || '',
+      baseURL,
       browser: process.env.BROWSER || overrides?.browser || 'chromium',
+      browserOptions: {
+        headless,
+        ...overrides?.browserOptions
+      },
+      contextOptions: {
+        baseURL,
+        ignoreHTTPSErrors: false,
+        viewport: { width: 1675, height: 1020 },
+        ...overrides?.contextOptions
+      },
       debug: process.env.DEBUG === 'true' || overrides?.debug || false,
-      headless: process.env.HEADLESS === 'true' || overrides?.headless || false,
+      headless,
       pages: (overrides?.pages || ['fixtures/pages/**/*.page.ts']).map(i => path.join(baseDir, i)),
       resultsDir,
       snapshots: {

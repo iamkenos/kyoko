@@ -14,4 +14,3 @@ export async function dropdownOptions(this: Locator, group?: { index: number }) 
   }
   return options;
 }
-

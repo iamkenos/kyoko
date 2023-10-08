@@ -1,16 +1,24 @@
 import type { IConfiguration } from "@cucumber/cucumber/lib/configuration";
+import type { BrowserContextOptions, LaunchOptions } from "@playwright/test";
 import type { Locator } from "@commands/locator/types";
 
 export interface Config extends Omit<IConfiguration, "worldParameters"> {
+  /** Custom: The base directory where most config paths will be resolved from */
   baseDir: string;
   baseURL: string;
   browser: string;
+  /** Custom: Whether to run in debug mode or not */
   debug: boolean;
   headless: boolean;
+  /** Custom: Array of globs pointing to your page object files, relative to the config file */
   pages: string[];
+  /** Custom: Directory to store the reports in, relative to config file */
   resultsDir: string;
+  /** Custom: Object containing properties of comparable files */
   snapshots: Snapshots;
   timeout: number;
+  browserOptions: Omit<LaunchOptions, "headless">;
+  contextOptions: Omit<BrowserContextOptions, "baseURL">;
 }
 
 type SnapshotDirectories = {

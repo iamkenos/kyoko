@@ -17,4 +17,3 @@ export async function hoverIntoView(this: Locator, options?: { position?: { x: n
 
   await page.mouse.move(x, y);
 }
-

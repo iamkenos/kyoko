@@ -11,4 +11,3 @@ export async function location(this: Locator) {
   const y = Math.round((box.y - body.y) * 100) / 100;
   return { x, y };
 }
-

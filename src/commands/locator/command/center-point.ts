@@ -6,4 +6,3 @@ export async function centerPoint(this: Locator) {
   const y = Math.round((box.y + (box.height / 2)) * 100) / 100;
   return { x, y };
 }
-

@@ -8,4 +8,3 @@ export async function dragAndDrop(this: Locator, target: Locator) {
   await target.hoverIntoView();
   await page.mouse.up();
 }
-
