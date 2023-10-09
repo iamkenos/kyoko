@@ -37,7 +37,7 @@ export class LocatorConditions extends ExpectedConditions {
     return this.addCondition(new AttributeContains(attribute, expected, preferred));
   }
 
-  attributeEquals(attribute: string, expected: string, preferred?: boolean) {
+  attributeEquals(attribute: string, expected?: string, preferred?: boolean) {
     return this.addCondition(new AttributeEquals(attribute, expected, preferred));
   }
 
@@ -101,7 +101,7 @@ export class LocatorConditions extends ExpectedConditions {
     return this.addCondition(new TextEquals(undefined, preferred));
   }
 
-  textEquals(expected: string, preferred?: boolean) {
+  textEquals(expected?: string, preferred?: boolean) {
     return this.addCondition(new TextEquals(expected, preferred));
   }
 
@@ -113,7 +113,7 @@ export class LocatorConditions extends ExpectedConditions {
     return this.addCondition(new ValueEquals(undefined, preferred));
   }
 
-  valueEquals(expected: string, preferred?: boolean) {
+  valueEquals(expected?: string, preferred?: boolean) {
     return this.addCondition(new ValueEquals(expected, preferred));
   }
 }

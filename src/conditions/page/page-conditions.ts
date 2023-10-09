@@ -1,8 +1,11 @@
 import { ExpectedConditions } from "../expected-conditions";
+import { DialogTextContains } from "./condition/dialog-text-contains";
+import { DialogTextEquals } from "./condition/dialog-text-equals";
 import { DomContentLoaded } from "./condition/dom-content-loaded";
 import { SnapshotMatch } from "./condition/snapshot-match";
 import { TitleContains } from "./condition/title-contains";
 import { TitleEquals } from "./condition/title-equals";
+import { Truthy } from "./condition/truthy";
 import { UrlContains } from "./condition/url-contains";
 import { UrlEquals } from "./condition/url-equals";
 import { WindowCountEquals } from "./condition/window-count-equals";
@@ -21,6 +24,14 @@ export class PageConditions extends ExpectedConditions {
     this.page = page;
   }
 
+  dialogTextContains(expected: string, preferred?: boolean) {
+    return this.addCondition(new DialogTextContains(expected, preferred));
+  }
+
+  dialogTextEquals(expected?: string, preferred?: boolean) {
+    return this.addCondition(new DialogTextEquals(expected, preferred));
+  }
+
   domContentLoaded(preferred?: boolean) {
     return this.addCondition(new DomContentLoaded(preferred));
   }
@@ -33,15 +44,19 @@ export class PageConditions extends ExpectedConditions {
     return this.addCondition(new TitleContains(expected, preferred));
   }
 
-  titleEquals(expected: string, preferred?: boolean) {
+  titleEquals(expected?: string, preferred?: boolean) {
     return this.addCondition(new TitleEquals(expected, preferred));
+  }
+
+  truthy(expected: boolean | (() => Promise<boolean>), preferred?: boolean) {
+    return this.addCondition(new Truthy(expected, preferred));
   }
 
   urlContains(expected: string, preferred?: boolean) {
     return this.addCondition(new UrlContains(expected, preferred));
   }
 
-  urlEquals(expected: string, preferred?: boolean) {
+  urlEquals(expected?: string, preferred?: boolean) {
     return this.addCondition(new UrlEquals(expected, preferred));
   }
 

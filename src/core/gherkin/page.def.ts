@@ -26,6 +26,13 @@ When(
 );
 
 When(
+  /^I( always)? auto (accept|dismiss)(?: and type "([^"]*)?" on)? the page dialog(?:s)?$/,
+  async function(this: This, always: string, action: any, text?: string) {
+    this.page.dialogHandler({ action, text, once: !always });
+  }
+);
+
+When(
   /^I press the "([^"]*)?" key(?:s)?(?: (\d+) times)?$/,
   async function(this: This, key: string, count: number) {
     const repeats = +count || 1;
@@ -100,6 +107,27 @@ Then(
   async function(this: This, page: string) {
     const pageObject = this.findPageObject(page);
     await this.page.expect().domContentLoaded().urlEquals(pageObject.url).titleEquals(pageObject.title).poll();
+  }
+);
+
+Then(
+  /^I expect (?:a|an|the) (?:alert|confirm box|prompt) to( not)? have been opened$/,
+  async function(this: This, not: boolean) {
+    await this.page.expect().truthy(this.page.dialog.handled, !not).poll();
+  }
+);
+
+Then(
+  /^I expect the (?:alert|confirm box|prompt) text to( not)? contain "([^"]*)?"$/,
+  async function(this: This, not: boolean, expected: string) {
+    await this.page.expect().dialogTextContains(expected, !not).poll();
+  }
+);
+
+Then(
+  /^I expect the (?:alert|confirm box|prompt) text to( not)? be "([^"]*)?"$/,
+  async function(this: This, not: boolean, expected: string) {
+    await this.page.expect().dialogTextEquals(expected, !not).poll();
   }
 );
 

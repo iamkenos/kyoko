@@ -1,6 +1,7 @@
 import type { Page as PlaywrightPageType } from "@playwright/test";
 import type { BrowserContext } from "@commands/context/types";
 import type { Page as PageClassType } from "./page";
+import type { dialogHandler } from "./command/dialog-handler";
 import type { expect } from "./command/expect";
 import type { frameLocator } from "./command/frame-locator";
 import type { getByAltText } from "./command/get-by-alt-text";
@@ -19,6 +20,8 @@ import type { scrollToTop } from "./command/scroll-to-top";
 // @ts-ignore
 export interface Page extends PlaywrightPageType, PageClassType {
   context: () => BrowserContext;
+  dialog: { handled: boolean, message: string };
+  dialogHandler: typeof dialogHandler;
   expect: typeof expect;
   frameLocator: typeof frameLocator;
   getByAltText: typeof getByAltText;
