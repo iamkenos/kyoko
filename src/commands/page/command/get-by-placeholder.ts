@@ -5,6 +5,6 @@ import type { Page } from "@commands/page/types";
 import type { Locator } from "@commands/locator/types";
 
 export function getByPlaceholder(this: Page, ...args: Parameters<PlaywrightPageType["getByPlaceholder"]>) {
-  const locator = this.mainFrame().getByPlaceholder(...args);
-  return new LocatorClass(locator) as Locator;
+  const from = this.activeframe ? this.activeframe.getByPlaceholder(...args) : this.__proto.getByPlaceholder(...args);
+  return new LocatorClass(from) as Locator;
 }

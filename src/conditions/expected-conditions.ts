@@ -42,7 +42,7 @@ export class ExpectedConditions {
     };
   }
 
-  protected addCondition(condition: ExpectedCondition) {
+  addCondition(condition: ExpectedCondition) {
     const [locator, page] = ["locator", "page"];
     condition[locator] = this[locator];
     condition[page] = this[page];

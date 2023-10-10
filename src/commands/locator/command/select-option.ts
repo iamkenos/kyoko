@@ -53,8 +53,8 @@ export async function selectOption(this: Locator, ...args: SelectOptionArgs) {
         break;
       }
     }
-    await this.__proto.selectOption(newval, options);
+    return this.__proto.selectOption(newval, options);
   } else {
-    await this.__proto.selectOption(...args);
+    return this.__proto.selectOption(...args);
   }
 }

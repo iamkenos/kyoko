@@ -36,7 +36,7 @@ When(
   /^I (?:focus on|switch to) the(?: "([^"]*)?" page's)? (?:"([^"]*)?" iframe|parent context)$/,
   async function(this: This, page: string, frame: string) {
     const selector = this.findPageObjectProp(page, frame);
-    this.frame = this.page.frameLocator(selector);
+    this.page.switchToFrame(selector);
   }
 );
 

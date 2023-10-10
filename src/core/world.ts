@@ -7,7 +7,7 @@ import { BrowserContext as BrowserContextClass } from "@commands/context/context
 import { PageObject } from "./page-object";
 
 import type { IWorldOptions } from "@cucumber/cucumber";
-import type { BrowserContext, FrameLocator, Locator, Page } from "@commands/types";
+import type { BrowserContext, Locator, Page } from "@commands/types";
 import type { Config } from "@config/types";
 
 export abstract class World<ParametersType = any> extends CucumberWorld<ParametersType> {
@@ -15,14 +15,13 @@ export abstract class World<ParametersType = any> extends CucumberWorld<Paramete
   private pageObject: PageObject;
   context: BrowserContext;
   page: Page;
-  frame: FrameLocator;
   config: Config;
 
   constructor(options: IWorldOptions) {
-    const { parameters, ...rest } = options;
-    const newoptions: any = { ...rest, parameters: {} }; // immutably remove parameters from options because it contains the config object.
-    super(newoptions);
-    this.config = parameters.config;
+    // immutably remove config from parameters so it's not carried over as clutter as these are accessible from world.config
+    const { config, ...parameters } = options.parameters;
+    super({ ...options, parameters });
+    this.config = config;
     this.loadPageObjects();
     this.loadCommands();
   }
@@ -36,7 +35,7 @@ export abstract class World<ParametersType = any> extends CucumberWorld<Paramete
   }
 
   findPageObject(page: string, persist = false) {
-    const file = this.pageObjects.find(i => path.basename(i).split(".").shift().toLowerCase() === page.toLowerCase());
+    const file = this.pageObjects.find(i => path.basename(i).split(".")[0].toLowerCase() === page.toLowerCase());
 
     if (!file) {
       throw new Error(`\n  Unable to resolve "${page}" from any of the available page object files:
@@ -61,12 +60,13 @@ export abstract class World<ParametersType = any> extends CucumberWorld<Paramete
   }
 
   findPageObjectLocator(page: string, element: string, index?: number) {
-    const locator = this.findPageObjectProp<Locator>(page, element, this.page.locator(element));
-    return index ? locator.nth(index - 1) : locator;
+    let locator = this.findPageObjectProp<Locator>(page, element, this.page.locator(element));
+    locator = index ? locator.nth(index - 1) : locator;
+    return locator;
   }
 
   findPageObjectProp<T = any>(page: string, prop: string, fallback?: T): T {
-    const pageObject = this.pageObject || this.findPageObject(page);
+    const pageObject = page ? this.findPageObject(page) : this.pageObject;
     return pageObject[prop] || fallback || prop;
   }
 

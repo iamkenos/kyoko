@@ -65,6 +65,46 @@ When(
   }
 );
 
+async function whenTypeOnField(locator: Locator, value: string, action: SetValueAction) {
+  switch (action) {
+    case SetValueAction.APPEND: {
+      await locator.fill(value, { append: true });
+      break;
+    }
+    default: {
+      await locator.fill(value);
+      break;
+    }
+  }
+}
+
+When(
+  /^I (type|append) "([^"]*)?" on the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:field|element)$/,
+  async function(this: This, action: SetValueAction, value: string, page: string, index: number, element: string) {
+    const locator = this.findPageObjectLocator(page, element, index);
+    await whenTypeOnField(locator, value, action);
+  }
+);
+
+When(
+  /^I (type|append) a multi line value on the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:field|element):$/,
+  async function(this: This, action: SetValueAction, page: string, index: number, element: string, value: string) {
+    const locator = this.findPageObjectLocator(page, element, index);
+    await whenTypeOnField(locator, value, action);
+  }
+);
+
+When(
+  /^I (type|append) on the(?: "([^"]*)?" (?:page|component)'s)? (?:fields|elements):$/,
+  async function(this: This, action: SetValueAction, page: string, table: DataTable) {
+    const values = table.raw().slice(1).map(([element, value, index]) => ({ locator: this.findPageObjectLocator(page, element, +index), value }));
+    for (let i = 0; i < values.length; i++) {
+      const { locator, value } = values[i];
+      await whenTypeOnField(locator, value, action);
+    }
+  }
+);
+
 When(
   /^I focus on the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:field|element)$/,
   async function(this: This, page: string, index: number, element: string) {
@@ -129,51 +169,31 @@ When(
   }
 );
 
-async function whenTypeOnField(locator: Locator, value: string, action: SetValueAction) {
-  switch (action) {
-    case SetValueAction.APPEND: {
-      await locator.fill(value, { append: true });
-      break;
-    }
-    default: {
-      await locator.fill(value);
-      break;
-    }
-  }
-}
-
-When(
-  /^I (type|append) "([^"]*)?" on the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:field|element)$/,
-  async function(this: This, action: SetValueAction, value: string, page: string, index: number, element: string) {
-    const locator = this.findPageObjectLocator(page, element, index);
-    await whenTypeOnField(locator, value, action);
-  }
-);
-
-When(
-  /^I (type|append) a multi line value on the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:field|element):$/,
-  async function(this: This, action: SetValueAction, page: string, index: number, element: string, value: string) {
-    const locator = this.findPageObjectLocator(page, element, index);
-    await whenTypeOnField(locator, value, action);
-  }
-);
-
-When(
-  /^I (type|append) on the(?: "([^"]*)?" (?:page|component)'s)? (?:fields|elements):$/,
-  async function(this: This, action: SetValueAction, page: string, table: DataTable) {
-    const values = table.raw().slice(1).map(([element, value, index]) => ({ locator: this.findPageObjectLocator(page, element, +index), value }));
-    for (let i = 0; i < values.length; i++) {
-      const { locator, value } = values[i];
-      await whenTypeOnField(locator, value, action);
-    }
-  }
-);
-
 When(
   /^I upload the "([^"]*)?" file to the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:field|element)$/,
   async function(this: This, filepath: string, page: string, index: number, element: string) {
     const locator = this.findPageObjectLocator(page, element, index);
     await locator.uploadFiles(filepath);
+  }
+);
+
+Then(
+  /^I expect the(?: "([^"]*)?" (?:page|component)'s)? "([^"]*)?" elements text array to( not)? contain:$/,
+  async function(this: This, page: string, element: string, not: boolean, values: DataTable) {
+    const locator = this.findPageObjectLocator(page, element);
+    const actual = await locator.allTextContents();
+    const expected = [].concat(...values.rows());
+    await locator.page().expect().arrayContains(actual, expected, !not).poll();
+  }
+);
+
+Then(
+  /^I expect the(?: "([^"]*)?" (?:page|component)'s)? "([^"]*)?" elements text array to( not)? be:$/,
+  async function(this: This, page: string, element: string, not: boolean, values: DataTable) {
+    const locator = this.findPageObjectLocator(page, element);
+    const actual = await locator.allTextContents();
+    const expected = [].concat(...values.rows());
+    await locator.page().expect().arrayEquals(actual, expected, !not).poll();
   }
 );
 
@@ -190,94 +210,6 @@ Then(
   async function(this: This, page: string, index: number, element: string, attribute: string, not: boolean, expected: string) {
     const locator = this.findPageObjectLocator(page, element, index);
     await locator.expect().attributeEquals(attribute, expected, !not).poll();
-  }
-);
-
-Then(
-  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:field|element) "([^"]*)?" attribute to( not)? exist$/,
-  async function(this: This, page: string, index: number, element: string, expected: string, not: boolean) {
-    const locator = this.findPageObjectLocator(page, element, index);
-    await locator.expect().attributeExists(expected, !not).poll();
-  }
-);
-
-Then(
-  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element location at (x|y) axis to( not)? be (\d*\.?\d+)$/,
-  async function(this: This, page: string, index: number, element: string, axis: Axis, not: boolean, expected: number) {
-    const locator = this.findPageObjectLocator(page, element, index);
-    await locator.expect().axisLocationEquals(axis, expected, !not).poll();
-  }
-);
-
-Then(
-  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:field|element) "([^"]*)?" css property to( not)? exist$/,
-  async function(this: This, page: string, index: number, element: string, expected: string, not: boolean) {
-    const locator = this.findPageObjectLocator(page, element, index);
-    await locator.expect().cssPropertyExists(expected, !not).poll();
-  }
-);
-
-Then(
-  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element to( not)? be (\d*\.?\d+)px in width and (\d*\.?\d+)px in height$/,
-  async function(this: This, page: string, index: number, element: string, not: boolean, width: number, height: number) {
-    const locator = this.findPageObjectLocator(page, element, index);
-    await locator.expect().dimensionEquals(width, height, !not).poll();
-  }
-);
-
-Then(
-  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element to( not)? be (\d*\.?\d+)px in (width|height)$/,
-  async function(this: This, page: string, index: number, element: string, not: boolean, expected: number, side: SizeContext) {
-    const locator = this.findPageObjectLocator(page, element, index);
-    await locator.expect().dimensionSideEquals(side, expected, !not).poll();
-  }
-);
-
-Then(
-  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element to( not)? be displayed$/,
-  async function(this: This, page: string, index: number, element: string, not: boolean) {
-    const locator = this.findPageObjectLocator(page, element, index);
-    await locator.expect().displayed(!not).poll();
-  }
-);
-
-Then(
-  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element to( not)? be displayed within the viewport$/,
-  async function(this: This, page: string, index: number, element: string, not: boolean) {
-    const locator = this.findPageObjectLocator(page, element, index);
-    await locator.expect().displayedInViewport(!not).poll();
-  }
-);
-
-Then(
-  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element to( not)? be enabled$/,
-  async function(this: This, page: string, index: number, element: string, not: boolean) {
-    const locator = this.findPageObjectLocator(page, element, index);
-    await locator.expect().enabled(!not).poll();
-  }
-);
-
-Then(
-  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element to( not)? exist$/,
-  async function(this: This, page: string, index: number, element: string, not: boolean) {
-    const locator = this.findPageObjectLocator(page, element, index);
-    await locator.expect().exists(!not).poll();
-  }
-);
-
-Then(
-  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:element|option|check box|toggle item|radio button) to( not)? be (?:checked|selected)$/,
-  async function(this: This, page: string, index: number, element: string, not: boolean) {
-    const locator = this.findPageObjectLocator(page, element, index);
-    await locator.expect().checked(!not).poll();
-  }
-);
-
-Then(
-  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element to( not)? be focused$/,
-  async function(this: This, page: string, index: number, element: string, not: boolean) {
-    const locator = this.findPageObjectLocator(page, element, index);
-    await locator.expect().focused(!not).poll();
   }
 );
 
@@ -343,6 +275,94 @@ Then(
     const locator = this.findPageObjectLocator(page, selector, index);
     const expected = this.findPageObject(target).url;
     await locator.expect().attributeEquals(AnchorAttributes.HREF, expected, !not).poll();
+  }
+);
+
+Then(
+  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:field|element) "([^"]*)?" attribute to( not)? exist$/,
+  async function(this: This, page: string, index: number, element: string, expected: string, not: boolean) {
+    const locator = this.findPageObjectLocator(page, element, index);
+    await locator.expect().attributeExists(expected, !not).poll();
+  }
+);
+
+Then(
+  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element location at (x|y) axis to( not)? be (\d*\.?\d+)$/,
+  async function(this: This, page: string, index: number, element: string, axis: Axis, not: boolean, expected: number) {
+    const locator = this.findPageObjectLocator(page, element, index);
+    await locator.expect().axisLocationEquals(axis, expected, !not).poll();
+  }
+);
+
+Then(
+  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:element|option|check box|toggle item|radio button) to( not)? be (?:checked|selected)$/,
+  async function(this: This, page: string, index: number, element: string, not: boolean) {
+    const locator = this.findPageObjectLocator(page, element, index);
+    await locator.expect().checked(!not).poll();
+  }
+);
+
+Then(
+  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:field|element) "([^"]*)?" css property to( not)? exist$/,
+  async function(this: This, page: string, index: number, element: string, expected: string, not: boolean) {
+    const locator = this.findPageObjectLocator(page, element, index);
+    await locator.expect().cssPropertyExists(expected, !not).poll();
+  }
+);
+
+Then(
+  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element to( not)? be (\d*\.?\d+)px in width and (\d*\.?\d+)px in height$/,
+  async function(this: This, page: string, index: number, element: string, not: boolean, width: number, height: number) {
+    const locator = this.findPageObjectLocator(page, element, index);
+    await locator.expect().dimensionEquals(width, height, !not).poll();
+  }
+);
+
+Then(
+  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element to( not)? be (\d*\.?\d+)px in (width|height)$/,
+  async function(this: This, page: string, index: number, element: string, not: boolean, expected: number, side: SizeContext) {
+    const locator = this.findPageObjectLocator(page, element, index);
+    await locator.expect().dimensionSideEquals(side, expected, !not).poll();
+  }
+);
+
+Then(
+  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element to( not)? be displayed$/,
+  async function(this: This, page: string, index: number, element: string, not: boolean) {
+    const locator = this.findPageObjectLocator(page, element, index);
+    await locator.expect().displayed(!not).poll();
+  }
+);
+
+Then(
+  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element to( not)? be displayed within the viewport$/,
+  async function(this: This, page: string, index: number, element: string, not: boolean) {
+    const locator = this.findPageObjectLocator(page, element, index);
+    await locator.expect().displayedInViewport(!not).poll();
+  }
+);
+
+Then(
+  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element to( not)? be enabled$/,
+  async function(this: This, page: string, index: number, element: string, not: boolean) {
+    const locator = this.findPageObjectLocator(page, element, index);
+    await locator.expect().enabled(!not).poll();
+  }
+);
+
+Then(
+  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element to( not)? exist$/,
+  async function(this: This, page: string, index: number, element: string, not: boolean) {
+    const locator = this.findPageObjectLocator(page, element, index);
+    await locator.expect().exists(!not).poll();
+  }
+);
+
+Then(
+  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element to( not)? be focused$/,
+  async function(this: This, page: string, index: number, element: string, not: boolean) {
+    const locator = this.findPageObjectLocator(page, element, index);
+    await locator.expect().focused(!not).poll();
   }
 );
 

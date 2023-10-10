@@ -66,7 +66,8 @@ function configure(overrides) {
       },
       timeout: +process.env.TIMEOUT || overrides?.timeout || 30000,
       ...overrides?.worldParameters
-    }
+    },
+    ...overrides.worldParameters
   };
 
   // resolve and prepare snapshot directories

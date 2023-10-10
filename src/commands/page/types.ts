@@ -1,5 +1,6 @@
 import type { Page as PlaywrightPageType } from "@playwright/test";
 import type { BrowserContext } from "@commands/context/types";
+import type { FrameLocator } from "@commands/frame/types";
 import type { Page as PageClassType } from "./page";
 import type { dialogListener } from "./command/dialog-listener";
 import type { downloadFile } from "./command/download-file";
@@ -17,10 +18,12 @@ import type { locator } from "./command/locator";
 import type { scrollTo } from "./command/scroll-to";
 import type { scrollToBottom } from "./command/scroll-to-bottom";
 import type { scrollToTop } from "./command/scroll-to-top";
+import type { switchToFrame } from "./command/switch-to-frame";
 
 // @ts-ignore
 export interface Page extends PlaywrightPageType, PageClassType {
   context: () => BrowserContext;
+  activeframe: FrameLocator;
   dialog: { handled: boolean, message: string };
   dialogListener: typeof dialogListener;
   downloadFile: typeof downloadFile;
@@ -38,4 +41,5 @@ export interface Page extends PlaywrightPageType, PageClassType {
   scrollTo: typeof scrollTo;
   scrollToBottom: typeof scrollToBottom;
   scrollToTop: typeof scrollToTop;
+  switchToFrame: typeof switchToFrame;
 }

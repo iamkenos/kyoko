@@ -4,5 +4,5 @@ export class IframePage extends DemoPage {
   url = "/iframe.html";
   title = "Demo Iframe";
 
-  tabs = this.page.locator("///ul//li[@class='tab']");
+  tabs = this.page.locator("//ul//li[@class='tab']");
 }

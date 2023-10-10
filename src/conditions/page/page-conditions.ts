@@ -1,4 +1,6 @@
 import { ExpectedConditions } from "../expected-conditions";
+import { ArrayContains } from "./condition/array-contains";
+import { ArrayEquals } from "./condition/array-equals";
 import { DialogTextContains } from "./condition/dialog-text-contains";
 import { DialogTextEquals } from "./condition/dialog-text-equals";
 import { DomContentLoaded } from "./condition/dom-content-loaded";
@@ -23,6 +25,14 @@ export class PageConditions extends ExpectedConditions {
   constructor(page: Page, options?: ExpectedConditionOptions) {
     super(options);
     this.page = page;
+  }
+
+  public arrayContains<T>(actual: Array<T>, expected: Array<T>, preferred?: boolean) {
+    return this.addCondition(new ArrayContains(actual, expected, preferred));
+  }
+
+  public arrayEquals<T>(actual: Array<T>, expected: Array<T>, preferred?: boolean) {
+    return this.addCondition(new ArrayEquals(actual, expected, preferred));
   }
 
   dialogTextContains(expected: string, preferred?: boolean) {

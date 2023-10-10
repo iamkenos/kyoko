@@ -5,6 +5,6 @@ import type { Page } from "@commands/page/types";
 import type { Locator } from "@commands/locator/types";
 
 export function getByLabel(this: Page, ...args: Parameters<PlaywrightPageType["getByLabel"]>) {
-  const locator = this.mainFrame().getByLabel(...args);
-  return new LocatorClass(locator) as Locator;
+  const from = this.activeframe ? this.activeframe.getByLabel(...args) : this.__proto.getByLabel(...args);
+  return new LocatorClass(from) as Locator;
 }
