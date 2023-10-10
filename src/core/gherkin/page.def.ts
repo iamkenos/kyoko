@@ -28,7 +28,15 @@ When(
 When(
   /^I( always)? auto (accept|dismiss)(?: and type "([^"]*)?" on)? the page dialog(?:s)?$/,
   async function(this: This, always: string, action: any, text?: string) {
-    this.page.dialogHandler({ action, text, once: !always });
+    this.page.dialogListener({ action, text, once: !always });
+  }
+);
+
+When(
+  /^I (?:focus on|switch to) the(?: "([^"]*)?" page's)? (?:"([^"]*)?" iframe|parent context)$/,
+  async function(this: This, page: string, frame: string) {
+    const selector = this.findPageObjectProp(page, frame);
+    this.frame = this.page.frameLocator(selector);
   }
 );
 
@@ -113,7 +121,8 @@ Then(
 Then(
   /^I expect (?:a|an|the) (?:alert|confirm box|prompt) to( not)? have been opened$/,
   async function(this: This, not: boolean) {
-    await this.page.expect().truthy(this.page.dialog.handled, !not).poll();
+    const dialogOpened = () => this.page.dialog.handled;
+    await this.page.expect().truthy(dialogOpened, !not).poll();
   }
 );
 

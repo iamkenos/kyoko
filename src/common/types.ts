@@ -8,3 +8,5 @@ export type RecursivePartial<T> = {
 };
 
 export type KeyValuePair = { key: string; value: string };
+
+export type MergeTuple<A extends any[], B extends any[]> = [...A, ...B];

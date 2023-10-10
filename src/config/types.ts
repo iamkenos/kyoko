@@ -7,18 +7,20 @@ export interface Config extends Omit<IConfiguration, "worldParameters"> {
   baseDir: string;
   baseURL: string;
   browser: string;
+  browserOptions: Omit<LaunchOptions, "headless">;
+  contextOptions: Omit<BrowserContextOptions, "baseURL">;
   /** Custom: Whether to run in debug mode or not */
   debug: boolean;
+  /** Custom: Directory to store browser downloads in, relative to the config file */
+  downloadsDir: string;
   headless: boolean;
   /** Custom: Array of globs pointing to your page object files, relative to the config file */
   pages: string[];
-  /** Custom: Directory to store the reports in, relative to config file */
+  /** Custom: Directory to store the reports in, relative to the config file */
   resultsDir: string;
   /** Custom: Object containing properties of comparable files */
   snapshots: Snapshots;
   timeout: number;
-  browserOptions: Omit<LaunchOptions, "headless">;
-  contextOptions: Omit<BrowserContextOptions, "baseURL">;
 }
 
 type SnapshotDirectories = {

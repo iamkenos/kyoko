@@ -1,7 +1,7 @@
 import type { Dialog } from "@playwright/test";
 import type { Page } from "@commands/page/types";
 
-export function dialogHandler(
+export function dialogListener(
   this: Page,
   options: { action?: "accept" | "dismiss"; once?: boolean; text?: string } = {
     action: "dismiss",

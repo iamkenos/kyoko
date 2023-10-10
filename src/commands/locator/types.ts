@@ -9,6 +9,7 @@ import type { doUntil } from "./command/do-until";
 import type { dragAndDrop } from "./command/drag-and-drop";
 import type { dropdownOptions } from "./command/dropdown-options";
 import type { expect } from "./command/expect";
+import type { fill } from "./command/fill";
 import type { first } from "./command/first";
 import type { getByAltText } from "./command/get-by-alt-text";
 import type { getByLabel } from "./command/get-by-label";
@@ -26,7 +27,9 @@ import type { location } from "./command/location";
 import type { locator } from "./command/locator";
 import type { nth } from "./command/nth";
 import type { or } from "./command/or";
+import type { press } from "./command/press";
 import type { scrollIntoView } from "./command/scroll-into-view";
+import type { selectOption } from "./command/select-option";
 import type { uploadFiles } from "./command/upload-files";
 
 // @ts-ignore
@@ -39,6 +42,7 @@ export interface Locator extends PlaywrightLocatorType, LocatorClassType {
   dragAndDrop: typeof dragAndDrop;
   dropdownOptions: typeof dropdownOptions;
   expect: typeof expect;
+  fill: typeof fill;
   first: typeof first;
   getByAltText: typeof getByAltText;
   getByLabel: typeof getByLabel;
@@ -57,6 +61,8 @@ export interface Locator extends PlaywrightLocatorType, LocatorClassType {
   page: () => Page;
   nth: typeof nth;
   or: typeof or;
+  press: typeof press;
   scrollIntoView: typeof scrollIntoView;
+  selectOption: typeof selectOption;
   uploadFiles: typeof uploadFiles;
 }

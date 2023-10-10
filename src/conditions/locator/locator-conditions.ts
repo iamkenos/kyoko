@@ -16,6 +16,7 @@ import { Selected } from "./condition/selected";
 import { SnapshotMatch } from "./condition/snapshot-match";
 import { TextContains } from "./condition/text-contains";
 import { TextEquals } from "./condition/text-equals";
+import { Truthy } from "./condition/truthy";
 import { ValueContains } from "./condition/value-contains";
 import { ValueEquals } from "./condition/value-equals";
 
@@ -103,6 +104,10 @@ export class LocatorConditions extends ExpectedConditions {
 
   textEquals(expected?: string, preferred?: boolean) {
     return this.addCondition(new TextEquals(expected, preferred));
+  }
+
+  truthy(truthy: boolean | (() => Promise<boolean>) | (() => boolean), preferred?: boolean) {
+    return this.addCondition(new Truthy(truthy, preferred));
   }
 
   valueContains(expected: string, preferred?: boolean) {

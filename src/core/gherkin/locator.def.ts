@@ -132,12 +132,10 @@ When(
 async function whenTypeOnField(locator: Locator, value: string, action: SetValueAction) {
   switch (action) {
     case SetValueAction.APPEND: {
-      const current = await locator.inputValue();
-      await locator.fill(current + value);
+      await locator.fill(value, { append: true });
       break;
     }
     default: {
-      await locator.clear();
       await locator.fill(value);
       break;
     }

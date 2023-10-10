@@ -31,6 +31,7 @@ function configure(overrides) {
   };
 
   const baseURL = process.env.BASE_URL || overrides?.baseURL || '';
+  const downloadsDir = path.join(baseDir, process.env.DOWNLOADS_DIR || overrides?.downloadsDir || 'downloads/');
   const snapshotsDir = path.join(baseDir, process.env.SNAPSHOTS_DIR || overrides?.snapshotsDir || 'snapshots/');
   const headless = process.env.HEADLESS === 'true' || overrides?.headless || false;
 
@@ -51,6 +52,7 @@ function configure(overrides) {
         ...overrides?.contextOptions
       },
       debug: process.env.DEBUG === 'true' || overrides?.debug || false,
+      downloadsDir,
       headless,
       pages: (overrides?.pages || ['fixtures/pages/**/*.page.ts']).map(i => path.join(baseDir, i)),
       resultsDir,

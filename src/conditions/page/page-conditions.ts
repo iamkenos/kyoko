@@ -2,6 +2,7 @@ import { ExpectedConditions } from "../expected-conditions";
 import { DialogTextContains } from "./condition/dialog-text-contains";
 import { DialogTextEquals } from "./condition/dialog-text-equals";
 import { DomContentLoaded } from "./condition/dom-content-loaded";
+import { FileExists } from "./condition/file-exists";
 import { SnapshotMatch } from "./condition/snapshot-match";
 import { TitleContains } from "./condition/title-contains";
 import { TitleEquals } from "./condition/title-equals";
@@ -36,6 +37,10 @@ export class PageConditions extends ExpectedConditions {
     return this.addCondition(new DomContentLoaded(preferred));
   }
 
+  fileExists(path: string, preferred?: boolean) {
+    return this.addCondition(new FileExists(path, preferred));
+  }
+
   snapshotMatch(filename: string, options?: PageSnapshotOptions, preferred?: boolean) {
     return this.addCondition(new SnapshotMatch(filename, options, preferred));
   }
@@ -48,8 +53,8 @@ export class PageConditions extends ExpectedConditions {
     return this.addCondition(new TitleEquals(expected, preferred));
   }
 
-  truthy(expected: boolean | (() => Promise<boolean>), preferred?: boolean) {
-    return this.addCondition(new Truthy(expected, preferred));
+  truthy(truthy: boolean | (() => Promise<boolean>) | (() => boolean), preferred?: boolean) {
+    return this.addCondition(new Truthy(truthy, preferred));
   }
 
   urlContains(expected: string, preferred?: boolean) {

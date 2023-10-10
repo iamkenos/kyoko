@@ -7,21 +7,22 @@ import { BrowserContext as BrowserContextClass } from "@commands/context/context
 import { PageObject } from "./page-object";
 
 import type { IWorldOptions } from "@cucumber/cucumber";
-import type { BrowserContext } from "@commands/context/types";
-import type { Locator } from "@commands/locator/types";
-import type { Page } from "@commands/page/types";
+import type { BrowserContext, FrameLocator, Locator, Page } from "@commands/types";
 import type { Config } from "@config/types";
 
-export abstract class World extends CucumberWorld {
+export abstract class World<ParametersType = any> extends CucumberWorld<ParametersType> {
   private pageObjects: string[];
   private pageObject: PageObject;
   context: BrowserContext;
   page: Page;
+  frame: FrameLocator;
   config: Config;
 
   constructor(options: IWorldOptions) {
-    super(options);
-    this.config = options.parameters.config;
+    const { parameters, ...rest } = options;
+    const newoptions: any = { ...rest, parameters: {} }; // immutably remove parameters from options because it contains the config object.
+    super(newoptions);
+    this.config = parameters.config;
     this.loadPageObjects();
     this.loadCommands();
   }
@@ -60,17 +61,13 @@ export abstract class World extends CucumberWorld {
   }
 
   findPageObjectLocator(page: string, element: string, index?: number) {
-    let locator: Locator;
-    try {
-      const pageObject = this.pageObject || this.findPageObject(page);
-      locator = pageObject[element];
+    const locator = this.findPageObjectProp<Locator>(page, element, this.page.locator(element));
+    return index ? locator.nth(index - 1) : locator;
+  }
 
-      if (!locator) throw new Error();
-    } finally {
-      locator = locator || this.page.locator(element);
-      locator = index ? locator.nth(index - 1) : locator;
-      return locator;
-    }
+  findPageObjectProp<T = any>(page: string, prop: string, fallback?: T): T {
+    const pageObject = this.pageObject || this.findPageObject(page);
+    return pageObject[prop] || fallback || prop;
   }
 
   async createBrowserContext() {
