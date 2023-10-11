@@ -1,7 +1,7 @@
 import { expect } from "@playwright/test";
 
 import type { ExpectedCondition } from "./expected-condition";
-import type { ExpectedConditionOptions, ExpectedConditionResult, ExpectedConditionsResult } from "./types";
+import type { ExpectedConditionOptions, ExpectedConditionsResult } from "./types";
 
 export class ExpectedConditions {
   protected name: string;
@@ -24,7 +24,7 @@ export class ExpectedConditions {
   }
 
   private async evaluateAll() {
-    const evaluations: ExpectedConditionResult[] = [];
+    const evaluations: ExpectedCondition[] = [];
     for (let i = 0; i < this.conditions.length; i++) {
       const evaluation = await this.conditions[i].evaluate();
       evaluations.push(evaluation);
@@ -34,8 +34,8 @@ export class ExpectedConditions {
     const total = evaluations.length;
 
     this.result = {
+      evaluations,
       passed: failed === 0,
-      results: evaluations,
       message: `${failed}/${total} expected conditions not met after waiting for ${this.timeout}ms:
   Expression: ${this.name}
   ${evaluations.map((result) => result.message).join("\n  ------------------------------")}`
@@ -69,7 +69,13 @@ export class ExpectedConditions {
       }, { intervals: [250], timeout: this.timeout + 250 }).toBe(true);
     } catch (e) {
       if (!this.soft) {
-        throw new Error(this.result?.message || e);
+        if (this.result) {
+          const failures = this.result.evaluations.filter(e => !e.passed);
+          for (let i = 0; i < failures.length; i++) { await failures[i].onFailure(); }
+          throw new Error(this.result.message);
+        } else {
+          throw new Error(`Unhandled exception: ${e}`);
+        }
       } else {
         return this.result.passed;
       }

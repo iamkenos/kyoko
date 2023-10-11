@@ -10,7 +10,9 @@ import type { IWorldOptions } from "@cucumber/cucumber";
 import type { BrowserContext, Locator, Page } from "@commands/types";
 import type { Config } from "@config/types";
 
+// @ts-ignore
 export abstract class World<ParametersType = any> extends CucumberWorld<ParametersType> {
+  private log: IWorldOptions["log"];
   private pageObjects: string[];
   private pageObject: PageObject;
   context: BrowserContext;
@@ -76,6 +78,7 @@ export abstract class World<ParametersType = any> extends CucumberWorld<Paramete
     const from = await browser.newContext(this.config.contextOptions);
     const context = new BrowserContextClass(from) as BrowserContext;
     context.setDefaultTimeout(this.config.timeout);
+    context.attach = this.attach;
     context.config = this.config;
     return context;
   }

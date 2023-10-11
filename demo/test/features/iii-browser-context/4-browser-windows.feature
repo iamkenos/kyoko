@@ -28,7 +28,7 @@ Feature: III. Browser Context - Browser windows
       And I expect the page title to be "Demo Iframe"
       And I expect the page title to be the "iframe" page's title
       And I expect the url to be the "iframe" page's url
-
+  @debug
   Scenario: S03: Snapshot comparison
     When I click the "#open-new-window" button
       And I focus on the last opened window
@@ -45,7 +45,7 @@ Feature: III. Browser Context - Browser windows
     Then I expect the "iframe" page's "tabs" elements text array to contain:
       | Values |
       | Tab 1  |
-      | Tab 3  |
+      | Tab 6  |
       And I expect the "iframe" page's "tabs" elements text array to be:
       | Values |
       | Tab 1  |

@@ -11,6 +11,10 @@ export class SnapshotMatch extends PageCondition {
   private readonly options: PageSnapshotOptions;
   protected locator: Locator;
 
+  private actualFilePath: string;
+  private diffFilePath: string;
+  private expectedFilePath: string;
+
   public constructor(filename: string, options?: PageSnapshotOptions, preferred?: boolean) {
     super(preferred);
     this.filename = filename + ".png";
@@ -21,6 +25,19 @@ export class SnapshotMatch extends PageCondition {
   private createFile(filename: string, data: Buffer) {
     fs.mkdirSync(path.dirname(filename), { recursive: true });
     fs.writeFileSync(filename, data);
+  }
+
+  async onFailure() {
+    const attach = (filename: string) => {
+      if (fs.existsSync(filename)) {
+        this.page.context().attach(filename);
+        this.page.context().attach(fs.readFileSync(filename), "image/png");
+      }
+    };
+
+    attach(this.expectedFilePath);
+    attach(this.actualFilePath);
+    attach(this.diffFilePath);
   }
 
   private getPixelDiff(error: string) {
@@ -36,27 +53,28 @@ export class SnapshotMatch extends PageCondition {
     try {
       const { browser, snapshots } = this.page.context().config;
       const { actualDir, expectedDir, diffDir, maxDiffPixelRatio, mask, skipCompare } = snapshots.images;
-      const actualFilePath = path.join(actualDir, browser, this.filename);
-      const diffFilePath = path.join(diffDir, browser, this.filename);
-      const expectedFilePath = path.join(expectedDir, browser, this.filename);
+      this.actualFilePath = path.join(actualDir, browser, this.filename);
+      this.diffFilePath = path.join(diffDir, browser, this.filename);
+      this.expectedFilePath = path.join(expectedDir, browser, this.filename);
+
       const screenshotOptions = { mask: this.options?.mask || mask, fullPage: this.options?.fullPage };
       const comparatorOptions = { maxDiffPixelRatio: this.options?.maxDiffPixelRatio || maxDiffPixelRatio };
       const resultOptions = { screenshotOptions, comparatorOptions, locator: this.locator };
       const isSkip = skipCompare || this.options?.skipCompare;
       let result: { actual?: Buffer, diff?: Buffer, errorMessage?: string, diffPixelRatio: number };
 
-      const hasExpectedSnapshot = fs.existsSync(expectedFilePath);
+      const hasExpectedSnapshot = fs.existsSync(this.expectedFilePath);
       if (hasExpectedSnapshot) {
         /** @see https://github.com/microsoft/playwright/blob/main/packages/playwright-core/src/client/page.ts#L65 */
         /** @see https://github.com/microsoft/playwright/blob/main/packages/protocol/src/channels.ts#L1922 */
-        result = await (this.page as any)._expectScreenshot({ expected: fs.readFileSync(expectedFilePath), ...resultOptions });
+        result = await (this.page as any)._expectScreenshot({ expected: fs.readFileSync(this.expectedFilePath), ...resultOptions });
       } else {
         result = await (this.page as any)._expectScreenshot(resultOptions);
-        this.createFile(expectedFilePath, result.actual);
+        this.createFile(this.expectedFilePath, result.actual);
       }
 
-      result.actual && this.createFile(actualFilePath, result.actual);
-      result.diff && this.createFile(diffFilePath, result.diff);
+      result.actual && this.createFile(this.actualFilePath, result.actual);
+      result.diff && this.createFile(this.diffFilePath, result.diff);
       result.diffPixelRatio = this.getPixelDiff(result?.errorMessage);
 
       const isSame = !result.errorMessage ? true : result.diffPixelRatio <= comparatorOptions.maxDiffPixelRatio;

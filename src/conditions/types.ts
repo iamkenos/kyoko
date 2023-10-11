@@ -1,3 +1,5 @@
+import type { ExpectedCondition } from "./expected-condition";
+
 export type { ExpectedCondition } from "./expected-condition";
 
 export type { ExpectedConditions } from "./expected-conditions";
@@ -10,16 +12,8 @@ export type { PageCondition } from "./page/page-condition";
 
 export type { PageConditions } from "./page/page-conditions";
 
-export type ExpectedConditionResult = {
-  name: string;
-  actual: any;
-  expected: any;
-  passed: boolean;
-  message: string;
-};
-
 export type ExpectedConditionsResult = {
-  results: ExpectedConditionResult[];
+  evaluations: ExpectedCondition[];
   message: string;
   passed: boolean;
 };
