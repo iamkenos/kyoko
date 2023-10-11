@@ -1,4 +1,4 @@
-import type { Page as PlaywrightPageType } from "@playwright/test";
+import type { Page as PlaywrightPageType, Request } from "@playwright/test";
 import type { BrowserContext } from "@commands/context/types";
 import type { FrameLocator } from "@commands/frame/types";
 import type { Page as PageClassType } from "./page";
@@ -15,6 +15,7 @@ import type { getByText } from "./command/get-by-text";
 import type { getByTitle } from "./command/get-by-title";
 import type { given } from "./command/given";
 import type { locator } from "./command/locator";
+import type { requestsInterceptor } from "./command/requests-interceptor";
 import type { scrollTo } from "./command/scroll-to";
 import type { scrollToBottom } from "./command/scroll-to-bottom";
 import type { scrollToTop } from "./command/scroll-to-top";
@@ -38,6 +39,7 @@ export interface Page extends PlaywrightPageType, PageClassType {
   getByTitle: typeof getByTitle;
   given: typeof given;
   locator: typeof locator;
+  requestsInterceptor: typeof requestsInterceptor;
   scrollTo: typeof scrollTo;
   scrollToBottom: typeof scrollToBottom;
   scrollToTop: typeof scrollToTop;

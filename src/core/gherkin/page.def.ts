@@ -7,7 +7,7 @@ Given(
   /^I am on the "([^"]*)?" (?:page|site|portal)$/,
   async function(this: This, page: string) {
     const url = this.findPageObject(page, true).url;
-    await this.page.goto(url);
+    await this.page.goto(url, { waitUntil: "domcontentloaded" });
   }
 );
 
@@ -33,20 +33,19 @@ When(
 );
 
 When(
-  /^I (?:focus on|switch to) the(?: "([^"]*)?" page's)? (?:"([^"]*)?" iframe|parent context)$/,
-  async function(this: This, page: string, frame: string) {
-    const selector = this.findPageObjectProp(page, frame);
-    this.page.switchToFrame(selector);
-  }
-);
-
-When(
   /^I press the "([^"]*)?" key(?:s)?(?: (\d+) times)?$/,
   async function(this: This, key: string, count: number) {
     const repeats = +count || 1;
     for (let i = 0; i < repeats; i++) {
       await this.page.keyboard.press(key);
     }
+  }
+);
+
+When(
+  /^I start (?:to intercept|observing the) (?:ajax|xhr|network|api) (?:requests|calls)$/,
+  async function(this: This) {
+    this.page.requestsInterceptor();
   }
 );
 
@@ -74,12 +73,20 @@ When(
 );
 
 When(
+  /^I (?:focus on|switch to) the(?: "([^"]*)?" page's)? (?:"([^"]*)?" iframe|parent context)$/,
+  async function(this: This, page: string, frame: string) {
+    const selector = this.findPageObjectProp(page, frame);
+    this.page.switchToFrame(selector);
+  }
+);
+
+When(
   /^I open the (?:"([^"]*)?" page's url|url "([^"]*)?") on a new window$/,
   async function(this: This, page: string, url?: string) {
     const pageObject = this.findPageObject(page);
-    const window = await this.context.newPage();
-    await window.goto(url || pageObject.url);
-    await this.page.expect().domContentLoaded().poll();
+    const newPage = await this.context.newPage();
+    await newPage.goto(url || pageObject.url);
+    await newPage.expect().domContentLoaded().poll();
   }
 );
 

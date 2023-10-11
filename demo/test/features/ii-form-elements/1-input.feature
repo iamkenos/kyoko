@@ -62,15 +62,15 @@ Feature: II. Form Elements - Input
   Scenario: S05: Input file
     When I upload the "fixtures/files/demo.txt" file to the "#input-file" field
     Then I expect the "#input-file" field value to contain "demo.txt"
-
+  @debug
   Scenario: S06: Request interception
     When I type on the fields:
       | Field           | Value                 |
       | #input-text     | Sam Porter            |
       | #input-email    | samporter@bridges.com |
       | #input-password | unger                 |
-# And I start observing the network calls
-# And I click the "#input-submit" button
+      And I start observing the network calls
+      And I click the "#input-submit" button
 # Then I expect the network requests with headers to match the snapshot "ii-form-elements/1-input/net-on-submit"
 #   And I expect the network requests with headers to match the snapshot "ii-form-elements/1-input/net-on-submit" with expressions:
 #   | JSON Path   | Expression |
