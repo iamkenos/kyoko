@@ -11,7 +11,7 @@
       "request": "launch",
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "${env:HOME}/.nvm/versions/node/v18.17.0/bin/npm",
+      "runtimeExecutable": "npm",
       "runtimeArgs": ["run-script", "test:demo"],
       "env": {
         "HEADLESS": "false",

@@ -1,4 +1,4 @@
-import type { Page as PlaywrightPageType, Request } from "@playwright/test";
+import type { Page as PlaywrightPageType } from "@playwright/test";
 import type { BrowserContext } from "@commands/context/types";
 import type { FrameLocator } from "@commands/frame/types";
 import type { Page as PageClassType } from "./page";
