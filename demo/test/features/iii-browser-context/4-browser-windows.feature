@@ -3,7 +3,7 @@ Feature: III. Browser Context - Browser windows
   Background:
     Given I am on the "demo" site
       And I click the "III. Browser Context" navigation item
-  # And I expect the section header "III. Browser Context" to exist
+      And I expect the section header "III. Browser Context" to exist
 
   Scenario: S01: Open on same window
     When I click the "#open-same-window" button
@@ -39,7 +39,7 @@ Feature: III. Browser Context - Browser windows
       And I expect the page title to not be the "iframe" page's title
       And I expect the url to not be the "iframe" page's url
       And I expect the page to match the snapshot "iii-browser-context/3-browser-windows/page"
-
+  @debug
   Scenario: S04: Iframe locators
     When I focus on the "#iframe" iframe
     Then I expect the "iframe" page's "tabs" elements text array to contain:

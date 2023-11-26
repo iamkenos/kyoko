@@ -16,7 +16,8 @@
       "env": {
         "HEADLESS": "false",
         "PARALLEL": "${input:parallel}",
-        "TAGS": "${input:tags}"
+        "TAGS": "${input:tags}",
+        "PATHS": "${file}"
       }
     }
   ],
