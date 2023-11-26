@@ -18,6 +18,8 @@ export interface Config extends IConfiguration {
   pages: string[];
   /** Custom: Directory to store the reports in, relative to the config file */
   resultsDir: string;
+  /** Custom: Directory to store the snapshots in, relative to the config file */
+  snapshotsDir: string;
   /** Custom: Object containing properties of comparable files */
   snapshots: Snapshots;
   timeout: number;

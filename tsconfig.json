@@ -3,6 +3,7 @@
     "baseUrl": "./",
     "target": "ESNext",
     "moduleResolution": "node",
+    "outDir": "build",
     "paths": {
       "@iamkenos/kyoko": ["src/index"],
       "@iamkenos/kyoko/*": ["src/*"],
@@ -13,6 +14,5 @@
       "@core/*": ["src/core/*"]
     }
   },
-  "include": ["./**/**.ts"],
   "exclude": ["node_modules", "build"]
 }

@@ -1,6 +1,6 @@
 {
-  "name": "kyoko",
-  "version": "1.0.0",
+  "name": "@iamkenos/kyoko",
+  "version": "0.0.0",
   "description": "",
   "scripts": {
     "prepare": "husky install",
@@ -9,8 +9,9 @@
     "release:patch": "standard-version --release-as patch",
     "release:major": "standard-version --release-as major",
     "prebuild": "rimraf build && rimraf *.tgz",
-    "build": "tsc --build tsconfig.build.json",
-    "postbuild": "resolve-tspaths",
+    "build": "cp -R src/ build && cp tsconfig.json build",
+    "postbuild": "resolve-tspaths --ext ts",
+    "pack": "npm run build && npm pack",
     "lint": "eslint ./",
     "serve:demo": "http-server ./demo/app -s",
     "test:demo": "start-test serve:demo 8080 cucumber:demo",
