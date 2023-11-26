@@ -6,6 +6,9 @@
 - ~~parameterize headless and browser options~~
 - ~~config file jsdocs~~
 - complete gherkin
+  - request validation
+  - ga tracking???
+  - browser storage
 - check locales support
 - fix html reports
 - test with npm pack
