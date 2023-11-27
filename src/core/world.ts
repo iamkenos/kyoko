@@ -33,7 +33,7 @@ export abstract class World<ParametersType = any> extends CucumberWorld<Paramete
   }
 
   private loadCommands() {
-    files.fromGlob([path.join(path.dirname(__dirname), "commands/**/command/*.ts")]).filter(Boolean).forEach(file => require(file));
+    files.fromGlob([path.join(path.dirname(__dirname), "commands/**/command/*.js")]).filter(Boolean).forEach(file => require(file));
   }
 
   findPageObject(page: string, persist = false) {

@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
-    "target": "ESNext",
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "lib": ["ESNext", "DOM"],
     "moduleResolution": "node",
     "outDir": "build",
     "paths": {
@@ -12,7 +14,12 @@
       "@conditions/*": ["src/conditions/*"],
       "@config/*": ["src/config/*"],
       "@core/*": ["src/core/*"]
-    }
+    },
+    "forceConsistentCasingInFileNames": true,
+    "removeComments": false,
+    "skipLibCheck": true,
+    "target": "ES5"
   },
+  "include": ["./**/**.ts"],
   "exclude": ["node_modules", "build"]
 }

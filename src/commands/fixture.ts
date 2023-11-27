@@ -20,7 +20,7 @@ export class Fixture<T> {
   }
 
   private addCommands(instance: any) {
-    const ext = ".ts";
+    const ext = ".js";
     const parts = changecase.split(this.constructor.name);
     const fixtureDir = parts.length > 1 ? `{${parts.join()}}` : parts[0];
     const files = glob.sync(path.join(__dirname, fixtureDir, "command", `*${ext}`));
