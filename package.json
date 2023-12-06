@@ -1,7 +1,7 @@
 {
   "name": "@iamkenos/kyoko",
   "version": "0.0.0",
-  "description": "",
+  "description": "Playwright & CucumberJS mixed with presets and additional features.",
   "scripts": {
     "prepare": "husky install",
     "release:first": "standard-version --first-release",
