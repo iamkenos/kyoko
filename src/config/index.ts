@@ -52,8 +52,8 @@ function configure(overrides) {
     formatOptions: { snippetInterface: "async-await", printAttachments: false },
     parallel: debug ? 0 : +process.env.PARALLEL || overrides?.parallel || 0,
     paths: [process.env.PATHS].filter(Boolean) || (overrides?.paths || ["features/"]).map(i => path.join(baseDir, i)),
-    require: [ path.join(__dirname, "../core/gherkin/*.def.ts")].concat((overrides?.require || ["fixtures/pages/**/*.def.ts"]).map(i => path.join(baseDir, i))),
-    requireModule: ["ts-node/register/transpile-only", "tsconfig-paths/register"],
+    require: [ path.join(__dirname, "../core/gherkin/*.def.js")].concat((overrides?.require || ["fixtures/pages/**/*.def.ts"]).map(i => path.join(baseDir, i))),
+    requireModule: ["@babel/register", "ts-node/register/transpile-only", "tsconfig-paths/register"],
     strict: false,
     tags: process.env.TAGS || overrides?.tags
   };

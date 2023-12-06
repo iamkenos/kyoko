@@ -8,8 +8,8 @@
     "moduleResolution": "node",
     "outDir": "build",
     "paths": {
-      "@iamkenos/kyoko": ["src/index"],
-      "@iamkenos/kyoko/*": ["src/*"],
+      "@iamkenos/kyoko": ["build/index"],
+      "@iamkenos/kyoko/*": ["build/*"],
       "@commands/*": ["src/commands/*"],
       "@common/*": ["src/common/*"],
       "@conditions/*": ["src/conditions/*"],
