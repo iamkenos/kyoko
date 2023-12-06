@@ -19,6 +19,7 @@
     "forceConsistentCasingInFileNames": true,
     "removeComments": false,
     "skipLibCheck": true,
+    "sourceMap": true,
     "target": "ESNext"
   },
   "include": ["./**/**.ts"],

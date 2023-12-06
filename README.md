@@ -10,6 +10,7 @@
   - ga tracking???
   - browser storage
 - check locales support
+- full UTs
 - fix html reports
 - test with npm pack
 - full docs

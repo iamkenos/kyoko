@@ -13,6 +13,10 @@
       "cwd": "${workspaceFolder}",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run-script", "test:demo"],
+      "outFiles": [
+        "${workspaceFolder}/**/*.ts",
+        "${workspaceFolder}/build/**/*.js"
+      ],
       "env": {
         "HEADLESS": "false",
         "PARALLEL": "${input:parallel}",

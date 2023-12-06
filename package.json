@@ -20,6 +20,60 @@
   "keywords": [],
   "author": "iamkenos <alexis.matunog@gmail.com>",
   "license": "ISC",
+  "exports": {
+    "./commands/fixture": {
+      "import": "./build/commands/fixture.js",
+      "require": "./build/commands/fixture.js"
+    },
+    "./commands/types": {
+      "import": "./build/commands/types.js",
+      "require": "./build/commands/types.js"
+    },
+    "./common/utils/files": {
+      "import": "./build/common/utils/files.js",
+      "require": "./build/common/utils/files.js"
+    },
+    "./common/utils/string": {
+      "import": "./build/common/utils/string.js",
+      "require": "./build/common/utils/string.js"
+    },
+    "./common/utils/types": {
+      "import": "./build/common/utils/types.js",
+      "require": "./build/common/utils/types.js"
+    },
+    "./conditions/locator": {
+      "import": "./build/conditions/locator/locator-condition.js",
+      "require": "./build/conditions/locator/locator-condition.js"
+    },
+    "./conditions/page": {
+      "import": "./build/conditions/page/page-condition.js",
+      "require": "./build/conditions/page/page-condition.js"
+    },
+    "./conditions/types": {
+      "import": "./build/conditions/types.js",
+      "require": "./build/conditions/types.js"
+    },
+    "./config": {
+      "import": "./build/config/index.js",
+      "require": "./build/config/index.js"
+    },
+    "./config/types": {
+      "import": "./build/config/types.js",
+      "require": "./build/config/types.js"
+    },
+    "./core": {
+      "import": "./build/core/index.js",
+      "require": "./build/core/index.js"
+    },
+    "./core/gherkin": {
+      "import": "./build/core/gherkin/enums.js",
+      "require": "./build/core/gherkin/enums.js"
+    },
+    "./core/utils/xpath": {
+      "import": "./build/core/utils/xpath-builder.js",
+      "require": "./build/core/utils/xpath-builder.js"
+    }
+  },
   "dependencies": {
     "@babel/preset-env": "^7.23.5",
     "@babel/register": "^7.22.15",
