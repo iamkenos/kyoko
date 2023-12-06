@@ -80,6 +80,7 @@
     "@cucumber/cucumber": "^10.0.1",
     "@playwright/test": "^1.40.0",
     "@types/fs-extra": "^11.0.4",
+    "@wdio/logger": "^7.26.0",
     "callsites": "^3.1.0",
     "change-case": "^4.1.2",
     "dotenv": "^16.3.1",

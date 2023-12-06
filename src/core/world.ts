@@ -6,6 +6,8 @@ import { World as CucumberWorld } from "@cucumber/cucumber";
 import { BrowserContext as BrowserContextClass } from "@commands/context/context";
 import { PageObject } from "./page-object";
 
+import log from "@wdio/logger";
+
 import type { IWorldOptions } from "@cucumber/cucumber";
 import type { BrowserContext, Locator, Page } from "@commands/types";
 import type { Config } from "@config/types";
@@ -16,6 +18,7 @@ export abstract class World<ParametersType = any> extends CucumberWorld<Paramete
   private pageObjects: string[];
   private pageObject: PageObject;
   context: BrowserContext;
+  logger: ReturnType<typeof log>;
   page: Page;
   config: Config;
 
@@ -24,8 +27,16 @@ export abstract class World<ParametersType = any> extends CucumberWorld<Paramete
     const { config, ...parameters } = options.parameters;
     super({ ...options, parameters });
     this.config = config;
+    this.loadLogger();
     this.loadPageObjects();
     this.loadCommands();
+  }
+
+  private loadLogger() {
+    const suffix = process.env.CUCUMBER_PARALLEL === "true" ? `[${process.env.CUCUMBER_WORKER_ID}]` : "";
+    this.logger = log(`kyoko${suffix}`);
+    this.logger.setLevel(this.config.logLevel);
+    this.logger.info("Instatiating cucumber world class...");
   }
 
   private loadPageObjects() {
@@ -35,6 +46,7 @@ export abstract class World<ParametersType = any> extends CucumberWorld<Paramete
   private loadCommands() {
     files.fromGlob([path.join(path.dirname(__dirname), "commands/**/command/*.js")]).filter(Boolean).forEach(file => require(file));
   }
+
 
   findPageObject(page: string, persist = false) {
     const file = this.pageObjects.find(i => path.basename(i).split(".")[0].toLowerCase() === page.toLowerCase());

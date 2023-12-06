@@ -21,7 +21,8 @@
         "HEADLESS": "false",
         "PARALLEL": "${input:parallel}",
         "TAGS": "${input:tags}",
-        "PATHS": "${file}"
+        "PATHS": "${file}",
+        "LOG_LEVEL": "debug"
       }
     }
   ],

@@ -18,6 +18,7 @@ function configure(overrides) {
   const debug = process.env.DEBUG === "true" || overrides?.debug || false;
   const downloadsDir = path.join(baseDir, process.env.DOWNLOADS_DIR || overrides?.downloadsDir || "downloads/");
   const headless = process.env.HEADLESS === "true" || overrides?.headless || false;
+  const logLevel = process.env.LOG_LEVEL || overrides?.logLevel || "error";
   const pages = (overrides?.pages || ["fixtures/pages/**/*.page.ts"]).map(i => path.join(baseDir, i));
   const resultsDir = path.join(baseDir, process.env.RESULTS_DIR || overrides?.resultsDir || "results/");
   const snapshotsDir = path.join(baseDir, process.env.SNAPSHOTS_DIR || overrides?.snapshotsDir || "snapshots/");
@@ -43,7 +44,7 @@ function configure(overrides) {
     fs.removeSync(snapshots[key].diffDir);
     fs.mkdirsSync(snapshots[key].expectedDir);
   });
-  const custom = { baseDir, baseURL, browser, browserOptions, contextOptions, debug, downloadsDir, headless, pages, resultsDir, snapshots, timeout };
+  const custom = { baseDir, baseURL, browser, browserOptions, contextOptions, debug, downloadsDir, headless, logLevel, pages, resultsDir, snapshots, timeout };
 
   // cucumber options defaults
   const config = {
