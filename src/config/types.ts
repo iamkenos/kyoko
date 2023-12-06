@@ -2,7 +2,7 @@ import type { IConfiguration } from "@cucumber/cucumber/lib/configuration";
 import type { BrowserContextOptions, LaunchOptions } from "@playwright/test";
 import type { Locator } from "@commands/locator/types";
 
-export interface Config extends IConfiguration {
+export interface Config extends Omit<IConfiguration, "publish" | "publishQuiet"> {
   /** Custom: The base directory where most config paths will be resolved from */
   baseDir: string;
   baseURL: string;

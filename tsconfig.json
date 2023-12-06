@@ -7,6 +7,7 @@
     "lib": ["ESNext", "DOM"],
     "moduleResolution": "node",
     "outDir": "build",
+    "checkJs": true,
     "paths": {
       "@iamkenos/kyoko": ["build/index"],
       "@iamkenos/kyoko/*": ["build/*"],
@@ -22,6 +23,6 @@
     "sourceMap": true,
     "target": "ESNext"
   },
-  "include": ["./**/**.ts"],
+  "include": ["./**/**.ts", "./**/**.js"],
   "exclude": ["node_modules", "build"]
 }

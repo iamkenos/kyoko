@@ -10,7 +10,7 @@
     "release:major": "standard-version --release-as major",
     "prebuild": "rimraf build && rimraf *.tgz",
     "build": "tsc --build tsconfig.build.json",
-    "postbuild": "resolve-tspaths",
+    "postbuild": "resolve-tspaths && rimraf build/config/index.d.ts",
     "pack": "npm run build && npm pack",
     "lint": "eslint ./",
     "serve:demo": "http-server ./demo/app -s",

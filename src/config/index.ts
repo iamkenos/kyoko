@@ -1,14 +1,13 @@
-const callsites = require("callsites");
-const fs = require("fs-extra");
-const path = require("path");
+const callsites = require("callsites") as typeof import("callsites");
+const fs = require("fs-extra") as typeof import("fs-extra");
+const path = require("path") as typeof import("path");
 
 /**
  * Creates a cucumber config object with default values.
- * @param { import("./types").Config } overrides overrides the default configuration values.
+ * @param { Partial<import("./types").Config> } [overrides] overrides the default configuration values.
  * @see [CucumberConfig](https://github.com/cucumber/cucumber-js/blob/main/docs/configuration.md)
- * @returns { import("./types").Config } configuration
  */
-function configure(overrides) {
+function configure(overrides?: Partial<import("./types").Config>) {
   require("dotenv").config();
 
   // custom options defaults
