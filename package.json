@@ -15,6 +15,7 @@
     "lint": "eslint ./",
     "serve:demo": "http-server ./demo/app -s",
     "test:demo": "start-test serve:demo 8080 cucumber:demo",
+    "report:demo": "npx serenity-bdd run --log warn --source demo/test/results/serenity --destination demo/test/results/serenity",
     "cucumber:demo": "cucumber-js -c demo/test/cucumber.js"
   },
   "keywords": [],
@@ -79,6 +80,10 @@
     "@babel/register": "^7.22.15",
     "@cucumber/cucumber": "^10.0.1",
     "@playwright/test": "^1.40.0",
+    "@serenity-js/console-reporter": "^3.14.0",
+    "@serenity-js/core": "^3.14.0",
+    "@serenity-js/cucumber": "^3.14.0",
+    "@serenity-js/serenity-bdd": "^3.14.0",
     "@types/fs-extra": "^11.0.4",
     "@wdio/logger": "^7.26.0",
     "callsites": "^3.1.0",

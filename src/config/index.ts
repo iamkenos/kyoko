@@ -34,6 +34,7 @@ function configure(overrides) {
     }
   };
   // resolve and prepare snapshot directories
+  process.env.KYK_RESULTS = resultsDir;
   fs.removeSync(resultsDir);
   Object.keys(snapshots).forEach(key => {
     snapshots[key].outDir = path.resolve(snapshotsDir, snapshots[key].outDir);
@@ -49,7 +50,7 @@ function configure(overrides) {
   // cucumber options defaults
   const config = {
     ...overrides,
-    format: [ "summary", `html:${resultsDir}report.html`, `json:${resultsDir}report.json`, ...overrides?.format || [] ],
+    format: ["summary", `json:${resultsDir}report.json`, "@serenity-js/cucumber", ...overrides?.format || [] ],
     formatOptions: { snippetInterface: "async-await", printAttachments: false },
     parallel: debug ? 0 : +process.env.PARALLEL || overrides?.parallel || 0,
     paths: process.env.PATHS ? [process.env.PATHS].filter(Boolean) : (overrides?.paths || ["features/"]).map(i => path.join(baseDir, i)),
