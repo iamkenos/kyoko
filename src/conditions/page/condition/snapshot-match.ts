@@ -30,7 +30,7 @@ export class SnapshotMatch extends PageCondition {
   async onFailure() {
     const attach = (filename: string) => {
       if (fs.existsSync(filename)) {
-        this.page.context().attach(filename);
+        this.page.context().attach(filename, "text/plain");
         this.page.context().attach(fs.readFileSync(filename), "image/png");
       }
     };

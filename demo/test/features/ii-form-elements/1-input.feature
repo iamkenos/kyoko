@@ -71,20 +71,4 @@ Feature: II. Form Elements - Input
       | #input-password | unger                 |
       And I start observing the network calls
       And I click the "#input-submit" button
-# Then I expect the network requests with headers to match the snapshot "ii-form-elements/1-input/net-on-submit"
-#   And I expect the network requests with headers to match the snapshot "ii-form-elements/1-input/net-on-submit" with expressions:
-#   | JSON Path   | Expression |
-#   | $[0].method | POST       |
-#   | $[0].body   | ^.+$       |
-#   And I expect the network requests with headers to the following paths to match the snapshot "ii-form-elements/1-input/net-on-submit":
-#   | URL Path   |
-#   | /api/login |
-#   And I expect the response to the following request to not match the snapshot "ii-form-elements/1-input/net-on-submit":
-#   """
-#   {
-#     "url": "https://reqres.in/api/users",
-#     "qs": {
-#       "page": 2
-#     }
-#   }
-#   """
+

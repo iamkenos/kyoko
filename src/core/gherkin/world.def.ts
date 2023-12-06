@@ -1,6 +1,3 @@
-import * as fs from "fs-extra";
-import * as path from "path";
-
 import {
   After,
   AfterStep,
@@ -32,10 +29,11 @@ AfterStep({}, async function(this: This, params: ITestStepHookParameter) {
   const { result, testStepId } = params;
 
   if (result.status !== Status.PASSED) {
-    this.logger.error(`${chalk.red(result.message)}`);
-    const screenshotFile = path.join(this.config.resultsDir, `${testStepId}.png`);
-    await this.page.screenshot({ path: screenshotFile, fullPage: true });
-    this.attach(fs.readFileSync(screenshotFile), "image/png");
+    const buffer = await this.page.screenshot({ fullPage: true });
+    await this.step(`${testStepId}`, () => {
+      this.attach(buffer, "image/png");
+      throw new Error();
+    });
   }
 });
 

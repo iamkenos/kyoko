@@ -61,6 +61,3 @@ Feature: III. Browser Context - Browser windows
       | Tab 3  |
     When I switch to the parent context
     Then I expect the "iframe" page's "tabs" element to not exist
-# When I start observing the network calls
-#   And I refresh the page
-# Then I expect the captured google analytics to not match the snapshot "iii-browser-context/3-browser-windows/ga-tracking"
