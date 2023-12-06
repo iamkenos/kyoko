@@ -1,13 +1,15 @@
-const callsites = require("callsites") as typeof import("callsites");
-const fs = require("fs-extra") as typeof import("fs-extra");
-const path = require("path") as typeof import("path");
+import * as fs from "fs-extra";
+import * as path from "path";
+
+import callsites from "callsites";
+
+import type { Config } from "./types";
 
 /**
  * Creates a cucumber config object with default values.
- * @param { Partial<import("./types").Config> } [overrides] overrides the default configuration values.
  * @see [CucumberConfig](https://github.com/cucumber/cucumber-js/blob/main/docs/configuration.md)
  */
-function configure(overrides?: Partial<import("./types").Config>) {
+export function configure(overrides?: Partial<Config>) {
   require("dotenv").config();
 
   // custom options defaults
@@ -53,8 +55,8 @@ function configure(overrides?: Partial<import("./types").Config>) {
     formatOptions: { snippetInterface: "async-await", printAttachments: false },
     parallel: debug ? 0 : +process.env.PARALLEL || overrides?.parallel || 0,
     paths: process.env.PATHS ? [process.env.PATHS].filter(Boolean) : (overrides?.paths || ["features/"]).map(i => path.join(baseDir, i)),
-    require: [ path.join(__dirname, "../core/gherkin/*.def.js")].concat((overrides?.require || ["fixtures/pages/**/*.def.ts"]).map(i => path.join(baseDir, i))),
-    requireModule: ["@babel/register", "ts-node/register/transpile-only", "tsconfig-paths/register"],
+    require: [path.join(__dirname, "../core/gherkin/*.def.js")].concat((overrides?.require || ["fixtures/pages/**/*.def.ts"]).map(i => path.join(baseDir, i))),
+    requireModule: ["ts-node/register/transpile-only", "tsconfig-paths/register"],
     strict: false,
     tags: process.env.TAGS || overrides?.tags
   };
@@ -64,5 +66,3 @@ function configure(overrides?: Partial<import("./types").Config>) {
   config.worldParameters = { config: { ...rest, ...custom }, ...worldParameters };
   return config;
 }
-
-module.exports = { configure };

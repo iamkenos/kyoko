@@ -36,35 +36,33 @@ You'll need a working knowledge of Playwright and Cucumber to be able to use thi
 
    ```json
    "scripts": {
-     "test": "cucumber-js -c cucumber.js",
-     "posttest": "allure -q generate results/allure/",
+     "test": "cucumber-js -c cucumber.js || exit 0",
+     "posttest": "allure -q generate results/allure/ -c -o results/allure/html",
      "report": "allure open results/allure/html/"
    },
    ```
 
-3. Create a `.babelrc` file:
-
-   ```json
-   {
-     "presets": ["@babel/preset-env"]
-   }
-   ```
-
-4. Create a `tsconfig.json` file:
+3. Create a `tsconfig.json` file:
 
    ```json
    {
      "compilerOptions": {
        "baseUrl": "./",
        "checkJs": true,
-       "types": ["node"],
-       "outDir": "build"
+       "downlevelIteration": true,
+       "esModuleInterop": true,
+       "lib": ["ESNext", "DOM"],
+       "module": "commonjs",
+       "moduleResolution": "node",
+       "outDir": "build",
+       "skipLibCheck": true,
+       "target": "ESNext"
      },
      "include": ["./**/**.ts", "./**/**.js"]
    }
    ```
 
-5. Create your CucumberJS config file: `wdio.conf.ts`
+4. Create your CucumberJS config file: `cucumber.js`
 
    ```js
    const { configure } = require("@iamkenos/kyoko/config");
@@ -75,7 +73,7 @@ You'll need a working knowledge of Playwright and Cucumber to be able to use thi
    });
    ```
 
-6. Create your page object classes:
+5. Create your page object classes:
 
    ```ts
    // fixtures/the-internet/the-internet.page.ts
@@ -106,7 +104,7 @@ You'll need a working knowledge of Playwright and Cucumber to be able to use thi
    }
    ```
 
-7. Create your feature file: `features/login.feature`
+6. Create your feature file: `features/login.feature`
 
    ```gherkin
    Feature: Login
@@ -133,15 +131,11 @@ You'll need a working knowledge of Playwright and Cucumber to be able to use thi
         And I expect the "divFlashMessage" element text to contain "Your username is invalid!"
    ```
 
-8. Run it: `npm test`
+7. Run it: `npm test`
 
-9. Check the results: `npm run report`
+8. Check the results: `npm run report`
 
-10. You can view other gherkin steps available out-of-the-box [here](./demo/test/features).
-
-## Contribute
-
-TODO
+9. You can view other gherkin steps available out-of-the-box [here](./demo/test/features).
 
 ## License
 
@@ -156,3 +150,4 @@ ISC
 - full UTs
 - full docs
 - npm init
+- contrib guide

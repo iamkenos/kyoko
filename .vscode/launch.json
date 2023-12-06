@@ -12,7 +12,7 @@
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run-script", "test:demo"],
+      "runtimeArgs": ["run-script", "debug:demo"],
       "outFiles": [
         "${workspaceFolder}/**/*.ts",
         "${workspaceFolder}/build/**/*.js"

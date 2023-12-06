@@ -4,6 +4,7 @@ import * as files from "@common/utils/files";
 
 import { CucumberAllureWorld } from "allure-cucumberjs";
 import { BrowserContext as BrowserContextClass } from "@commands/context/context";
+import { changecase } from "@common/utils/string";
 import { PageObject } from "./page-object";
 
 import log from "@wdio/logger";
@@ -59,7 +60,7 @@ export abstract class World<ParametersType = any> extends CucumberAllureWorld {
     }
 
     const module = require(file);
-    const entries = Object.entries(module).find(([key]) => key.toLowerCase().includes(`${page}page`));
+    const entries = Object.entries(module).find(([key]) => key === changecase.pascalCase(`${page}Page`));
 
     if (!entries) {
       throw new Error(`"${file}" doesn't have an exported page object class`);

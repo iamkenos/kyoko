@@ -10,74 +10,107 @@
     "release:major": "standard-version --release-as major",
     "prebuild": "rimraf build && rimraf *.tgz",
     "build": "tsc --build tsconfig.build.json",
-    "postbuild": "resolve-tspaths && rimraf build/config/index.d.ts",
+    "postbuild": "resolve-tspaths",
     "pack": "npm run build && npm pack",
     "lint": "eslint ./",
     "serve:demo": "http-server ./demo/app -s",
-    "test:demo": "start-test serve:demo 8080 cucumber:demo",
-    "report:demo": "npx allure -q generate demo/test/results/allure/ -c -o demo/test/results/allure/html/ && npx allure open demo/test/results/allure/html/",
+    "test:demo": "start-test serve:demo 8080 cucumber:demo || exit 0",
+    "posttest:demo": "allure -q generate demo/test/results/allure/ -c -o demo/test/results/allure/html/",
+    "debug:demo": "npm run test:demo",
+    "report:demo": "allure open demo/test/results/allure/html/",
     "cucumber:demo": "cucumber-js -c demo/test/cucumber.js"
   },
-  "keywords": [],
+  "keywords": [
+    "playwright",
+    "cucumber",
+    "bdd"
+  ],
   "author": "iamkenos <alexis.matunog@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:iamkenos/kyoko.git"
+  },
   "license": "ISC",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "commands": [
+        "./build/commands/types.d.ts"
+      ],
+      "common": [
+        "./build/common/types.d.ts"
+      ],
+      "conditions": [
+        "./build/conditions/types.d.ts"
+      ],
+      "config": [
+        "./build/config/index.d.ts"
+      ],
+      "core": [
+        "./build/core/index.d.ts"
+      ]
+    }
+  },
   "exports": {
+    ".": {
+      "import": "./src/index.ts",
+      "require": "./build/index.js"
+    },
     "./commands/fixture": {
-      "import": "./build/commands/fixture.js",
+      "import": "./src/commands/fixture.ts",
       "require": "./build/commands/fixture.js"
     },
     "./commands/types": {
-      "import": "./build/commands/types.js",
+      "import": "./src/commands/types.ts",
       "require": "./build/commands/types.js"
     },
     "./common/utils/files": {
-      "import": "./build/common/utils/files.js",
+      "import": "./src/common/utils/files.ts",
       "require": "./build/common/utils/files.js"
     },
     "./common/utils/string": {
-      "import": "./build/common/utils/string.js",
+      "import": "./src/common/utils/string.ts",
       "require": "./build/common/utils/string.js"
     },
     "./common/utils/types": {
-      "import": "./build/common/utils/types.js",
+      "import": "./src/common/utils/types.ts",
       "require": "./build/common/utils/types.js"
     },
     "./conditions/locator": {
-      "import": "./build/conditions/locator/locator-condition.js",
+      "import": "./src/conditions/locator/locator-condition.ts",
       "require": "./build/conditions/locator/locator-condition.js"
     },
     "./conditions/page": {
-      "import": "./build/conditions/page/page-condition.js",
+      "import": "./src/conditions/page/page-condition.ts",
       "require": "./build/conditions/page/page-condition.js"
     },
     "./conditions/types": {
-      "import": "./build/conditions/types.js",
+      "import": "./src/conditions/types.ts",
       "require": "./build/conditions/types.js"
     },
     "./config": {
-      "import": "./build/config/index.js",
+      "import": "./src/config/index.ts",
       "require": "./build/config/index.js"
     },
     "./config/types": {
-      "import": "./build/config/types.js",
+      "import": "./src/config/types.ts",
       "require": "./build/config/types.js"
     },
     "./core": {
-      "import": "./build/core/index.js",
+      "import": "./src/core/index.ts",
       "require": "./build/core/index.js"
     },
     "./core/gherkin": {
-      "import": "./build/core/gherkin/enums.js",
+      "import": "./src/core/gherkin/enums.ts",
       "require": "./build/core/gherkin/enums.js"
     },
     "./core/utils/xpath": {
-      "import": "./build/core/utils/xpath-builder.js",
+      "import": "./src/core/utils/xpath-builder.ts",
       "require": "./build/core/utils/xpath-builder.js"
     }
   },
   "dependencies": {
-    "@babel/preset-env": "^7.23.5",
-    "@babel/register": "^7.22.15",
     "@cucumber/cucumber": "^10.0.1",
     "@playwright/test": "^1.40.0",
     "@types/fs-extra": "^11.0.4",

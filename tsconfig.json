@@ -5,6 +5,7 @@
     "downlevelIteration": true,
     "esModuleInterop": true,
     "lib": ["ESNext", "DOM"],
+    "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "build",
     "checkJs": true,

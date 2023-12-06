@@ -39,7 +39,7 @@ export const changecase = {
   /** Convert a string to dot case (`foo.bar`). */
   dotCase,
   /** Convert a string to kebab case (`foo-bar`). */
-  kebabCase: (input: string) => noCase(input).replaceAll(" ", "-"),
+  kebabCase: (input: string) => noCase(input).replace(new RegExp(/ /, "g"), "-"),
   /** Convert a string to space separated lower case (`foo bar`). */
   noCase,
   /** Convert a string to pascal case (`FooBar`). */
