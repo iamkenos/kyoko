@@ -62,7 +62,7 @@ Feature: II. Form Elements - Input
   Scenario: S05: Input file
     When I upload the "fixtures/files/demo.txt" file to the "#input-file" field
     Then I expect the "#input-file" field value to contain "demo.txt"
-  @debug
+
   Scenario: S06: Request interception
     When I type on the fields:
       | Field           | Value                 |

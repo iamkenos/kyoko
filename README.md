@@ -11,7 +11,7 @@
   - browser storage
 - check locales support
 - full UTs
-- fix html reports
+- ~~fix html reports~~
 - test with npm pack
 - full docs
 - publish first version

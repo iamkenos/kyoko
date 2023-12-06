@@ -3,6 +3,7 @@ import * as path from "path";
 import * as files from "@common/utils/files";
 
 import { World as CucumberWorld } from "@cucumber/cucumber";
+import { CucumberAllureWorld } from "allure-cucumberjs";
 import { BrowserContext as BrowserContextClass } from "@commands/context/context";
 import { PageObject } from "./page-object";
 
@@ -13,7 +14,7 @@ import type { BrowserContext, Locator, Page } from "@commands/types";
 import type { Config } from "@config/types";
 
 // @ts-ignore
-export abstract class World<ParametersType = any> extends CucumberWorld<ParametersType> {
+export abstract class World<ParametersType = any> extends CucumberAllureWorld<ParametersType> {
   private log: IWorldOptions["log"];
   private pageObjects: string[];
   private pageObject: PageObject;
@@ -21,6 +22,8 @@ export abstract class World<ParametersType = any> extends CucumberWorld<Paramete
   logger: ReturnType<typeof log>;
   page: Page;
   config: Config;
+  parameters: CucumberWorld["parameters"];
+  attach: CucumberWorld["attach"];
 
   constructor(options: IWorldOptions) {
     // immutably remove config from parameters so it's not carried over as clutter as these are accessible from world.config
