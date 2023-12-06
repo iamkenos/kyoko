@@ -1,5 +1,5 @@
 import { Before, Then, When } from "@cucumber/cucumber";
-import { World } from "@iamkenos/kyoko/core";
+import { World } from "../../../../../build/core/world";
 import { DemoPage } from "./demo.page";
 
 export interface This extends World {

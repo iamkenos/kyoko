@@ -1,10 +1,6 @@
-import * as fs from "fs-extra";
-import * as path from "path";
-
-import callsites from "callsites";
-
-import type { Config } from "./types";
-
+const callsites = require("callsites");
+const fs = require("fs-extra");
+const path = require("path");
 
 /**
  * Creates a cucumber config object with default values.
@@ -12,7 +8,7 @@ import type { Config } from "./types";
  * @see [CucumberConfig](https://github.com/cucumber/cucumber-js/blob/main/docs/configuration.md)
  * @returns { import("./types").Config } configuration
  */
-export function configure(overrides: Config) {
+function configure(overrides) {
   require("dotenv").config();
 
   // custom options defaults
@@ -56,7 +52,7 @@ export function configure(overrides: Config) {
     formatOptions: { snippetInterface: "async-await", printAttachments: false },
     parallel: debug ? 0 : +process.env.PARALLEL || overrides?.parallel || 0,
     paths: [process.env.PATHS].filter(Boolean) || (overrides?.paths || ["features/"]).map(i => path.join(baseDir, i)),
-    require: [ path.join(__dirname, "../core/gherkin/*.def.js")].concat((overrides?.require || ["fixtures/pages/**/*.def.ts"]).map(i => path.join(baseDir, i))),
+    require: [ path.join(__dirname, "../core/gherkin/*.def.ts")].concat((overrides?.require || ["fixtures/pages/**/*.def.ts"]).map(i => path.join(baseDir, i))),
     requireModule: ["ts-node/register/transpile-only", "tsconfig-paths/register"],
     strict: false,
     tags: process.env.TAGS || overrides?.tags
@@ -65,5 +61,7 @@ export function configure(overrides: Config) {
   // assign the whole thing to world parameters so these can be accessible from cucumber's world context
   const { worldParameters, ...rest } = config;
   config.worldParameters = { config: { ...rest, ...custom }, ...worldParameters };
-  return config as Config;
+  return config;
 }
+
+module.exports = { configure };

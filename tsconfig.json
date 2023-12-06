@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
+    "declaration": true,
     "downlevelIteration": true,
     "esModuleInterop": true,
     "lib": ["ESNext", "DOM"],
@@ -18,7 +19,7 @@
     "forceConsistentCasingInFileNames": true,
     "removeComments": false,
     "skipLibCheck": true,
-    "target": "ES5"
+    "target": "ESNext"
   },
   "include": ["./**/**.ts"],
   "exclude": ["node_modules", "build"]

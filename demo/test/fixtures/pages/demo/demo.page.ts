@@ -1,4 +1,4 @@
-import { PageObject } from "@iamkenos/kyoko/core";
+import { PageObject } from "../../../../../build/core/page-object";
 
 export class DemoPage extends PageObject {
   url = "/index.html";
