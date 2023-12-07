@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.1](https://github.com/iamkenos/kyoko/compare/v0.0.0...v0.0.1) (2023-12-07)
+
+
+### Chore
+
+* **deps:** dependency housekeeping ([52fcce1](https://github.com/iamkenos/kyoko/commit/52fcce1fdc407067fdda21d9f17ed4cd693d9f8c))
+
 ## 0.0.0 (2023-12-07)
 
 
