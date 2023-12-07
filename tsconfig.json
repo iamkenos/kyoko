@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
+    "checkJs": true,
     "declaration": true,
     "downlevelIteration": true,
     "esModuleInterop": true,
@@ -8,7 +9,6 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "build",
-    "checkJs": true,
     "paths": {
       "@iamkenos/kyoko": ["build/index"],
       "@iamkenos/kyoko/*": ["build/*"],
