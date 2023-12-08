@@ -16,6 +16,7 @@
 - gherkin statements that can be used out of the box
 - page and element expected conditions
 - generic classes for page objects support
+- multiple locale support
 - internal polling and retries
 - reporters:
   - [built-in cucumber reporter plugins](https://cucumber.io/docs/cucumber/reporting/?sbsearch=reporting&lang=javascript)

@@ -51,8 +51,9 @@ export abstract class World<ParametersType = any> extends CucumberAllureWorld {
   }
 
 
-  findPageObject(page: string, persist = false) {
-    const file = this.pageObjects.find(i => path.basename(i).split(".")[0].toLowerCase() === page.toLowerCase());
+  findPageObject<T = PageObject>(page: string, persist = false) {
+    const files = this.pageObjects.filter(i => path.basename(i).split(".")[0].toLowerCase() === page.toLowerCase());
+    const file = files.find(i => path.basename(i).includes(`.page.${this.config.locale}`)) || files[0];
 
     if (!file) {
       throw new Error(`\n  Unable to resolve "${page}" from any of the available page object files:
@@ -73,7 +74,7 @@ export abstract class World<ParametersType = any> extends CucumberAllureWorld {
       this.pageObject = pageObject;
     }
 
-    return pageObject;
+    return pageObject as T;
   }
 
   findPageObjectLocator(page: string, element: string, index?: number) {

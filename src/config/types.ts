@@ -14,6 +14,8 @@ export interface Config extends Omit<IConfiguration, "publish" | "publishQuiet">
   /** Custom: Directory to store browser downloads in, relative to the config file */
   downloadsDir: string;
   headless: boolean;
+  /** Custom: The active locale. Used as primary context for reading page object classes */
+  locale: string;
   /** Custom: Level of logging verbosity */
   logLevel: "trace" | "debug" | "info" | "warn" | "error" | "silent";
   /** Custom: Array of globs pointing to your page object files, relative to the config file */

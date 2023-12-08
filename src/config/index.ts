@@ -19,8 +19,9 @@ export function configure(overrides?: Partial<Config>) {
   const debug = process.env.DEBUG === "true" || overrides?.debug || false;
   const downloadsDir = path.join(baseDir, process.env.DOWNLOADS_DIR || overrides?.downloadsDir || "downloads/");
   const headless = process.env.HEADLESS === "true" || overrides?.headless || false;
+  const locale = process.env.LOCALE || overrides?.locale || undefined;
   const logLevel = process.env.LOG_LEVEL || overrides?.logLevel || "info";
-  const pages = (overrides?.pages || ["fixtures/pages/**/*.page.ts"]).map(i => path.join(baseDir, i));
+  const pages = (overrides?.pages || ["fixtures/pages/**/*.page{,.*}.ts"]).map(i => path.join(baseDir, i));
   const resultsDir = path.join(baseDir, process.env.RESULTS_DIR || overrides?.resultsDir || "results/");
   const snapshotsDir = path.join(baseDir, process.env.SNAPSHOTS_DIR || overrides?.snapshotsDir || "snapshots/");
   const timeout = +process.env.TIMEOUT || overrides?.timeout || 30000;
@@ -46,7 +47,7 @@ export function configure(overrides?: Partial<Config>) {
     fs.removeSync(snapshots[key].diffDir);
     fs.mkdirsSync(snapshots[key].expectedDir);
   });
-  const custom = { baseDir, baseURL, browser, browserOptions, contextOptions, debug, downloadsDir, headless, logLevel, pages, resultsDir, snapshots, timeout };
+  const custom = { baseDir, baseURL, browser, browserOptions, contextOptions, debug, downloadsDir, headless, locale, logLevel, pages, resultsDir, snapshots, timeout };
 
   // cucumber options defaults
   const config = {
