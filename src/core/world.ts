@@ -39,7 +39,7 @@ export abstract class World<ParametersType = any> extends CucumberAllureWorld {
     const suffix = process.env.CUCUMBER_PARALLEL === "true" ? `[${process.env.CUCUMBER_WORKER_ID}]` : "";
     this.logger = log(`kyoko${suffix}`);
     this.logger.setLevel(this.config.logLevel);
-    this.logger.info("Instatiating cucumber world class...");
+    this.logger.info("Starting worker...");
   }
 
   private loadPageObjects() {

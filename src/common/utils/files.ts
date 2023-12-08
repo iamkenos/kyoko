@@ -5,7 +5,7 @@ export function fromGlob(globs: string[], isStrict = false): string[] {
   const resolved = new Set<string>();
 
   globs.filter(Boolean).forEach((i: string): void => {
-    const files: string[] = glob.sync(i);
+    const files: string[] = glob.sync(i.replace(new RegExp(/\\/, "g"), "/"));
 
     if (files.length === 0) {
       console.warn("No matches found for glob %s", i);

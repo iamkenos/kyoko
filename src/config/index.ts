@@ -19,7 +19,7 @@ export function configure(overrides?: Partial<Config>) {
   const debug = process.env.DEBUG === "true" || overrides?.debug || false;
   const downloadsDir = path.join(baseDir, process.env.DOWNLOADS_DIR || overrides?.downloadsDir || "downloads/");
   const headless = process.env.HEADLESS === "true" || overrides?.headless || false;
-  const logLevel = process.env.LOG_LEVEL || overrides?.logLevel || "error";
+  const logLevel = process.env.LOG_LEVEL || overrides?.logLevel || "info";
   const pages = (overrides?.pages || ["fixtures/pages/**/*.page.ts"]).map(i => path.join(baseDir, i));
   const resultsDir = path.join(baseDir, process.env.RESULTS_DIR || overrides?.resultsDir || "results/");
   const snapshotsDir = path.join(baseDir, process.env.SNAPSHOTS_DIR || overrides?.snapshotsDir || "snapshots/");
@@ -51,7 +51,7 @@ export function configure(overrides?: Partial<Config>) {
   // cucumber options defaults
   const config = {
     ...overrides,
-    format: ["summary", `json:${resultsDir}report.json`, path.join(__dirname, `../core/utils/reporter.js:${resultsDir}allure/report.json`), ...overrides?.format || [] ],
+    format: ["summary", `"json":"${resultsDir}report.json"`, `"file://${path.join(__dirname, "../core/utils/reporter.js")}":"${resultsDir}allure/report.json"`, ...overrides?.format || [] ],
     formatOptions: { snippetInterface: "async-await", printAttachments: false },
     parallel: debug ? 0 : +process.env.PARALLEL || overrides?.parallel || 0,
     paths: process.env.PATHS ? [process.env.PATHS].filter(Boolean) : (overrides?.paths || ["features/"]).map(i => path.join(baseDir, i)),

@@ -76,7 +76,7 @@ You'll need a working knowledge of Playwright and Cucumber to be able to use thi
 5. Create your page object classes:
 
    ```ts
-   // fixtures/the-internet/the-internet.page.ts
+   // fixtures/pages/the-internet/the-internet.page.ts
    import { PageObject } from "@iamkenos/kyoko/core";
 
    export class TheInternetPage extends PageObject {
@@ -84,7 +84,7 @@ You'll need a working knowledge of Playwright and Cucumber to be able to use thi
      title = "The Internet";
    }
 
-   // fixtures/login/login.page.ts
+   // fixtures/pages/login/login.page.ts
    import { TheInternetPage } from "../the-internet/the-internet.page";
 
    export class LoginPage extends TheInternetPage {
@@ -96,7 +96,7 @@ You'll need a working knowledge of Playwright and Cucumber to be able to use thi
      btnLogin = this.page.locator("//button[@type='submit']");
    }
 
-   // fixtures/secure/secure.page.ts
+   // fixtures/pages/secure/secure.page.ts
    import { TheInternetPage } from "../the-internet/the-internet.page";
 
    export class SecurePage extends TheInternetPage {
