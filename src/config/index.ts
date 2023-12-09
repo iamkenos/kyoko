@@ -2,6 +2,7 @@ import * as fs from "fs-extra";
 import * as path from "path";
 
 import callsites from "callsites";
+import dotenv from "dotenv";
 
 import type { Config } from "./types";
 
@@ -10,10 +11,10 @@ import type { Config } from "./types";
  * @see [CucumberConfig](https://github.com/cucumber/cucumber-js/blob/main/docs/configuration.md)
  */
 export function configure(overrides?: Partial<Config>) {
-  require("dotenv").config();
+  const baseDir = path.dirname(callsites()[1].getFileName()).replace("file://", "");
+  dotenv.config({ path: process.env.NODE_ENV ? path.join(baseDir, `.env.${process.env.NODE_ENV}`) : path.join(baseDir, ".env") });
 
   // custom options defaults
-  const baseDir = path.dirname(callsites()[1].getFileName()).replace("file://", "");
   const baseURL = process.env.BASE_URL || overrides?.baseURL || "";
   const browser = process.env.BROWSER || overrides?.browser || "chromium";
   const debug = process.env.DEBUG === "true" || overrides?.debug || false;
@@ -65,5 +66,6 @@ export function configure(overrides?: Partial<Config>) {
   // assign the whole thing to world parameters so these can be accessible from cucumber's world context
   const { worldParameters, ...rest } = config;
   config.worldParameters = { config: { ...rest, ...custom }, ...worldParameters };
+
   return config;
 }
