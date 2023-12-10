@@ -34,6 +34,7 @@ import type { uploadFiles } from "./command/upload-files";
 
 // @ts-ignore
 export interface Locator extends PlaywrightLocatorType, LocatorClassType {
+  _selector: string;
   all: typeof all;
   and: typeof and;
   centerPoint: typeof centerPoint;

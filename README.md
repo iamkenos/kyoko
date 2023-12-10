@@ -17,6 +17,7 @@
 - page and element expected conditions
 - generic classes for page objects support
 - multiple locale support
+- web components support
 - internal polling and retries
 - reporters:
   - [built-in cucumber reporter plugins](https://cucumber.io/docs/cucumber/reporting/?sbsearch=reporting&lang=javascript)
@@ -147,7 +148,6 @@ ISC
 - complete gherkin
   - request validation
   - browser storage
-- check locales support
 - full UTs
 - full docs
 - npm init

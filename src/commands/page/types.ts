@@ -2,6 +2,7 @@ import type { Page as PlaywrightPageType } from "@playwright/test";
 import type { BrowserContext } from "@commands/context/types";
 import type { FrameLocator } from "@commands/frame/types";
 import type { Page as PageClassType } from "./page";
+import type { component } from "./command/component";
 import type { dialogListener } from "./command/dialog-listener";
 import type { downloadFile } from "./command/download-file";
 import type { expect } from "./command/expect";
@@ -26,6 +27,7 @@ export interface Page extends PlaywrightPageType, PageClassType {
   context: () => BrowserContext;
   activeframe: FrameLocator;
   dialog: { handled: boolean, message: string };
+  component: typeof component;
   dialogListener: typeof dialogListener;
   downloadFile: typeof downloadFile;
   expect: typeof expect;
