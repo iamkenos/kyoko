@@ -32,7 +32,7 @@
 
 You'll need a working knowledge of Playwright and Cucumber to be able to use this library. They have rich documentation so head on over the site and read on if you're not familiar with it yet.
 
-1. Get it: `npm install @iamkenos/kyoko`
+1. Get it: `npm install @iamkenos/kyoko && npx playwright install`
 
 2. Setup npm scripts, add the following inside your `package.json` file:
 
