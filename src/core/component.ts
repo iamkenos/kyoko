@@ -5,16 +5,17 @@ interface ComponentInterface {
 }
 
 export abstract class Component implements ComponentInterface {
-  protected page: Page;
+  private _page: Page;
+
   protected parent: Locator;
   abstract selector: string;
 
   constructor(page: Page, parent?: Locator) {
-    this.page = page;
+    this._page = page;
     this.parent = parent;
   }
 
   get root() {
-    return this.parent ? this.parent.locator(this.selector) : this.page.locator(this.selector);
+    return this.parent ? this.parent.locator(this.selector) : this._page.locator(this.selector);
   }
 }
