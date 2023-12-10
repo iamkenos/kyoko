@@ -1,7 +1,7 @@
 import { PageCondition } from "@conditions/page/page-condition";
 
 export class ArrayContains<T> extends PageCondition {
-  public constructor(actual: Array<T>, expected: Array<T>, preferred?: boolean) {
+  constructor(actual: Array<T>, expected: Array<T>, preferred?: boolean) {
     super(preferred);
     this.actual = actual;
     this.expected = expected;

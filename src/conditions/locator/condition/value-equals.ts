@@ -1,7 +1,7 @@
 import { LocatorCondition } from "@conditions/locator/locator-condition";
 
 export class ValueEquals extends LocatorCondition {
-  public constructor(expected?: string, preferred?: boolean) {
+  constructor(expected?: string, preferred?: boolean) {
     super(preferred);
     this.expected = expected || "";
   }

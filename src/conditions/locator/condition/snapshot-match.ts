@@ -4,7 +4,7 @@ import type { LocatorSnapshotOptions } from "@config/types";
 
 export class SnapshotMatch extends LocatorCondition {
 
-  public constructor(filename: string, options?: LocatorSnapshotOptions, preferred?: boolean) {
+  constructor(filename: string, options?: LocatorSnapshotOptions, preferred?: boolean) {
     super(filename, options, preferred);
   }
 

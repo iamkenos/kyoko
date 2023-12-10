@@ -4,7 +4,7 @@ import { PageCondition } from "@conditions/page/page-condition";
 export class Truthy extends PageCondition {
   private truthy: boolean | (() => Promise<boolean>) | (() => boolean);
 
-  public constructor(truthy: boolean | (() => Promise<boolean>) | (() => boolean), preferred?: boolean) {
+  constructor(truthy: boolean | (() => Promise<boolean>) | (() => boolean), preferred?: boolean) {
     super(preferred);
     this.expected = true;
     this.truthy = truthy;

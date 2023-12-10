@@ -2,7 +2,7 @@ import { LocatorCondition } from "@conditions/locator/locator-condition";
 import { Axis } from "@core/gherkin/enums";
 
 export class AxisLocationEquals extends LocatorCondition {
-  public constructor(axis: Axis, expected: number, preferred?: boolean) {
+  constructor(axis: Axis, expected: number, preferred?: boolean) {
     super(preferred);
     this.on = axis;
     this.expected = this.toString(expected);

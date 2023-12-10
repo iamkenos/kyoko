@@ -1,7 +1,7 @@
 import { LocatorCondition } from "@conditions/locator/locator-condition";
 
 export class DimensionEquals extends LocatorCondition {
-  public constructor(width: number, height: number, preferred?: boolean) {
+  constructor(width: number, height: number, preferred?: boolean) {
     super(preferred);
     this.expected = this.toString(width, height);
   }

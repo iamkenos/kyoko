@@ -15,7 +15,7 @@ export class SnapshotMatch extends PageCondition {
   private diffFilePath: string;
   private expectedFilePath: string;
 
-  public constructor(filename: string, options?: PageSnapshotOptions, preferred?: boolean) {
+  constructor(filename: string, options?: PageSnapshotOptions, preferred?: boolean) {
     super(preferred);
     this.filename = filename + ".png";
     this.options = options;

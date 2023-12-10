@@ -1,14 +1,14 @@
 import type { World } from "./world";
 import type { BrowserContext, Page } from "@commands/types";
 
-export class PageObject<ParametersType = any> {
+export abstract class PageObject<ParametersType = any> {
   protected readonly attach: World["attach"];
   protected readonly logger: World["logger"];
   protected parameters: ParametersType;
   protected context: BrowserContext;
   protected page: Page;
-  url: string;
-  title: string;
+  abstract url: string;
+  abstract title: string;
 
   constructor(world: World) {
     this.attach = world.attach;

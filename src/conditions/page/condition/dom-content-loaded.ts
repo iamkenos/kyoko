@@ -1,7 +1,7 @@
 import { PageCondition } from "@conditions/page/page-condition";
 
 export class DomContentLoaded extends PageCondition {
-  public constructor(preferred?: boolean) {
+  constructor(preferred?: boolean) {
     super(preferred);
     this.expected = this.constructor.name.toLowerCase();
   }

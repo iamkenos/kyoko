@@ -68,6 +68,7 @@ export abstract class World<ParametersType = any> extends CucumberAllureWorld {
     }
 
     const PageObj = entries[1] as typeof PageObject;
+    // @ts-ignore
     const pageObject = new PageObj(this);
 
     if (persist) {

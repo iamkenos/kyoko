@@ -27,11 +27,11 @@ export class PageConditions extends ExpectedConditions {
     this.page = page;
   }
 
-  public arrayContains<T>(actual: Array<T>, expected: Array<T>, preferred?: boolean) {
+  arrayContains<T>(actual: Array<T>, expected: Array<T>, preferred?: boolean) {
     return this.addCondition(new ArrayContains(actual, expected, preferred));
   }
 
-  public arrayEquals<T>(actual: Array<T>, expected: Array<T>, preferred?: boolean) {
+  arrayEquals<T>(actual: Array<T>, expected: Array<T>, preferred?: boolean) {
     return this.addCondition(new ArrayEquals(actual, expected, preferred));
   }
 

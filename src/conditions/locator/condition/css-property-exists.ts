@@ -1,7 +1,7 @@
 import { LocatorCondition } from "@conditions/locator/locator-condition";
 
 export class CssPropertyExists extends LocatorCondition {
-  public constructor(property: string, preferred?: boolean) {
+  constructor(property: string, preferred?: boolean) {
     super(preferred);
     this.expected = true;
     this.on = property;

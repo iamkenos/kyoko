@@ -1,7 +1,7 @@
 import { LocatorCondition } from "@conditions/locator/locator-condition";
 
 export class AttributeExists extends LocatorCondition {
-  public constructor(attribute: string, preferred?: boolean) {
+  constructor(attribute: string, preferred?: boolean) {
     super(preferred);
     this.expected = true;
     this.on = attribute;

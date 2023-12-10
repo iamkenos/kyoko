@@ -1,7 +1,7 @@
 import { LocatorCondition } from "@conditions/locator/locator-condition";
 
 export class Focused extends LocatorCondition {
-  public constructor(preferred?: boolean) {
+  constructor(preferred?: boolean) {
     super(preferred);
     this.expected = true;
   }
