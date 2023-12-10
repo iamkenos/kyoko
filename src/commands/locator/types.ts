@@ -32,9 +32,7 @@ import type { scrollIntoView } from "./command/scroll-into-view";
 import type { selectOption } from "./command/select-option";
 import type { uploadFiles } from "./command/upload-files";
 
-// @ts-ignore
 export interface Locator extends PlaywrightLocatorType, LocatorClassType {
-  _selector: string;
   all: typeof all;
   and: typeof and;
   centerPoint: typeof centerPoint;

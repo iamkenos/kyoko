@@ -8,7 +8,6 @@ import type { closeOtherPages } from "./command/close-other-pages";
 import type { lastPage } from "./command/last-page";
 import type { newPage } from "./command/new-page";
 
-// @ts-ignore
 export interface BrowserContext extends PlaywrightBrowserContextType, BrowserContextClassType {
   config: Config;
   attach: IWorldOptions["attach"];

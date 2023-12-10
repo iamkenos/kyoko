@@ -22,7 +22,6 @@ import type { scrollToBottom } from "./command/scroll-to-bottom";
 import type { scrollToTop } from "./command/scroll-to-top";
 import type { switchToFrame } from "./command/switch-to-frame";
 
-// @ts-ignore
 export interface Page extends PlaywrightPageType, PageClassType {
   context: () => BrowserContext;
   activeframe: FrameLocator;
