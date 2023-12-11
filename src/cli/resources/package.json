@@ -1,0 +1,14 @@
+{
+  "name": "kyoko-init",
+  "version": "0.0.1",
+  "description": "Get started with Playwright and Cucumber.",
+  "scripts": {
+    "pretest": "playwright install",
+    "test": "cucumber-js -c cucumber.js || exit 0",
+    "posttest": "allure -q generate results/allure/ -c -o results/allure/html",
+    "report": "allure open results/allure/html/"
+  },
+  "dependencies": {
+    "@iamkenos/kyoko": "^0.0.1"
+  }
+}

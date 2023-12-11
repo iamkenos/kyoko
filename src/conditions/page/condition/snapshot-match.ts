@@ -1,4 +1,4 @@
-import * as fs from "fs";
+import * as fs from "fs-extra";
 import * as path from "path";
 
 import { PageCondition } from "@conditions/page/page-condition";
@@ -23,8 +23,7 @@ export class SnapshotMatch extends PageCondition {
   }
 
   private createFile(filename: string, data: Buffer) {
-    fs.mkdirSync(path.dirname(filename), { recursive: true });
-    fs.writeFileSync(filename, data);
+    fs.outputFileSync(filename, data);
   }
 
   async onFailure() {

@@ -46,7 +46,6 @@ export function configure(overrides?: Partial<Config>) {
     snapshots[key].diffDir = path.resolve(snapshots[key].outDir, "diff");
     fs.removeSync(snapshots[key].actualDir);
     fs.removeSync(snapshots[key].diffDir);
-    fs.mkdirsSync(snapshots[key].expectedDir);
   });
   const custom = { baseDir, baseURL, browser, browserOptions, contextOptions, debug, downloadsDir, headless, locale, logLevel, pages, resultsDir, snapshots, timeout };
 
