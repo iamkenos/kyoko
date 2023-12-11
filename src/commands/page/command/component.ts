@@ -3,11 +3,7 @@ import { Locator as LocatorClass } from "@commands/locator/locator";
 import type { Page } from "@commands/page/types";
 import type { Locator } from "@commands/locator/types";
 import type { ExcludePropertiesOf } from "@common/types";
-import type { Component } from "@core/component";
-
-type ComponentInstance<T> = Locator & Component & T;
-
-type ComponentSubClass<T> = new(page: Page, parent: Locator) => T;
+import type { Component, ComponentInstance, ComponentSubClass } from "@core/component";
 
 function getInstance(subComponent: Component) {
   const excluded = ["constructor"];
