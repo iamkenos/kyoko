@@ -12,6 +12,13 @@ Given(
 );
 
 When(
+  /^I move out of the viewport$/,
+  async function(this: This) {
+    await this.page.locator("html").dispatchEvent("mouseleave");
+  }
+);
+
+When(
   /^I close the last opened (?:window|tab)$/,
   async function(this: This) {
     this.page = await this.context.closeLastPage();

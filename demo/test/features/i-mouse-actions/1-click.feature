@@ -8,8 +8,14 @@ Feature: I. Mouse Actions - Click
   Scenario: S01: Create element
     When I click the "#create" button
     Then I expect the "#create-result" element to exist
+      And I expect the "#create-result" element count to be 1
+      And I expect the "#create-result" element count to be less than 2
+      And I expect the "#create-result" element count to be more than 0
       But I click the "#create" button again
     Then I expect the "#create-result" element to not exist
+      And I expect the "#create-result" element count to not be 1
+      And I expect the "#create-result" element count to not be less than 0
+      And I expect the "#create-result" element count to not be more than 2
 
   Scenario: S02: Change element text
     When I right click the "#change-txt" button

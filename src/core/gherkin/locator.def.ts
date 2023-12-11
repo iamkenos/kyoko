@@ -303,6 +303,30 @@ Then(
 );
 
 Then(
+  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element count to( not)? be (\d+)$/,
+  async function(this: This, page: string, index: number, element: string, not: boolean, expected: number) {
+    const locator = this.findPageObjectLocator(page, element, index);
+    await locator.expect().countEquals(expected, !not).poll();
+  }
+);
+
+Then(
+  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element count to( not)? be less than (\d+)$/,
+  async function(this: This, page: string, index: number, element: string, not: boolean, expected: number) {
+    const locator = this.findPageObjectLocator(page, element, index);
+    await locator.expect().countLessThan(expected, !not).poll();
+  }
+);
+
+Then(
+  /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" element count to( not)? be more than (\d+)$/,
+  async function(this: This, page: string, index: number, element: string, not: boolean, expected: number) {
+    const locator = this.findPageObjectLocator(page, element, index);
+    await locator.expect().countMoreThan(expected, !not).poll();
+  }
+);
+
+Then(
   /^I expect the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:field|element) "([^"]*)?" css property to( not)? exist$/,
   async function(this: This, page: string, index: number, element: string, expected: string, not: boolean) {
     const locator = this.findPageObjectLocator(page, element, index);

@@ -4,6 +4,9 @@ import { AttributeEquals } from "./condition/attribute-equals";
 import { AttributeExists } from "./condition/attribute-exists";
 import { AxisLocationEquals } from "./condition/axis-location-equals";
 import { Checked } from "./condition/checked";
+import { CountEquals } from "./condition/count-equals";
+import { CountLessThan } from "./condition/count-less-than";
+import { CountMoreThan } from "./condition/count-more-than";
 import { CssPropertyExists } from "./condition/css-property-exists";
 import { DimensionEquals } from "./condition/dimension-equals";
 import { DimensionSideEquals } from "./condition/dimension-side-equals";
@@ -52,6 +55,18 @@ export class LocatorConditions extends ExpectedConditions {
 
   checked(preferred?: boolean) {
     return this.addCondition(new Checked(preferred));
+  }
+
+  countEquals(expected: number, preferred?: boolean) {
+    return this.addCondition(new CountEquals(expected, preferred));
+  }
+
+  countLessThan(expected: number, preferred?: boolean) {
+    return this.addCondition(new CountLessThan(expected, preferred));
+  }
+
+  countMoreThan(expected: number, preferred?: boolean) {
+    return this.addCondition(new CountMoreThan(expected, preferred));
   }
 
   cssPropertyExists(property: string, preferred?: boolean) {
