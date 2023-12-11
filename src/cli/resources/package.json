@@ -9,6 +9,6 @@
     "report": "allure open results/allure/html/"
   },
   "dependencies": {
-    "@iamkenos/kyoko": "^0.0.1"
+    "@iamkenos/kyoko": "*"
   }
 }
