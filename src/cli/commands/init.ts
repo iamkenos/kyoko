@@ -9,9 +9,13 @@ To run your tests:
 
 export function init() {
   const source = path.join(__dirname, "../", "resources");
-  const target = process.cwd();
+  const target = path.join(process.cwd(), "samples");
+
+  const ignoreSource = path.join(target, "ignore.tpl");
+  const ignoretarget = path.join(target, ".gitignore");
 
   process.stdout.write("Creating files...");
   fs.copySync(source, target);
+  fs.moveSync(ignoreSource, ignoretarget);
   console.log(SUCCESS_MESSAGE.trim());
 }
