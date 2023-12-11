@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.3](https://github.com/iamkenos/kyoko/compare/v0.0.2...v0.0.3) (2023-12-11)
+
+
+### Features
+
+* cli module and init command ([5749348](https://github.com/iamkenos/kyoko/commit/57493484f203bae276d90a92e181f25791e27b3f))
+* complex, nested components ([b92147c](https://github.com/iamkenos/kyoko/commit/b92147cb4219474dbb513a8e95ead864e5d1836b))
+* load .env from baseDir ([0c97a2c](https://github.com/iamkenos/kyoko/commit/0c97a2cb5717d719d3fbd75b818fc99a88fdb1ac))
+* multi-locales support ([66643bc](https://github.com/iamkenos/kyoko/commit/66643bcad178f2e8e76d09c2b9349f7e0a5dbf28))
+* support web components ([eedb92d](https://github.com/iamkenos/kyoko/commit/eedb92d70f3b945857d222f4ecae2d6b2b3d076c))
+
+
+### Bug Fixes
+
+* build component instance and proper prototype ([e5ccba3](https://github.com/iamkenos/kyoko/commit/e5ccba31e7dadc60ef427a29a96d8fdb5396413a))
+
+
+### Refactor
+
+* remove implicit public accessors ([b7b0d76](https://github.com/iamkenos/kyoko/commit/b7b0d76d6393b0d9f792fa3d7999b2604ac61ac3))
+
+
+### Chore
+
+* improve component method typings ([2fc9c98](https://github.com/iamkenos/kyoko/commit/2fc9c98a0bd0d6840c44dde206fa6746be7be21f))
+
 ### [0.0.2](https://github.com/iamkenos/kyoko/compare/v0.0.1...v0.0.2) (2023-12-08)
 
 
