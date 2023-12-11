@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.4](https://github.com/iamkenos/kyoko/compare/v0.0.3...v0.0.4) (2023-12-11)
+
+
+### Features
+
+* gherkin for element count ([e8821d2](https://github.com/iamkenos/kyoko/commit/e8821d21beb6a630db2db4ff1ab67f1facb2c852))
+* update samples ([3d0438f](https://github.com/iamkenos/kyoko/commit/3d0438f794602527b7caa9e31565e529c5fcd24b))
+
 ### [0.0.3](https://github.com/iamkenos/kyoko/compare/v0.0.2...v0.0.3) (2023-12-11)
 
 
