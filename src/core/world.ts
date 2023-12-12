@@ -11,28 +11,40 @@ import log from "@wdio/logger";
 
 import type { IWorldOptions } from "@cucumber/cucumber";
 import type { BrowserContext, Locator, Page } from "@commands/types";
-import type { Config } from "@config/types";
+import type { Config, WorldParameters } from "@config/types";
 
-// @ts-ignore
-export abstract class World<ParametersType = any> extends CucumberAllureWorld {
-  private log: IWorldOptions["log"];
+interface Reporter extends Pick<CucumberAllureWorld, "attach" | "step" | "issue" | "link" | "description"> { }
+
+export interface This<ParametersType = WorldParameters> extends Omit<World, keyof CucumberAllureWorld> { reporter: Reporter, parameters: ParametersType }
+
+export abstract class World extends CucumberAllureWorld {
   private pageObjects: string[];
   private pageObject: PageObject;
   context: BrowserContext;
   logger: ReturnType<typeof log>;
   page: Page;
   config: Config;
-  // @ts-ignore
-  parameters: ParametersType;
+  reporter: Reporter;
 
   constructor(options: IWorldOptions) {
     // immutably remove config from parameters so it's not carried over as clutter as these are accessible from world.config
     const { config, ...parameters } = options.parameters;
     super({ ...options, parameters });
     this.config = config;
+    this.loadReporter();
     this.loadLogger();
     this.loadPageObjects();
     this.loadCommands();
+  }
+
+  private loadReporter() {
+    this.reporter = {
+      attach: this.attach,
+      step: super.step,
+      issue: super.issue,
+      link: super.link,
+      description: super.description
+    };
   }
 
   private loadLogger() {
@@ -50,7 +62,6 @@ export abstract class World<ParametersType = any> extends CucumberAllureWorld {
     files.fromGlob([path.join(path.dirname(__dirname), "commands/**/command/*.js")]).filter(Boolean).forEach(file => require(file));
   }
 
-
   findPageObject<T = PageObject>(page: string, persist = false) {
     const files = this.pageObjects.filter(i => path.basename(i).split(".")[0].toLowerCase() === page.toLowerCase());
     const file = files.find(i => path.basename(i).includes(`.page.${this.config.locale}`)) || files[0];
@@ -67,15 +78,14 @@ export abstract class World<ParametersType = any> extends CucumberAllureWorld {
       throw new Error(`"${file}" doesn't have an exported page object class`);
     }
 
-    const PageObj = entries[1] as typeof PageObject;
-    // @ts-ignore
+    const PageObj = entries[1] as new (world: World) => PageObject;
     const pageObject = new PageObj(this);
 
     if (persist) {
       this.pageObject = pageObject;
     }
 
-    return pageObject as T;
+    return pageObject as unknown as T;
   }
 
   findPageObjectLocator(page: string, element: string, index?: number) {
@@ -95,7 +105,7 @@ export abstract class World<ParametersType = any> extends CucumberAllureWorld {
     const from = await browser.newContext(this.config.contextOptions);
     const context = new BrowserContextClass(from) as BrowserContext;
     context.setDefaultTimeout(this.config.timeout);
-    context.attach = this.attach;
+    context.reporter = this.reporter;
     context.config = this.config;
     return context;
   }

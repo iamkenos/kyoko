@@ -35,10 +35,9 @@
     },
     {
       "id": "parallel",
-      "type": "pickString",
+      "type": "promptString",
       "default": "0",
-      "description": "Browsers running in parallel",
-      "options": ["0", "5"]
+      "description": "Browsers running in parallel"
     }
   ]
 }

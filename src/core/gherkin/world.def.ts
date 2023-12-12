@@ -8,12 +8,12 @@ import {
   setWorldConstructor,
   Status
 } from "@cucumber/cucumber";
-import { World as This } from "../world";
+import { This, World } from "../world";
 
 import chalk from "chalk";
 
 setDefaultTimeout(process.env.DEBUG === "true" ? -1 : undefined);
-setWorldConstructor(This);
+setWorldConstructor(World);
 
 Before({}, async function(this: This) {
   this.context = await this.createBrowserContext();
@@ -26,14 +26,11 @@ BeforeStep({}, async function(this: This, params: ITestStepHookParameter) {
 });
 
 AfterStep({}, async function(this: This, params: ITestStepHookParameter) {
-  const { result, testStepId } = params;
+  const { result } = params;
 
   if (result.status !== Status.PASSED) {
     const buffer = await this.page.screenshot({ fullPage: true });
-    await this.step(`${testStepId}`, () => {
-      this.attach(buffer, "image/png");
-      throw new Error();
-    });
+    this.reporter.attach(buffer, "image/png");
   }
 });
 

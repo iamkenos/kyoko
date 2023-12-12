@@ -2,6 +2,8 @@ import type { IConfiguration } from "@cucumber/cucumber/lib/configuration";
 import type { BrowserContextOptions, LaunchOptions } from "@playwright/test";
 import type { Locator } from "@commands/locator/types";
 
+export type WorldParameters = { [key: string]: any };
+
 export interface Config extends Omit<IConfiguration, "publish" | "publishQuiet"> {
   /** Custom: The base directory where most config paths will be resolved from */
   baseDir: string;
@@ -27,6 +29,7 @@ export interface Config extends Omit<IConfiguration, "publish" | "publishQuiet">
   /** Custom: Object containing properties of comparable files */
   snapshots: Snapshots;
   timeout: number;
+  worldParameters: WorldParameters
 }
 
 type SnapshotDirectories = {
@@ -48,7 +51,7 @@ type SnapshotOptions = {
 type ImageSnapshotOptions = {
   maxDiffPixelRatio?: number;
   mask?: Locator[];
-} & SnapshotOptions
+} & SnapshotOptions;
 
 export type LocatorSnapshotOptions = ImageSnapshotOptions;
 

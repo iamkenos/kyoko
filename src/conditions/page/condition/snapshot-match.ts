@@ -3,6 +3,7 @@ import * as path from "path";
 
 import { PageCondition } from "@conditions/page/page-condition";
 
+import type { AllureCommandStepExecutable } from "allure-js-commons";
 import type { Locator } from "@commands/locator/types";
 import type { PageSnapshotOptions } from "@config/types";
 
@@ -27,16 +28,16 @@ export class SnapshotMatch extends PageCondition {
   }
 
   async onFailure() {
-    const attach = (filename: string) => {
+    const { outDir } = this.page.context().config.snapshots.images;
+    const attach = (title: string, filename: string) => {
       if (fs.existsSync(filename)) {
-        this.page.context().attach(filename, "text/plain");
-        this.page.context().attach(fs.readFileSync(filename), "image/png");
+        this.page.context().reporter.step(title, (step: AllureCommandStepExecutable) => step.attach(fs.readFileSync(filename), "image/png"));
       }
     };
 
-    attach(this.expectedFilePath);
-    attach(this.actualFilePath);
-    attach(this.diffFilePath);
+    attach(`expected: ${path.relative(outDir, this.expectedFilePath)}`, this.expectedFilePath);
+    attach(`actual: ${path.relative(outDir, this.actualFilePath)}`, this.actualFilePath);
+    attach(`difference: ${path.relative(outDir, this.diffFilePath)}`, this.diffFilePath);
   }
 
   private getPixelDiff(error: string) {

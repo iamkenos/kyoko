@@ -1,7 +1,7 @@
 import { Given, Then, When } from "@cucumber/cucumber";
 import { Count, WindowDirection, WindowNavigation } from "./enums";
 
-import type { World as This } from "../world";
+import type { This } from "../world";
 
 Given(
   /^I am on the "([^"]*)?" (?:page|site|portal)$/,

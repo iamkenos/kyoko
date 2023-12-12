@@ -4,6 +4,7 @@ import { ArrayEquals } from "./condition/array-equals";
 import { DialogTextContains } from "./condition/dialog-text-contains";
 import { DialogTextEquals } from "./condition/dialog-text-equals";
 import { DomContentLoaded } from "./condition/dom-content-loaded";
+import { Equals } from "./condition/equals";
 import { FileExists } from "./condition/file-exists";
 import { SnapshotMatch } from "./condition/snapshot-match";
 import { TitleContains } from "./condition/title-contains";
@@ -45,6 +46,10 @@ export class PageConditions extends ExpectedConditions {
 
   domContentLoaded(preferred?: boolean) {
     return this.addCondition(new DomContentLoaded(preferred));
+  }
+
+  equals<T = any>(actual: T, expected: T, preferred?: boolean) {
+    return this.addCondition(new Equals(actual, expected, preferred));
   }
 
   fileExists(path: string, preferred?: boolean) {

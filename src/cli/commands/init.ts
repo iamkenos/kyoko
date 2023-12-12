@@ -9,7 +9,7 @@ To run your tests:
 
 export function init() {
   const source = path.join(__dirname, "../", "resources");
-  const target = path.join(process.cwd(), "samples");
+  const target = process.cwd();
 
   const ignoreSource = path.join(target, "ignore.tpl");
   const ignoretarget = path.join(target, ".gitignore");

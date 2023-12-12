@@ -8,7 +8,7 @@ export class Truthy extends PageCondition {
     super(preferred);
     this.expected = true;
     this.truthy = truthy;
-    this.name = changecase.pascalCase(this.truthy["name"]) || this.name;
+    this.name = changecase.pascalCase((this.truthy as any)["name"] || this.name);
   }
 
   async evaluate() {

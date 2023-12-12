@@ -59,7 +59,8 @@ export function configure(overrides?: Partial<Config>) {
     require: [path.join(__dirname, "../core/gherkin/*.def.js")].concat((overrides?.require || ["fixtures/**/*.def.ts"]).map(i => path.join(baseDir, i))),
     requireModule: ["ts-node/register/transpile-only", "tsconfig-paths/register"],
     strict: false,
-    tags: process.env.TAGS || overrides?.tags
+    tags: process.env.TAGS || overrides?.tags,
+    worldParameters: overrides?.worldParameters || {}
   };
 
   // assign the whole thing to world parameters so these can be accessible from cucumber's world context
