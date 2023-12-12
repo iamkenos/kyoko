@@ -13,7 +13,7 @@ import {
 export function isURL(str: string) {
   try {
     const url = new URL(str);
-    return ["http:", "https:"].includes(url.protocol);
+    return url.href.replace(/([^:]\/)\/+/g, "$1");
   } catch (e) {
     return false;
   }

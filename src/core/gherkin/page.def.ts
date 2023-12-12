@@ -6,7 +6,7 @@ import type { This } from "../world";
 Given(
   /^I am on the "([^"]*)?" (?:page|site|portal)$/,
   async function(this: This, page: string) {
-    const pageObject = this.findPageObject(page);
+    const pageObject = this.findPageObject(page, true);
     await pageObject.navigate();
   }
 );

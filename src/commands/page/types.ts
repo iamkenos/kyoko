@@ -21,6 +21,7 @@ import type { scrollTo } from "./command/scroll-to";
 import type { scrollToBottom } from "./command/scroll-to-bottom";
 import type { scrollToTop } from "./command/scroll-to-top";
 import type { switchToFrame } from "./command/switch-to-frame";
+import type { urlFromBase } from "./command/url-from-base";
 
 export interface Page extends PlaywrightPageType, PageClassType {
   context: () => BrowserContext;
@@ -45,4 +46,5 @@ export interface Page extends PlaywrightPageType, PageClassType {
   scrollToBottom: typeof scrollToBottom;
   scrollToTop: typeof scrollToTop;
   switchToFrame: typeof switchToFrame;
+  urlFromBase: typeof urlFromBase;
 }
