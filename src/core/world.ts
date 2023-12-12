@@ -31,13 +31,24 @@ export abstract class World extends CucumberAllureWorld {
     const { config, ...parameters } = options.parameters;
     super({ ...options, parameters });
     this.config = config;
-    this.loadReporter();
-    this.loadLogger();
-    this.loadPageObjects();
+    this.setLogger();
+    this.setPageObjects();
+    this.setReporter();
     this.loadCommands();
   }
 
-  private loadReporter() {
+  private setLogger() {
+    const suffix = process.env.CUCUMBER_PARALLEL === "true" ? `[${process.env.CUCUMBER_WORKER_ID}]` : "";
+    this.logger = log(`kyoko${suffix}`);
+    this.logger.setLevel(this.config.logLevel);
+    this.logger.info("Starting worker...");
+  }
+
+  private setPageObjects() {
+    this.pageObjects = files.fromGlob(this.config.pages);
+  }
+
+  private setReporter() {
     this.reporter = {
       attach: this.attach,
       step: super.step,
@@ -45,17 +56,6 @@ export abstract class World extends CucumberAllureWorld {
       link: super.link,
       description: super.description
     };
-  }
-
-  private loadLogger() {
-    const suffix = process.env.CUCUMBER_PARALLEL === "true" ? `[${process.env.CUCUMBER_WORKER_ID}]` : "";
-    this.logger = log(`kyoko${suffix}`);
-    this.logger.setLevel(this.config.logLevel);
-    this.logger.info("Starting worker...");
-  }
-
-  private loadPageObjects() {
-    this.pageObjects = files.fromGlob(this.config.pages);
   }
 
   private loadCommands() {
