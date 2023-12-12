@@ -6,8 +6,8 @@ import type { This } from "../world";
 Given(
   /^I am on the "([^"]*)?" (?:page|site|portal)$/,
   async function(this: This, page: string) {
-    const url = this.findPageObject(page, true).url;
-    await this.page.goto(url, { waitUntil: "domcontentloaded" });
+    const pageObject = this.findPageObject(page);
+    await pageObject.navigate();
   }
 );
 

@@ -18,4 +18,28 @@ export abstract class PageObject<ParametersType = WorldParameters> {
     this.context = world.context;
     this.page = world.page;
   }
+
+  async navigate() {
+    const baseURL = this.context.config.baseURL || "";
+    const validateURL = (from: string) => {
+      try {
+        return new URL(from);
+      } catch (e) {
+        return false;
+      }
+    };
+
+    const fullURL = baseURL + this.url;
+    const fullURLInstance = validateURL(fullURL);
+    const pageURLInstance = validateURL(this.url);
+    const resolvedURLs = [pageURLInstance, fullURLInstance]; // page url takes precedence for cases where the page object defines a full page url
+    const validURL = resolvedURLs.find(Boolean);
+
+    if (validURL instanceof URL) {
+      const url = validURL.href.replace(/([^:]\/)\/+/g, "$1");
+      await this.page.goto(url, { waitUntil: "domcontentloaded" });
+    } else {
+      throw new Error(`None of the resolved URLs are valid:\n  ${[fullURL, this.url].join(",\n  ")}`);
+    }
+  }
 }
