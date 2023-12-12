@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.5](https://github.com/iamkenos/kyoko/compare/v0.0.4...v0.0.5) (2023-12-12)
+
+
+### Bug Fixes
+
+* cli init gitignore file ([1499d3a](https://github.com/iamkenos/kyoko/commit/1499d3ac29f752fffd111bf2f94f8ae1bf08f463))
+* reporter attachments, world parameters, typings ([21ab39e](https://github.com/iamkenos/kyoko/commit/21ab39ea91d0ab2aaa96bc279a107b28b4159759))
+
 ### [0.0.4](https://github.com/iamkenos/kyoko/compare/v0.0.3...v0.0.4) (2023-12-11)
 
 
