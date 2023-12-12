@@ -134,8 +134,7 @@ When(
   /^I (select|deselect) the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:element|option|check box|toggle item|radio button)$/,
   async function(this: This, action: SelectAction, page: string, index: number, element: string) {
     const locator = this.findPageObjectLocator(page, element, index);
-    const conditions = locator.expect().checked(action === SelectAction.SELECT);
-    await locator.clickUntil(conditions, { force: true });
+    action === SelectAction.SELECT ? await locator.check({ force: true }) : await locator.uncheck({ force: true });
   }
 );
 
