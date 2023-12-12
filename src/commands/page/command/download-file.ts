@@ -18,7 +18,7 @@ export async function downloadFile(this: Page, trigger: (() => Promise<void>), e
 
     await download.saveAs(filepath);
   } catch (e) {
-    throw new Error(`File download exception: ${e}`);
+    throw new Error(`Unable to download file: ${e}`);
   }
 
   await this.expect().fileExists(filepath).poll();

@@ -2,7 +2,7 @@ import * as playwright from "@playwright/test";
 import * as path from "path";
 import * as files from "@common/utils/files";
 
-import { CucumberAllureWorld } from "allure-cucumberjs";
+import { CucumberAllureWorld as AllureWorld } from "allure-cucumberjs";
 import { BrowserContext as BrowserContextClass } from "@commands/context/context";
 import { changecase } from "@common/utils/string";
 import { PageObject } from "./page-object";
@@ -13,17 +13,36 @@ import type { IWorldOptions } from "@cucumber/cucumber";
 import type { BrowserContext, Locator, Page } from "@commands/types";
 import type { Config, WorldParameters } from "@config/types";
 
-interface Reporter extends Pick<CucumberAllureWorld, "attach" | "step" | "issue" | "link" | "description"> { }
+interface Reporter extends Pick<AllureWorld, "attach" | "step" | "issue" | "link" | "description"> { }
 
-export interface This<ParametersType = WorldParameters> extends Omit<World, keyof CucumberAllureWorld> { reporter: Reporter, parameters: ParametersType }
+interface PrivateWorld {
+  findPageObject: <T = PageObject>(page: string, persist?: boolean) => T;
+  findPageObjectLocator: (page: string, element: string, index?: number) => Locator;
+  findPageObjectProp: <T = any>(page: string, prop: string, fallback?: T) => T;
+  createBrowserContext: () => void;
+}
 
-export abstract class World extends CucumberAllureWorld {
+export interface This<ParametersType = WorldParameters> extends Omit<World, keyof AllureWorld | keyof PrivateWorld> {
+  reporter: Reporter, parameters: ParametersType
+}
+
+export abstract class World extends AllureWorld implements PrivateWorld {
   private pageObjects: string[];
   private pageObject: PageObject;
-  context: BrowserContext;
   logger: ReturnType<typeof log>;
+  /** Playwright's BrowserContext instance with added custom commands and presets.
+   * @see [BrowserContext](https://playwright.dev/docs/api/class-browsercontext)
+   **/
+  context: BrowserContext;
+  /** Playwright's Page instance created from `this.context` with added custom commands and presets.
+   * @see [Page](https://playwright.dev/docs/api/class-page)
+   */
   page: Page;
+  /** The resolved Cucumber configuration object. */
   config: Config;
+  /** The AllureJS Cucumber reporter interface, restricted to the bare essential methods.
+   * @see [allure-cucumberjs](https://github.com/allure-framework/allure-js/blob/master/packages/allure-cucumberjs/README.md)
+   */
   reporter: Reporter;
 
   constructor(options: IWorldOptions) {
@@ -67,18 +86,18 @@ export abstract class World extends CucumberAllureWorld {
     const file = files.find(i => path.basename(i).includes(`.page.${this.config.locale}`)) || files[0];
 
     if (!file) {
-      throw new Error(`\n  Unable to resolve "${page}" from any of the available page object files:
-     ${this.pageObjects.map((i) => i).join(",\n")}`);
+      throw new Error(`Unable to resolve "${page}" from any of the available page object files:\n  ${this.pageObjects.join(",\n  ")}`);
     }
 
     const module = require(file);
-    const entries = Object.entries(module).find(([key]) => key === changecase.pascalCase(`${page}Page`));
+    const name = changecase.pascalCase(`${page}Page`);
+    const clazz = Object.getOwnPropertyNames(module).find(prop => prop === name);
 
-    if (!entries) {
-      throw new Error(`"${file}" doesn't have an exported page object class`);
+    if (!clazz) {
+      throw new Error(`Unable to find an exported "${name}" page object class from "${file}".`);
     }
 
-    const PageObj = entries[1] as new (world: World) => PageObject;
+    const PageObj = module[clazz] as new (world: World) => PageObject;
     const pageObject = new PageObj(this);
 
     if (persist) {

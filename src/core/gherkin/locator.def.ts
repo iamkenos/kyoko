@@ -14,7 +14,7 @@ import {
 } from "./enums";
 import { XPathBuilder } from "../utils/xpath-builder";
 
-import type { This } from "../world";
+import type { World as This } from "../world";
 import type { Locator } from "@commands/locator/types";
 
 When(

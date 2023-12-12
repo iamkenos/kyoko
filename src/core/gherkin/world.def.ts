@@ -15,7 +15,7 @@ import chalk from "chalk";
 setDefaultTimeout(process.env.DEBUG === "true" ? -1 : undefined);
 setWorldConstructor(World);
 
-Before({}, async function(this: This) {
+Before({}, async function(this: World) {
   this.context = await this.createBrowserContext();
   this.page = await this.context.newPage();
 });
