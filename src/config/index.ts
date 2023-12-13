@@ -38,6 +38,7 @@ export function configure(overrides?: Partial<Config>) {
   };
   // resolve and prepare snapshot directories
   process.env.KYK_RESULTS = resultsDir;
+  process.env.LOG_LEVEL = debug ? "debug" : logLevel;
   fs.removeSync(resultsDir);
   Object.keys(snapshots).forEach(key => {
     snapshots[key].outDir = path.resolve(snapshotsDir, snapshots[key].outDir);

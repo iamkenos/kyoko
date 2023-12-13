@@ -5,9 +5,8 @@ import * as files from "@common/utils/files";
 import { CucumberAllureWorld as AllureWorld } from "allure-cucumberjs";
 import { BrowserContext as BrowserContextClass } from "@commands/context/context";
 import { changecase } from "@common/utils/string";
+import { Logger } from "./utils/logger";
 import { PageObject } from "./page-object";
-
-import log from "@wdio/logger";
 
 import type { IWorldOptions } from "@cucumber/cucumber";
 import type { BrowserContext, Locator, Page } from "@commands/types";
@@ -23,13 +22,15 @@ interface PrivateWorld {
 }
 
 export interface This<ParametersType = WorldParameters> extends Omit<World, keyof AllureWorld | keyof PrivateWorld> {
-  reporter: Reporter, parameters: ParametersType
+  readonly reporter: Reporter, parameters: ParametersType, readonly context: BrowserContext;
 }
 
 export abstract class World extends AllureWorld implements PrivateWorld {
   private pageObjects: string[];
   private pageObject: PageObject;
-  logger: ReturnType<typeof log>;
+  /** The resolved Cucumber configuration object. */
+  private config: Config;
+  logger: Logger;
   /** Playwright's BrowserContext instance with added custom commands and presets.
    * @see [BrowserContext](https://playwright.dev/docs/api/class-browsercontext)
    **/
@@ -38,8 +39,6 @@ export abstract class World extends AllureWorld implements PrivateWorld {
    * @see [Page](https://playwright.dev/docs/api/class-page)
    */
   page: Page;
-  /** The resolved Cucumber configuration object. */
-  config: Config;
   /** The AllureJS Cucumber reporter interface, restricted to the bare essential methods.
    * @see [allure-cucumberjs](https://github.com/allure-framework/allure-js/blob/master/packages/allure-cucumberjs/README.md)
    */
@@ -50,17 +49,10 @@ export abstract class World extends AllureWorld implements PrivateWorld {
     const { config, ...parameters } = options.parameters;
     super({ ...options, parameters });
     this.config = config;
-    this.setLogger();
+    this.logger = new Logger("kyoko");
     this.setPageObjects();
     this.setReporter();
     this.loadCommands();
-  }
-
-  private setLogger() {
-    const suffix = process.env.CUCUMBER_PARALLEL === "true" ? `[${process.env.CUCUMBER_WORKER_ID}]` : "";
-    this.logger = log(`kyoko${suffix}`);
-    this.logger.setLevel(this.config.logLevel);
-    this.logger.info("Starting worker...");
   }
 
   private setPageObjects() {

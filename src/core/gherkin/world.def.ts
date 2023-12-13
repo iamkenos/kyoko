@@ -22,7 +22,7 @@ Before({}, async function(this: World) {
 
 BeforeStep({}, async function(this: This, params: ITestStepHookParameter) {
   const { pickleStep } = params;
-  this.logger.info(`${chalk.yellow("GHERKIN")} ${chalk.green.dim.bold(`${pickleStep.type}: `)}${chalk.green.dim(pickleStep.text)}`);
+  this.logger.info(`${chalk.green.dim.bold(`${pickleStep.type}: `)}${chalk.green.dim(pickleStep.text)}`);
 });
 
 AfterStep({}, async function(this: This, params: ITestStepHookParameter) {
