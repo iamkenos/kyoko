@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.6](https://github.com/iamkenos/kyoko/compare/v0.0.5...v0.0.6) (2023-12-13)
+
+
+### Features
+
+* **core:** url from base ([695f918](https://github.com/iamkenos/kyoko/commit/695f918b748adfe48fe027ca21db798558ebffc3))
+* **core:** use playwright's check and uncheck methods for element select and deselect ([49176a5](https://github.com/iamkenos/kyoko/commit/49176a51d669a5176508f1fefa52e3216085746d))
+* rework logger ([6f04a91](https://github.com/iamkenos/kyoko/commit/6f04a9122b9fa2a3f86142b2589246688c3390f2))
+
+
+### Bug Fixes
+
+* playwright goto resolves from baseURL origin, not from the href ([6237521](https://github.com/iamkenos/kyoko/commit/6237521951f97892d49aa3879efb8598a3bdb220))
+
+
+### Refactor
+
+* rename world private methods ([05f7443](https://github.com/iamkenos/kyoko/commit/05f744337bc5d9a13a9d5322502969a0cc2b8914))
+
 ### [0.0.5](https://github.com/iamkenos/kyoko/compare/v0.0.4...v0.0.5) (2023-12-12)
 
 
