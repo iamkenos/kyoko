@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.8](https://github.com/iamkenos/kyoko/compare/v0.0.7...v0.0.8) (2024-01-20)
+
+
+### Chore
+
+* npm audit ([d527e9e](https://github.com/iamkenos/kyoko/commit/d527e9e29a23a960f06b7a494be85498dd6bb51f))
+
 ### [0.0.7](https://github.com/iamkenos/kyoko/compare/v0.0.6...v0.0.7) (2023-12-13)
 
 ### [0.0.6](https://github.com/iamkenos/kyoko/compare/v0.0.5...v0.0.6) (2023-12-13)
