@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.9](https://github.com/iamkenos/kyoko/compare/v0.0.8...v0.0.9) (2024-01-21)
+
+
+### Bug Fixes
+
+* use link selector when providing link text arg from gherkin ([008f178](https://github.com/iamkenos/kyoko/commit/008f1788c4c41ebe594c2a5e15712f2d1d35e9c2))
+
+
+### Chore
+
+* normalize repo url ([83172aa](https://github.com/iamkenos/kyoko/commit/83172aa64ccd2f5baeff330c281a9b0da2a27363))
+
 ### [0.0.8](https://github.com/iamkenos/kyoko/compare/v0.0.7...v0.0.8) (2024-01-20)
 
 
