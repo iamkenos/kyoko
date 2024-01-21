@@ -34,7 +34,7 @@
   "author": "iamkenos <alexis.matunog@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:iamkenos/kyoko.git"
+    "url": "git+ssh://git@github.com/iamkenos/kyoko.git"
   },
   "license": "ISC",
   "main": "./build/index.js",
