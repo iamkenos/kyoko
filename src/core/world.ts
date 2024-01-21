@@ -100,7 +100,12 @@ export abstract class World extends AllureWorld implements PrivateWorld {
   }
 
   findPageObjectLocator(page: string, element: string, index?: number) {
-    let locator = this.findPageObjectProp<Locator>(page, element, this.page.locator(element));
+    let locator: Locator;
+    if (page) {
+      locator = this.findPageObjectProp<Locator>(page, element, this.page.locator(element));
+    } else {
+      locator = this.page.locator(element);
+    }
     locator = index ? locator.nth(index - 1) : locator;
     return locator;
   }
