@@ -6,6 +6,8 @@ import dotenv from "dotenv";
 
 import type { Config } from "./types";
 
+export * from "./types";
+
 /**
  * Creates a cucumber config object with default values.
  * @see [CucumberConfig](https://github.com/cucumber/cucumber-js/blob/main/docs/configuration.md)
