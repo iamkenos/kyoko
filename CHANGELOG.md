@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.11](https://github.com/iamkenos/kyoko/compare/v0.0.10...v0.0.11) (2024-01-22)
+
+
+### Features
+
+* add interval option on expected conditions ([736b044](https://github.com/iamkenos/kyoko/commit/736b0443ebebc925e6e4a6f7c5f807caed14777c))
+
+
+### Chore
+
+* update cli package.json ([5bf957f](https://github.com/iamkenos/kyoko/commit/5bf957f48e3912c5303f204c780733434c7d3bd8))
+
 ### [0.0.10](https://github.com/iamkenos/kyoko/compare/v0.0.9...v0.0.10) (2024-01-22)
 
 
