@@ -12,6 +12,8 @@ export class ExpectedConditions {
 
   private timeout: number;
 
+  private interval: number;
+
   private action: Function;
 
   private soft: boolean;
@@ -20,6 +22,7 @@ export class ExpectedConditions {
     this.name = this.constructor.name;
     this.conditions = [];
     this.timeout = options?.timeout;
+    this.interval = options?.interval || 250;
     this.soft = options?.soft;
   }
 
@@ -66,7 +69,7 @@ export class ExpectedConditions {
         this.action !== undefined && await this.action();
         await this.evaluateAll();
         return this.result.passed;
-      }, { intervals: [250], timeout: this.timeout + 250 }).toBe(true);
+      }, { intervals: [this.interval], timeout: this.timeout + 250 }).toBe(true);
     } catch (e) {
       if (!this.soft) {
         if (this.result) {

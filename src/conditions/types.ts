@@ -20,5 +20,6 @@ export type ExpectedConditionsResult = {
 
 export type ExpectedConditionOptions = {
   timeout?: number,
+  interval?: number,
   soft?: boolean
 }
