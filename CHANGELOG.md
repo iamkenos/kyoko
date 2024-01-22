@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.10](https://github.com/iamkenos/kyoko/compare/v0.0.9...v0.0.10) (2024-01-22)
+
+
+### Bug Fixes
+
+* package exports and minor bugs ([8713c26](https://github.com/iamkenos/kyoko/commit/8713c261684da89d89e036ba183a945d35ae0645))
+
 ### [0.0.9](https://github.com/iamkenos/kyoko/compare/v0.0.8...v0.0.9) (2024-01-21)
 
 
