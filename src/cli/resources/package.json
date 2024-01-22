@@ -5,7 +5,7 @@
   "scripts": {
     "pretest": "playwright install",
     "test": "cucumber-js -c cucumber.js",
-    "prereport": "allure -q generate results/allure/ -c -o results/allure/html",
+    "prereport": "allure -q generate results/allure/ -c -o results/allure/html/",
     "report": "allure open results/allure/html/"
   },
   "dependencies": {
