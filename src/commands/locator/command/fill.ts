@@ -4,8 +4,8 @@ import type { Locator } from "@commands/locator/types";
 
 type Values = [Parameters<PlaywrightLocatorType["fill"]>[0]];
 type ExtendedOptions = [Parameters<PlaywrightLocatorType["fill"]>[1] & {
-  /** Whether to proceed normally and ignore the command if element is not existing or visible. Ignored if `force` is set to `true`. Defaults to `false`. */
-  soft?: boolean | number;
+  /** Whether to proceed normally and ignore the command if element is visible. Ignored if `force` is set to `true`. Defaults to `false`. */
+  conditional?: boolean;
   /** Whether to append the supplied value on the field's current value. Defaults to `false`. */
   append?: boolean;
 }];
@@ -15,14 +15,15 @@ type FillArgs = MergeTuple<Values, Partial<ExtendedOptions>>
 export async function fill(this: Locator, ...args: FillArgs) {
   const [val, options] = args;
 
-  if (options?.soft && !options?.force) {
-    const { soft } = options;
-    const timeout = typeof soft === "number" ? soft : undefined;
-    const canProceed = await this.given({ timeout }).exists().displayed().poll();
+  const isConditional = options?.conditional && !options?.force;
+  if (isConditional) {
+    const { timeout = 1500 } = options;
+    const canProceed = await this.given({ timeout }).displayed().poll();
     if (!canProceed) return;
   }
 
-  if (options?.append) {
+  const shouldAppend = options?.append;
+  if (shouldAppend) {
     const current = await this.inputValue();
     await this.__proto.fill(current + val, options);
   } else {

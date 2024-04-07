@@ -71,17 +71,16 @@ export class ExpectedConditions {
         return this.result.passed;
       }, { intervals: [this.interval], timeout: this.timeout + 250 }).toBe(true);
     } catch (e) {
-      if (!this.soft) {
-        if (this.result) {
+      if (this.result) {
+        if (!this.soft) {
           const failures = this.result.evaluations.filter(e => !e.passed);
           for (let i = 0; i < failures.length; i++) { await failures[i].onFailure(); }
           throw new Error(this.result.message);
-        } else {
-          throw new Error(`Unhandled exception: ${e}`);
         }
       } else {
-        return this.result.passed;
+        throw new Error(`Unhandled exception: ${e}`);
       }
     }
+    return this.result.passed;
   }
 }
