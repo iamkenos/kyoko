@@ -7,7 +7,7 @@ export abstract class PageObject<ParametersType = WorldParameters> {
   protected readonly logger: World["logger"];
   protected readonly context: BrowserContext;
   protected page: Page;
-  protected parameters: ParametersType | WorldParameters;
+  protected parameters: ParametersType;
   abstract url: string;
   abstract title: string;
 
@@ -16,7 +16,7 @@ export abstract class PageObject<ParametersType = WorldParameters> {
     this.logger = world.logger;
     this.context = world.context;
     this.page = world.page;
-    this.parameters = world.parameters;
+    this.parameters = world.parameters as any;
   }
 
   async navigate() {

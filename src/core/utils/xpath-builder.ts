@@ -9,7 +9,7 @@ export class XPathBuilder {
 
   constructor(selector?: string) {
     this.conditionals = [];
-    this.selector = selector || `//${this.ANY}`;
+    this.selector = selector || `//self::${this.ANY}`;
   }
 
   private wrap(condition: string, not = false) {
@@ -243,6 +243,11 @@ export class XPathBuilder {
 
   hasPrecedingSibling(tag = this.ANY, not?: boolean) {
     this.conditionals.push(this.wrap(`preceding-sibling::${this.unslash(tag)}`, not));
+    return this;
+  }
+
+  self(tag = this.ANY) {
+    this.conditionals.push(`/self::${this.unslash(tag)}`);
     return this;
   }
 
