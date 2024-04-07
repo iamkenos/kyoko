@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0](https://github.com/iamkenos/kyoko/compare/v0.0.11...v0.1.0) (2024-04-07)
+
+
+### Bug Fixes
+
+* **conditions:** return results or throw error after polling ([4bd6443](https://github.com/iamkenos/kyoko/commit/4bd644352797efd3989dfaa97fa232ff7f8aaf69))
+
 ### [0.0.11](https://github.com/iamkenos/kyoko/compare/v0.0.10...v0.0.11) (2024-01-22)
 
 
