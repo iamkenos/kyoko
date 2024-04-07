@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.1](https://github.com/iamkenos/kyoko/compare/v0.1.0...v0.1.1) (2024-04-07)
+
+
+### Bug Fixes
+
+* page object parameters type and default xpath root ([c49e551](https://github.com/iamkenos/kyoko/commit/c49e55125e3ca8d4d2300b8253795f6acb9727f4))
+
 ## [0.1.0](https://github.com/iamkenos/kyoko/compare/v0.0.11...v0.1.0) (2024-04-07)
 
 
