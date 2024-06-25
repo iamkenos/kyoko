@@ -1,3 +1,5 @@
+import * as object from "@common/utils/object";
+
 import {
   After,
   AfterStep,
@@ -21,8 +23,9 @@ Before({}, async function(this: World) {
 });
 
 BeforeStep({}, async function(this: This, params: ITestStepHookParameter) {
-  const { pickleStep } = params;
-  this.logger.info(`${chalk.green.dim.bold(`${pickleStep.type}: `)}${chalk.green.dim(pickleStep.text)}`);
+  const { pickleStep, gherkinDocument } = params;
+  const step = object.deepSearch(gherkinDocument, "id", pickleStep.astNodeIds[0]);
+  this.logger.info(`${chalk.green.dim.bold(step.keyword.trim())} ${chalk.green.dim(step.text)}`);
 });
 
 AfterStep({}, async function(this: This, params: ITestStepHookParameter) {
