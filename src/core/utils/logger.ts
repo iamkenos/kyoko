@@ -22,9 +22,6 @@ export class Logger {
   private applyFormatter(): void {
     prefix.reg(log);
     prefix.apply(log, {
-      nameFormatter(name) {
-        return chalk.whiteBright(`${name}${process.env.CUCUMBER_PARALLEL === "true" ? `[${process.env.CUCUMBER_WORKER_ID}]` : ""}`);
-      },
       timestampFormatter(date) {
         return date.toISOString();
       },
@@ -32,7 +29,7 @@ export class Logger {
         const [, , , caller] = callsites();
         const stack = caller.toString();
         const from = caller.getFunctionName() || stack.substring(0, stack.indexOf("."));
-        return `${chalk.gray(`${timestamp}`)} ${COLORS[level.toUpperCase()](level)} [${name}] ${chalk.yellow.bold(from)}:`;
+        return `${chalk.gray(`${timestamp}`)} ${COLORS[level.toUpperCase()](level)} ${chalk.yellow.bold(from)}:`;
       }
     });
   }
