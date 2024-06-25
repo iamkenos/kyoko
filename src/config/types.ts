@@ -8,7 +8,7 @@ export interface Config extends Omit<IConfiguration, "publish" | "publishQuiet">
   /** Custom: The base directory where most config paths will be resolved from */
   baseDir: string;
   baseURL: string;
-  browser: string;
+  browser: "chromium" | "firefox" | "webkit" ;
   browserOptions: Omit<LaunchOptions, "headless">;
   contextOptions: Omit<BrowserContextOptions, "baseURL">;
   /** Custom: Whether to run in debug mode or not */

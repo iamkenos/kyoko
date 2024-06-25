@@ -17,17 +17,17 @@ export function configure(overrides?: Partial<Config>) {
   dotenv.config({ path: process.env.NODE_ENV ? path.join(baseDir, `.env.${process.env.NODE_ENV}`) : path.join(baseDir, ".env") });
 
   // custom options defaults
-  const baseURL = process.env.BASE_URL || overrides?.baseURL || "";
-  const browser = process.env.BROWSER || overrides?.browser || "chromium";
-  const debug = process.env.DEBUG === "true" || overrides?.debug || false;
-  const downloadsDir = path.join(baseDir, process.env.DOWNLOADS_DIR || overrides?.downloadsDir || "downloads/");
-  const headless = process.env.HEADLESS === "true" || overrides?.headless || false;
-  const locale = process.env.LOCALE || overrides?.locale || undefined;
-  const logLevel = process.env.LOG_LEVEL || overrides?.logLevel || "info";
+  const baseURL = process.env.BASE_URL ? process.env.BASE_URL : overrides?.baseURL || "";
+  const browser = process.env.BROWSER ? process.env.BROWSER : overrides?.browser || "chromium";
+  const debug = process.env.DEBUG ? process.env.DEBUG === "true" : overrides?.debug || false;
+  const downloadsDir = path.join(baseDir, process.env.DOWNLOADS_DIR ? process.env.DOWNLOADS_DIR : overrides?.downloadsDir || "downloads/");
+  const headless = process.env.HEADLESS ? process.env.HEADLESS === "true" : overrides?.headless || false;
+  const locale = process.env.LOCALE ? process.env.LOCALE : overrides?.locale || undefined;
+  const logLevel = process.env.LOG_LEVEL ? process.env.LOG_LEVEL : overrides?.logLevel || "info";
   const pages = (overrides?.pages || ["fixtures/pages/**/*.page{,.*}.ts"]).map(i => path.join(baseDir, i));
-  const resultsDir = path.join(baseDir, process.env.RESULTS_DIR || overrides?.resultsDir || "results/");
-  const snapshotsDir = path.join(baseDir, process.env.SNAPSHOTS_DIR || overrides?.snapshotsDir || "snapshots/");
-  const timeout = +process.env.TIMEOUT || overrides?.timeout || 30000;
+  const resultsDir = path.join(baseDir, process.env.RESULTS_DIR ? process.env.RESULTS_DIR : overrides?.resultsDir || "results/");
+  const snapshotsDir = path.join(baseDir, process.env.SNAPSHOTS_DIR ? process.env.SNAPSHOTS_DIR : overrides?.snapshotsDir || "snapshots/");
+  const timeout = +process.env.TIMEOUT ? +process.env.TIMEOUT : overrides?.timeout || 30000;
   const browserOptions = { headless, ...overrides?.browserOptions };
   const contextOptions = { baseURL, ignoreHTTPSErrors: false, viewport: { width: 1675, height: 1020 }, ...overrides?.contextOptions };
   const snapshots = {
@@ -57,12 +57,12 @@ export function configure(overrides?: Partial<Config>) {
     ...overrides,
     format: ["summary", `"json":"${resultsDir}report.json"`, `"file://${path.join(__dirname, "../core/utils/reporter.js")}":"${resultsDir}allure/report.json"`, ...overrides?.format || [] ],
     formatOptions: { snippetInterface: "async-await", printAttachments: false },
-    parallel: debug ? 0 : +process.env.PARALLEL || overrides?.parallel || 0,
+    parallel: debug ? 0 : overrides?.parallel || +process.env.PARALLEL || 0,
     paths: process.env.PATHS ? [process.env.PATHS].filter(Boolean) : (overrides?.paths || ["features/"]).map(i => path.join(baseDir, i)),
     require: [path.join(__dirname, "../core/gherkin/*.def.js")].concat((overrides?.require || ["fixtures/**/*.def.ts"]).map(i => path.join(baseDir, i))),
     requireModule: ["ts-node/register/transpile-only", "tsconfig-paths/register"],
     strict: false,
-    tags: process.env.TAGS || overrides?.tags,
+    tags: overrides?.tags || process.env.TAGS,
     worldParameters: overrides?.worldParameters || {}
   };
 
