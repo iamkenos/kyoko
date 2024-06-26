@@ -25,6 +25,6 @@ export abstract class Component implements ComponentInterface {
   }
 
   component<T extends Component, U extends ExcludePropertiesOf<U, Locator>>(SubComponent: ComponentSubClass<T>, parent?: U) {
-    return this._page.component(SubComponent, parent);
+    return this._page.component(SubComponent, parent).dropdownOptions;
   }
 }

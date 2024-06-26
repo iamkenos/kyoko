@@ -25,8 +25,8 @@ export async function fill(this: Locator, ...args: FillArgs) {
   const shouldAppend = options?.append;
   if (shouldAppend) {
     const current = await this.inputValue();
-    await this.__proto.fill(current + val, options);
+    await this["__proto"].fill(current + val, options);
   } else {
-    await this.__proto.fill(...args);
+    await this["__proto"].fill(...args);
   }
 }

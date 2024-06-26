@@ -5,6 +5,6 @@ import type { Page } from "@commands/page/types";
 import type { Locator } from "@commands/locator/types";
 
 export function getByTestId(this: Page, ...args: Parameters<PlaywrightPageType["getByTestId"]>) {
-  const from = this.activeframe ? this.activeframe.getByTestId(...args) : this.__proto.getByTestId(...args);
+  const from = this.activeframe ? this.activeframe.getByTestId(...args) : this["__proto"].getByTestId(...args);
   return new LocatorClass(from) as Locator;
 }

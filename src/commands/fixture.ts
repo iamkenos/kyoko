@@ -13,7 +13,7 @@ import { changecase } from "@common/utils/string";
  */
 export class Fixture<T> {
   /** The unmodified version of this prototype. */
-  __proto: T;
+  private __proto: T;
   constructor(from: T) {
     this.__proto = Object.assign(Object.create(Object.getPrototypeOf(from)), from);
     return this.addCommands(from);

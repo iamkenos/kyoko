@@ -5,5 +5,5 @@ import type { FrameLocator } from "@commands/frame/types";
 import type { Locator } from "@commands/locator/types";
 
 export function getByTitle(this: FrameLocator, ...args: Parameters<PlaywrightFrameLocatorType["getByTitle"]>) {
-  return new LocatorClass(this.__proto.getByTitle(...args)) as Locator;
+  return new LocatorClass(this["__proto"].getByTitle(...args)) as Locator;
 }

@@ -1,5 +1,6 @@
 import type { Locator } from "@commands/locator/types";
 
+/** Returns */
 export async function dropdownOptions(this: Locator, group?: { index: number }) {
   const hasGroup = !!group;
   const option = hasGroup ? this.locator("//optgroup").nth(group.index).locator("//option") : this.locator("//option");

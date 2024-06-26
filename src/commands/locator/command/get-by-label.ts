@@ -4,5 +4,5 @@ import type { Locator as PlaywrightLocatorType } from "@playwright/test";
 import type { Locator } from "@commands/locator/types";
 
 export function getByLabel(this: Locator, ...args: Parameters<PlaywrightLocatorType["getByLabel"]>) {
-  return new LocatorClass(this.__proto.getByLabel(...args)) as Locator;
+  return new LocatorClass(this["__proto"].getByLabel(...args)) as Locator;
 }

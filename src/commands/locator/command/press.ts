@@ -20,5 +20,5 @@ export async function press(this: Locator, ...args: PressArgs) {
     if (!canProceed) return;
   }
 
-  this.__proto.press(...args);
+  this["__proto"].press(...args);
 }

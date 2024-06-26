@@ -4,5 +4,5 @@ import type { Locator as PlaywrightLocatorType } from "@playwright/test";
 import type { Locator } from "@commands/locator/types";
 
 export function locator(this: Locator, ...args: Parameters<PlaywrightLocatorType["locator"]>) {
-  return new LocatorClass(this.__proto.locator(...args)) as Locator;
+  return new LocatorClass(this["__proto"].locator(...args)) as Locator;
 }

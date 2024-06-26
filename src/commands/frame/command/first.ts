@@ -4,5 +4,5 @@ import type { FrameLocator as PlaywrightFrameLocatorType } from "@playwright/tes
 import type { FrameLocator } from "@commands/frame/types";
 
 export function first(this: FrameLocator, ...args: Parameters<PlaywrightFrameLocatorType["first"]>) {
-  return new FrameLocatorClass(this.__proto.first(...args)) as FrameLocator;
+  return new FrameLocatorClass(this["__proto"].first(...args)) as FrameLocator;
 }

@@ -5,5 +5,5 @@ import type { FrameLocator } from "@commands/frame/types";
 import type { Locator } from "@commands/locator/types";
 
 export function getByTestId(this: FrameLocator, ...args: Parameters<PlaywrightFrameLocatorType["getByTestId"]>) {
-  return new LocatorClass(this.__proto.getByTestId(...args)) as Locator;
+  return new LocatorClass(this["__proto"].getByTestId(...args)) as Locator;
 }

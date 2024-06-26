@@ -4,5 +4,5 @@ import type { FrameLocator as PlaywrightFrameLocatorType } from "@playwright/tes
 import type { FrameLocator } from "@commands/frame/types";
 
 export function last(this: FrameLocator, ...args: Parameters<PlaywrightFrameLocatorType["last"]>) {
-  return new FrameLocatorClass(this.__proto.last(...args)) as FrameLocator;
+  return new FrameLocatorClass(this["__proto"].last(...args)) as FrameLocator;
 }

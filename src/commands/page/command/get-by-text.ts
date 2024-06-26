@@ -5,6 +5,6 @@ import type { Page } from "@commands/page/types";
 import type { Locator } from "@commands/locator/types";
 
 export function getByText(this: Page, ...args: Parameters<PlaywrightPageType["getByText"]>) {
-  const from = this.activeframe ? this.activeframe.getByText(...args) : this.__proto.getByText(...args);
+  const from = this.activeframe ? this.activeframe.getByText(...args) : this["__proto"].getByText(...args);
   return new LocatorClass(from) as Locator;
 }

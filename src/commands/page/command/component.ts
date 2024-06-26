@@ -13,7 +13,7 @@ function getInstance(subComponent: Component) {
   // intentional mutation going on here
   // assign properties
   Object.getOwnPropertyNames(subComponent)
-    .forEach(key => instance[key] = subComponent[key]);
+    .forEach(prop => instance[prop] = subComponent[prop]);
   // assign methods
   Object.getOwnPropertyNames(subComponentProto)
     .filter(i => !excluded.includes(i))
