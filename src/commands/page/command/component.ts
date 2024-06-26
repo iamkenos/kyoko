@@ -2,18 +2,17 @@ import { Locator as LocatorClass } from "@commands/locator/locator";
 
 import type { Page } from "@commands/page/types";
 import type { Locator } from "@commands/locator/types";
-import type { ExcludePropertiesOf } from "@common/types";
-import type { Component, ComponentInstance, ComponentSubClass } from "@core/component";
+import type { Component, ComponentSubClass } from "@core/component";
 
-function getInstance(subComponent: Component) {
+function getInstance<T extends Component>(subClassInstance: T) {
   const excluded = ["constructor"];
-  const instance = new LocatorClass(subComponent.root);
-  const subComponentProto = Object.getPrototypeOf(subComponent);
+  const instance = new LocatorClass(subClassInstance.root) as T & Locator;
+  const subComponentProto = Object.getPrototypeOf(subClassInstance);
   const componentProto = Object.getPrototypeOf(subComponentProto);
   // intentional mutation going on here
   // assign properties
-  Object.getOwnPropertyNames(subComponent)
-    .forEach(prop => instance[prop] = subComponent[prop]);
+  Object.getOwnPropertyNames(subClassInstance)
+    .forEach(prop => instance[prop] = subClassInstance[prop]);
   // assign methods
   Object.getOwnPropertyNames(subComponentProto)
     .filter(i => !excluded.includes(i))
@@ -25,8 +24,8 @@ function getInstance(subComponent: Component) {
   return instance;
 }
 
-export function component<T extends Component, U extends ExcludePropertiesOf<U, Locator>>(this: Page, SubComponent: ComponentSubClass<T>, parent?: U) {
-  const subComponent = new SubComponent(this, parent);
-  const instance = getInstance(subComponent);
-  return instance as ComponentInstance<T>;
+export function component<T extends Component>(this: Page, SubClass: ComponentSubClass<T>, options?: { from?: Locator }) {
+  const subClassInstance = new SubClass(this, options?.from);
+  const instance = getInstance<T>(subClassInstance);
+  return instance;
 }

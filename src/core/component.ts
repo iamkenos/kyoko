@@ -1,30 +1,18 @@
 import type { Locator, Page } from "@commands/types";
-import type { ExcludePropertiesOf } from "@common/types";
 
-interface ComponentInterface {
-  selector: string
-}
+export type ComponentSubClass<T extends Component> = new(page: Page, from?: Locator) => T;
 
-export type ComponentInstance<T> = Locator & Component & T;
-
-export type ComponentSubClass<T> = new(page: Page, parent: Locator) => T;
-
-export abstract class Component implements ComponentInterface {
+export abstract class Component {
   private _page: Page;
-
   protected parent: Locator;
   abstract selector: string;
 
-  constructor(page: Page, parent?: Locator) {
+  constructor(page: Page, from?: Locator ) {
     this._page = page;
-    this.parent = parent;
+    this.parent = from;
   }
 
   get root() {
     return this.parent ? this.parent.locator(this.selector) : this._page.locator(this.selector);
-  }
-
-  component<T extends Component, U extends ExcludePropertiesOf<U, Locator>>(SubComponent: ComponentSubClass<T>, parent?: U) {
-    return this._page.component(SubComponent, parent).dropdownOptions;
   }
 }
