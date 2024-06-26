@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/iamkenos/kyoko/compare/v0.1.1...v0.2.0) (2024-06-26)
+
+
+### Features
+
+* remove logger name formatter ([4acf61a](https://github.com/iamkenos/kyoko/commit/4acf61a417005e33f73454699138661c8b315e8f))
+
+
+### Bug Fixes
+
+* cucumber keywords on logging ([3b41b22](https://github.com/iamkenos/kyoko/commit/3b41b221cf9349ab13f6d6b26d7d499ddf38a56a))
+* env variable config overrides ([5666f73](https://github.com/iamkenos/kyoko/commit/5666f73753455a121da2c7d79f6cee0e027605c5))
+* npm audit ([ee17e3c](https://github.com/iamkenos/kyoko/commit/ee17e3c1ad293e90e5676d68d65d796236ba60b4))
+* remove unecessary options on debugger config ([bb0cd5c](https://github.com/iamkenos/kyoko/commit/bb0cd5cc2a70e26a93a1c52283111ba2409f56c7))
+
+
+### Refactor
+
+* hide __proto property ([3d9d8a8](https://github.com/iamkenos/kyoko/commit/3d9d8a89fabd672335b742399d470148b9cd2fff))
+* simplified component api ([8217b58](https://github.com/iamkenos/kyoko/commit/8217b58eeb66606782bd9d0ed373af0501c2fd47))
+
 ### [0.1.1](https://github.com/iamkenos/kyoko/compare/v0.1.0...v0.1.1) (2024-04-07)
 
 
