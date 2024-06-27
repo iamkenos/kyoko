@@ -57,12 +57,12 @@ export function configure(overrides?: Partial<Config>) {
     ...overrides,
     format: ["summary", `"json":"${resultsDir}report.json"`, `"file://${path.join(__dirname, "../core/utils/reporter.js")}":"${resultsDir}allure/report.json"`, ...overrides?.format || [] ],
     formatOptions: { snippetInterface: "async-await", printAttachments: false },
-    parallel: debug ? 0 : overrides?.parallel || +process.env.PARALLEL || 0,
+    parallel: debug ? 0 : process.env.PARALLEL ? +process.env.PARALLEL : overrides?.parallel || 0,
     paths: process.env.PATHS ? [process.env.PATHS].filter(Boolean) : (overrides?.paths || ["features/"]).map(i => path.join(baseDir, i)),
     require: [path.join(__dirname, "../core/gherkin/*.def.js")].concat((overrides?.require || ["fixtures/**/*.def.ts"]).map(i => path.join(baseDir, i))),
     requireModule: ["ts-node/register/transpile-only", "tsconfig-paths/register"],
     strict: false,
-    tags: overrides?.tags || process.env.TAGS,
+    tags: process.env.TAGS ? process.env.TAGS : overrides?.tags,
     worldParameters: overrides?.worldParameters || {}
   };
 
