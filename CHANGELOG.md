@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](https://github.com/iamkenos/kyoko/compare/v0.2.0...v0.2.1) (2024-06-27)
+
+
+### Features
+
+* object utils ([0d5e7eb](https://github.com/iamkenos/kyoko/commit/0d5e7ebd3802f684fa1af236ff3cd4fa3c6a16f9))
+
 ## [0.2.0](https://github.com/iamkenos/kyoko/compare/v0.1.1...v0.2.0) (2024-06-26)
 
 
