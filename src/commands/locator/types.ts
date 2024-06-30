@@ -5,6 +5,7 @@ import type { all } from "./command/all";
 import type { and } from "./command/and";
 import type { centerPoint } from "./command/center-point";
 import type { clickUntil } from "./command/click-until";
+import type { component } from "./command/component";
 import type { doUntil } from "./command/do-until";
 import type { dragAndDrop } from "./command/drag-and-drop";
 import type { dropdownOptions } from "./command/dropdown-options";
@@ -37,6 +38,7 @@ export interface Locator extends PlaywrightLocatorType, LocatorClassType {
   and: typeof and;
   centerPoint: typeof centerPoint;
   clickUntil: typeof clickUntil;
+  component: typeof component;
   doUntil: typeof doUntil;
   dragAndDrop: typeof dragAndDrop;
   dropdownOptions: typeof dropdownOptions;

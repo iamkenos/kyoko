@@ -88,12 +88,27 @@ When(
 );
 
 When(
+  /^I open the (?:"([^"]*)?" page's url|url "([^"]*)?")$/,
+  async function(this: This, page: string, url?: string) {
+    if (url) {
+      await this.page.goto(url);
+    } else {
+      const pageObject = this.findPageObject(page);
+      await this.page.goto(pageObject.url);
+    }
+  }
+);
+
+When(
   /^I open the (?:"([^"]*)?" page's url|url "([^"]*)?") on a new window$/,
   async function(this: This, page: string, url?: string) {
-    const pageObject = this.findPageObject(page);
     const newPage = await this.context.newPage();
-    await newPage.goto(url || pageObject.url);
-    await newPage.expect().domContentLoaded().poll();
+    if (url) {
+      await newPage.goto(url);
+    } else {
+      const pageObject = this.findPageObject(page);
+      await newPage.goto(pageObject.url);
+    }
   }
 );
 
