@@ -50,7 +50,6 @@ ISC
   - component chaining
   - component return type on locator methods
 - Gherkin:
-  - locator search limit
   - Request validation with JSON snapshot matching
   - Browser storage steps
 - Unit Tests

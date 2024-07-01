@@ -6,5 +6,5 @@ import type { Locator } from "@commands/locator/types";
 
 export function locator(this: Page, ...args: Parameters<PlaywrightPageType["locator"]>) {
   const from = this.activeframe ? this.activeframe.locator(...args) : this["__proto"].locator(...args);
-  return new LocatorClass(from) as Locator;
+  return new LocatorClass(this["getLocatorSearchLimit"](from)) as Locator;
 }

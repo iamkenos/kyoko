@@ -6,5 +6,5 @@ import type { Locator } from "@commands/locator/types";
 
 export function getByLabel(this: Page, ...args: Parameters<PlaywrightPageType["getByLabel"]>) {
   const from = this.activeframe ? this.activeframe.getByLabel(...args) : this["__proto"].getByLabel(...args);
-  return new LocatorClass(from) as Locator;
+  return new LocatorClass(this["getLocatorSearchLimit"](from)) as Locator;
 }

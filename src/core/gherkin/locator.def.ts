@@ -18,6 +18,21 @@ import type { World as This } from "../world";
 import type { Locator } from "@commands/locator/types";
 
 When(
+  /^I (?:search for|use the) (?:locators|elements|fields|buttons|components) under the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?"(?: (?:section|component|element))?$/,
+  async function(this: This, page: string, index: number, element: string) {
+    const locator = this.findPageObjectLocator(page, element, index);
+    this.context.locatorSearchLimit = locator;
+  }
+);
+
+When(
+  /^I remove the (?:locator|element|field) search (?:limit|restriction)$/,
+  async function(this: This) {
+    this.context.locatorSearchLimit = undefined;
+  }
+);
+
+When(
   /^I clear the(?: "([^"]*)?" (?:page|component)'s)?(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?" (?:field|element)$/,
   async function(this: This, page: string, index: number, element: string) {
     const locator = this.findPageObjectLocator(page, element, index);

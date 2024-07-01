@@ -6,5 +6,5 @@ import type { Locator } from "@commands/locator/types";
 
 export function getByAltText(this: Page, ...args: Parameters<PlaywrightPageType["getByAltText"]>) {
   const from = this.activeframe ? this.activeframe.getByAltText(...args) : this["__proto"].getByAltText(...args);
-  return new LocatorClass(from) as Locator;
+  return new LocatorClass(this["getLocatorSearchLimit"](from)) as Locator;
 }

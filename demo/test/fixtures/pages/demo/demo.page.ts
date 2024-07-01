@@ -5,6 +5,7 @@ export class DemoPage extends PageObject {
   url = "/index.html";
   title = "Demo Site";
 
+  clickSection = this.page.locator("//div[contains(@class,'collapsible-header')][text()='Click']/..");
   hSectionHeader = this.page.locator("//h5");
-  navBar = this.page.component(NavigationBar);
+  navBar = () => this.page.component(NavigationBar);
 }
