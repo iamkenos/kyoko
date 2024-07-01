@@ -17,7 +17,7 @@ export abstract class Component {
   }
 
   get root() {
-    return (this._from.page ?? this._from.locator as any).locator(this.selector, this._options);
+    return (this._from.page ?? this._from.locator as any).locator(this.selector, this._options) as Locator;
   }
 
   private static create<SubComponent extends Component>(sub: SubComponent) {
