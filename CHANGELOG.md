@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.2](https://github.com/iamkenos/kyoko/compare/v0.2.1...v0.2.2) (2024-07-01)
+
+
+### Bug Fixes
+
+* component command return types ([de6a425](https://github.com/iamkenos/kyoko/commit/de6a42552fb6b52800cb1cdd8b2135c4cb7ac630))
+* **config:** parallel and tags env overrride ([a224f95](https://github.com/iamkenos/kyoko/commit/a224f954cb6534b43700bd2a34a3fb8ea7c56406))
+
+
+### Refactor
+
+* web components ([c80d605](https://github.com/iamkenos/kyoko/commit/c80d605c4111744ed96ea9a38c746c87e3aa807a))
+
 ### [0.2.1](https://github.com/iamkenos/kyoko/compare/v0.2.0...v0.2.1) (2024-06-27)
 
 
