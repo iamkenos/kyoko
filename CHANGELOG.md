@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/iamkenos/kyoko/compare/v0.2.3...v0.3.0) (2024-07-02)
+
+
+### Chore
+
+* dependency upgrades ([6d78326](https://github.com/iamkenos/kyoko/commit/6d7832668bc0b326a097e2587b2863e2216e55b7))
+
+
+### Refactor
+
+* use typed globalThis ([9784127](https://github.com/iamkenos/kyoko/commit/97841276de06d1d3d8d88a9760e3cf5d0ebaab12))
+
 ### [0.2.3](https://github.com/iamkenos/kyoko/compare/v0.2.2...v0.2.3) (2024-07-02)
 
 
