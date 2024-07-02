@@ -31,7 +31,7 @@ export class SnapshotMatch extends PageCondition {
     const { outDir } = this.page.context().config.snapshots.images;
     const attach = (title: string, filename: string) => {
       if (fs.existsSync(filename)) {
-        this.page.context().reporter.step(title, (step: AllureCommandStepExecutable) => step.attach(fs.readFileSync(filename), "image/png"));
+        _kyk_world.reporter.step(title, (step: AllureCommandStepExecutable) => step.attach(fs.readFileSync(filename), "image/png"));
       }
     };
 

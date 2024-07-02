@@ -7,7 +7,7 @@ export interface This extends World {
 }
 
 Before({}, async function(this: This) {
-  this.demoPage = new DemoPage(this);
+  this.demoPage = new DemoPage();
 });
 
 When(

@@ -11,12 +11,12 @@ export abstract class PageObject<ParametersType = WorldParameters> {
   abstract url: string;
   abstract title: string;
 
-  constructor(world: World) {
-    this.reporter = world.reporter;
-    this.logger = world.logger;
-    this.context = world.context;
-    this.page = world.page;
-    this.parameters = world.parameters as any;
+  constructor() {
+    this.reporter = _kyk_world.reporter;
+    this.logger = _kyk_world.logger;
+    this.context = _kyk_world.context;
+    this.page = _kyk_world.page;
+    this.parameters = _kyk_world.parameters as any;
   }
 
   async navigate() {

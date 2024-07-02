@@ -39,7 +39,7 @@ export function configure(overrides?: Partial<Config>) {
     }
   };
   // resolve and prepare snapshot directories
-  process.env.KYK_RESULTS = resultsDir;
+  globalThis._kyk_allure_results_dir = resultsDir;
   process.env.LOG_LEVEL = debug ? "debug" : logLevel;
   fs.removeSync(resultsDir);
   Object.keys(snapshots).forEach(key => {

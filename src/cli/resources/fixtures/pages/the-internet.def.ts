@@ -27,10 +27,10 @@ export interface This extends World<Parameters> {
 }
 
 Before({}, async function(this: This) {
-  this.theInternetPage = new TheInternetPage(this);
-  this.exitIntentPage = new ExitIntentPage(this);
-  this.loginPage = new LoginPage(this);
-  this.securePage = new SecurePage(this);
+  this.theInternetPage = new TheInternetPage();
+  this.exitIntentPage = new ExitIntentPage();
+  this.loginPage = new LoginPage();
+  this.securePage = new SecurePage();
 });
 
 When(

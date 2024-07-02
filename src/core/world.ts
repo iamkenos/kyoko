@@ -53,6 +53,7 @@ export abstract class World extends AllureWorld implements PrivateWorld {
     this.setPageObjects();
     this.setReporter();
     this.loadCommands();
+    globalThis._kyk_world = this;
   }
 
   private setPageObjects() {
@@ -122,7 +123,6 @@ export abstract class World extends AllureWorld implements PrivateWorld {
     const from = await browser.newContext(this.config.contextOptions);
     const context = new BrowserContextClass(from) as BrowserContext;
     context.setDefaultTimeout(this.config.timeout);
-    context.reporter = this.reporter;
     context.config = this.config;
     return context;
   }
