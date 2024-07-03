@@ -6,8 +6,8 @@ Feature: II. Form Elements - Radio
       And I expect the section header "II. Form Elements" to exist
 
   Scenario: S01: Radio options
-    When I select the "#input-radio-1" radio button
+    When I tick the "#input-radio-1" radio button
     Then I expect the "#input-radio-1" radio button to be selected
-      But I select the "#input-radio-2" radio button
+      But I tick the "#input-radio-2" radio button
     Then I expect the "#input-radio-1" radio button to not be selected
       And I expect the "#input-radio-2" radio button to be selected

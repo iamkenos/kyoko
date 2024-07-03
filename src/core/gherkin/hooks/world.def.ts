@@ -10,7 +10,7 @@ import {
   setWorldConstructor,
   Status
 } from "@cucumber/cucumber";
-import { This, World } from "../world";
+import { This, World } from "../../world";
 
 import chalk from "chalk";
 

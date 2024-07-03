@@ -9,6 +9,7 @@
       "type": "node",
       "request": "launch",
       "console": "integratedTerminal",
+      "outputCapture": "std",
       "cwd": "${workspaceFolder}",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run-script", "debug:demo"],

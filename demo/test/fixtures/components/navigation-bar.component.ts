@@ -6,6 +6,7 @@ export class NavigationBar extends Component {
 
   async clickItem(text: string) {
     const locator = this.navItem(text);
+    await locator.expect().displayed().poll();
     await locator.click();
   }
 

@@ -1,5 +1,6 @@
 import type { This as World } from "./world";
 import type { BrowserContext, Page } from "@commands/types";
+import type { ExpectedConditionOptions } from "@conditions/types";
 import type { WorldParameters } from "@config/types";
 
 export abstract class PageObject<ParametersType = WorldParameters> {
@@ -22,5 +23,12 @@ export abstract class PageObject<ParametersType = WorldParameters> {
   async navigate() {
     const url = this.page.urlFromBase(this.url);
     await this.page.goto(url as string, { waitUntil: "domcontentloaded" });
+  }
+
+  expect(options?: ExpectedConditionOptions) {
+    const loaded = () => this.page.expect(options).domContentLoaded().urlEquals(this.url).titleEquals(this.title);
+    return {
+      loaded
+    };
   }
 }

@@ -69,6 +69,6 @@ Feature: II. Form Elements - Input
       | #input-text     | Sam Porter            |
       | #input-email    | samporter@bridges.com |
       | #input-password | unger                 |
-      And I start observing the network calls
+      And I start recording the network requests
       And I click the "#input-submit" button
 

@@ -34,21 +34,21 @@ Before({}, async function(this: This) {
 });
 
 When(
-  /^I set the something parameter to "([^"]*)?"$/,
+  "I set the something parameter to {input_string}",
   async function(this: This, value: string) {
     this.parameters.something = value;
   }
 );
 
 When(
-  /^I update the something parameter from the page$/,
+  "I update the something parameter from the page",
   async function(this: This) {
     this.theInternetPage.updateParameters();
   }
 );
 
 Then(
-  /^I expect the something parameter value to( not)? be "([^"]*)?"$/,
+  "I expect the something parameter value {to_or_to_not} be {input_string}",
   async function(this: This, not: boolean, value: string) {
     await this.page.expect().equals(this.parameters.something, value, !not).poll();
   }

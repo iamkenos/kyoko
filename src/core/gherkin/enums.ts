@@ -46,10 +46,11 @@ export enum HrefTargetContext {
   TOP = "top frame"
 }
 
-
-export enum SelectAction {
-  SELECT = "select",
-  DESELECT = "deselect"
+export enum MatchContext {
+  BE = "be",
+  MATCH = "match",
+  CONTAIN = "contain",
+  PARTIAL = "partially match"
 }
 
 export enum SelectOptionContext {
@@ -68,6 +69,11 @@ export enum SizeContext {
   HEIGHT = "height"
 }
 
+export enum ToggleAction {
+  TICK = "tick",
+  UNTICK = "untick"
+}
+
 export enum WindowDirection {
   TOP = "top",
   BOTTOM = "bottom",
@@ -79,4 +85,9 @@ export enum WindowDirection {
 export enum WindowNavigation {
   BACK = "back",
   FORWARD = "forward"
+}
+
+export enum WindowPromptAction {
+  ACCEPT = "accept",
+  DISMISS = "dismiss"
 }

@@ -16,5 +16,5 @@ Feature: III. Browser Context - Keyboard events
 
   Scenario: S02: Key chords
     When I type "lorem ipsum" on the "#key-chords" field
-      And I press the "Shift+Insert" keys
+      And I press the "Shift+Insert" keys 2 times
     Then I expect the "#key-chords" field value to be "Shift+Insert"

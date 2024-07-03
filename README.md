@@ -13,7 +13,7 @@
 [Playwright](https://playwright.dev/) & [CucumberJS](https://cucumber.io/docs/installation/javascript/) mixed with presets and additional features:
 
 - write tests with [TypeScript](https://www.typescriptlang.org/docs/handbook/modules.html) and [Cucumber](https://cucumber.io/docs/guides/overview/)
-- gherkin statements that can be used out of the box
+- gherkin statements that can be used out of the box powered by [cucumber expressions](https://github.com/cucumber/cucumber-expressions)
 - page and element expected conditions
 - generic classes for page objects support
 - multiple locale support

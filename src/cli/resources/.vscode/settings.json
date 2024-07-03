@@ -1,15 +1,16 @@
 {
   "cucumberautocomplete.steps": [
-    "./node_modules/@iamkenos/kyoko/src/core/gherkin/*.def.ts",
-    "./**/*.def.ts"
+    "./node_modules/@iamkenos/kyoko/src/core/gherkin/**/*.def.ts",
+    "./**/*.{def,step,steps}.ts"
   ],
   "cucumberautocomplete.formatConfOverride": { "And": 3, "But": 3 },
   "cucumberautocomplete.onTypeFormat": true,
   "cucumberautocomplete.stepsInvariants": true,
   "cucumberautocomplete.smartSnippets": true,
+  "cucumberautocomplete.pureTextSteps": false,
   "editor.formatOnSave": true,
   "eslint.validate": ["typescript"],
-  "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
+  "editor.codeActionsOnSave": { "source.fixAll.eslint": "explicit" },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "typescript.tsdk": "node_modules/typescript/lib",
   "[feature]": {

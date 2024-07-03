@@ -6,7 +6,7 @@ Feature: I. Mouse Actions - Click
       And I expect the section header "I. Mouse Actions" to exist
 
   Scenario: S01: Create element
-    When I search for elements under the "Click Section"
+    When I search for elements under the "Click Section" element
       And I click the "#create" button
       And I remove the element search restriction
     Then I expect the "#create-result" element to exist

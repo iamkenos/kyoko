@@ -4,8 +4,8 @@ import { TheInternetPage } from "../the-internet.page";
 export class LoginPage extends TheInternetPage {
   url = "/login";
 
-  divFlashMessage = this.page.locator("#flash");
-  tfUsername = this.page.locator("#username");
-  tfPassword = this.page.locator("#password");
-  btnLogin = this.page.locator("//button[@type='submit']");
+  flashMessage = this.page.locator("#flash");
+  username = this.page.locator("#username");
+  password = this.page.locator("#password");
+  login = this.page.locator("//button[@type='submit']");
 }

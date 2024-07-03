@@ -20,11 +20,11 @@ Feature: II. Form Elements - Links
 
   Scenario: S04: Mail to
     Then I expect the "email address" link to open on a named frame "framename"
-      And I expect the "email address" link to point to a mail "someone@example.com"
+      And I expect the "email address" link to point to a mail scheme "someone@example.com"
 
   Scenario: S05: Tel
     Then I expect the "phone number" link to open on the top frame
-      And I expect the "phone number" link to point to a tel "+4733378901"
+      And I expect the "phone number" link to point to a tel scheme "+4733378901"
 
   Scenario: S06: Javascript
     Then I expect the "javascript function" link to open without a target

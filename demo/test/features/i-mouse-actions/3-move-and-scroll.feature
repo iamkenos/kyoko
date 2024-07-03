@@ -21,5 +21,5 @@ Feature: I. Mouse Actions - Move and scroll
       And I expect the "#scroll-to-result" element text to be empty
       But I scroll to the bottom of the page
     Then I expect the "#scroll-to-result" element text to not be empty
-      But I scroll to the coordinates 500.500 of the page
+      But I scroll to the 500,500 coordinates of the page
     Then I expect the "#scroll-to-result" element text to be empty

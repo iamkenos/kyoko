@@ -5,10 +5,11 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "debug test:demo",
+      "name": "test",
       "type": "node",
       "request": "launch",
       "console": "integratedTerminal",
+      "outputCapture": "std",
       "cwd": "${workspaceFolder}",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run-script", "test"],

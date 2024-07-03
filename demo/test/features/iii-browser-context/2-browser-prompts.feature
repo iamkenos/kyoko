@@ -8,9 +8,9 @@ Feature: III. Browser Context - Browser prompts
   Scenario: S01: Show alert prompt
     When I always auto accept the page dialogs
       And I click the "#show-alert-prompt" button
-    Then I expect an alert to have been opened
-      And I expect the alert text to contain "Show alert"
-      And I expect the alert text to be "Show alert prompt result"
+    Then I expect an alert box to have been opened
+      And I expect the alert box text to contain "Show alert"
+      And I expect the alert box text to be "Show alert prompt result"
 
   Scenario: S02: Show confirm prompt
     When I auto accept the page dialog
@@ -26,5 +26,5 @@ Feature: III. Browser Context - Browser prompts
   Scenario: S03: Show input prompt
     When I auto accept and type "lorem ipsum" on the page dialog
       And I click the "#show-input-prompt" button
-    Then I expect a prompt to have been opened
+    Then I expect a prompt box to have been opened
       And I expect the "#show-input-prompt-result" element text to be "lorem ipsum"
