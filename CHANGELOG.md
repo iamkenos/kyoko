@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.1](https://github.com/iamkenos/kyoko/compare/v0.3.0...v0.3.1) (2024-07-04)
+
+
+### Refactor
+
+* prefer cucumber expressions over regex ([68f5327](https://github.com/iamkenos/kyoko/commit/68f53277134670da3a032a6f4ebf71d6de360b19))
+
 ## [0.3.0](https://github.com/iamkenos/kyoko/compare/v0.2.3...v0.3.0) (2024-07-02)
 
 
