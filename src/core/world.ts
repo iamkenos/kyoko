@@ -21,13 +21,21 @@ interface PrivateWorld {
   createBrowserContext: () => void;
 }
 
+interface PageObjectFile {
+  basename: string;
+  classname: string;
+  name: string;
+  filepath: string;
+  locale: string;
+}
+
 export interface This<ParametersType = WorldParameters> extends Omit<World, keyof AllureWorld | keyof PrivateWorld> {
   readonly reporter: Reporter, parameters: ParametersType, readonly context: BrowserContext;
 }
 
 export abstract class World extends AllureWorld implements PrivateWorld {
-  private pageObjects: string[];
-  private pageObject: PageObject;
+  private pageObjectsFiles: PageObjectFile[];
+  private pageObjectFile: PageObjectFile;
   /** The resolved Cucumber configuration object. */
   private config: Config;
   logger: Logger;
@@ -57,7 +65,11 @@ export abstract class World extends AllureWorld implements PrivateWorld {
   }
 
   private setPageObjects() {
-    this.pageObjects = files.fromGlob(this.config.pages);
+    this.pageObjectsFiles = files.fromGlob(this.config.pages).map(file => {
+      const rex = /(.+).page(?:.([a-z]{2}))?.ts|js/;
+      const [basename, name, locale] = path.basename(file).match(rex);
+      return { name, locale, basename, classname: changecase.pascalCase(`${name}Page`), filepath: file };
+    });
   }
 
   private setReporter() {
@@ -74,45 +86,43 @@ export abstract class World extends AllureWorld implements PrivateWorld {
     files.fromGlob([path.join(path.dirname(__dirname), "commands/**/command/*.js")]).filter(Boolean).forEach(file => require(file));
   }
 
-  findPageObject<T = PageObject>(page: string, persist = false) {
-    const files = this.pageObjects.filter(i => path.basename(i).split(".")[0].toLowerCase() === page.toLowerCase());
-    const file = files.find(i => path.basename(i).includes(`.page.${this.config.locale}`)) || files[0];
+  findPageObject<T = PageObject>(page?: string, persist = false) {
+    let pageObjectFile = this.pageObjectFile;
 
-    if (!file) {
-      throw new Error(`Unable to resolve "${page}" from any of the available page object files:\n  ${this.pageObjects.join(",\n  ")}`);
+    if (page) {
+      const pageObjectFiles = this.pageObjectsFiles.filter(i => i.name === changecase.kebabCase(page));
+      pageObjectFile = pageObjectFiles.find(i => i.locale === this.config.locale) || pageObjectFiles[0];
+
+      if (persist) {
+        this.pageObjectFile = pageObjectFile;
+      }
     }
 
-    const module = require(file);
-    const name = changecase.pascalCase(`${page}Page`);
-    const clazz = Object.getOwnPropertyNames(module).find(prop => prop === name);
+    if (!pageObjectFile) {
+      throw new Error(`Unable to resolve "${page}" name from any of the available page object files:\n${JSON.stringify(this.pageObjectsFiles, null, 2)}`);
+    }
+
+    const module = require(pageObjectFile.filepath);
+    const clazz = Object.getOwnPropertyNames(module).find(prop => prop === pageObjectFile.classname);
 
     if (!clazz) {
-      throw new Error(`Unable to find an exported "${name}" page object class from "${file}".`);
+      throw new Error(`Unable to find an exported "${pageObjectFile.classname}" page object class from "${pageObjectFile.filepath}".`);
     }
 
-    const PageObj = module[clazz] as new (world: World) => PageObject;
-    const pageObject = new PageObj(this);
-
-    if (persist) {
-      this.pageObject = pageObject;
-    }
-
+    const PageObj = module[clazz] as new () => PageObject;
+    const pageObject = new PageObj();
     return pageObject as unknown as T;
   }
 
   findPageObjectLocator(page: string, element: string, index?: number) {
     let locator: Locator;
-    if (page || this.pageObject) {
-      locator = this.findPageObjectProp<Locator>(page, element, this.page.locator(element));
-    } else {
-      locator = this.page.locator(element);
-    }
+    locator = this.findPageObjectProp<Locator>(page, element, this.page.locator(element));
     locator = index ? locator.nth(index - 1) : locator;
     return locator;
   }
 
   findPageObjectProp<T = any>(page: string, prop: string, fallback?: T): T {
-    const pageObject = page ? this.findPageObject(page) : this.pageObject;
+    const pageObject = this.findPageObject(page);
     const result = pageObject[prop] || pageObject[changecase.camelCase(prop ?? "")] || fallback || prop;
     return result instanceof Function ? result() : result;
   }

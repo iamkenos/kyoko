@@ -13,15 +13,16 @@ import type { locator } from "./command/locator";
 import type { nth } from "./command/nth";
 
 export interface FrameLocator extends PlaywrightFrameLocatorType, FrameLocatorClassType {
-  first: typeof first;
-  frameLocator: typeof frameLocator;
-  getByAltText: typeof getByAltText;
-  getByLabel: typeof getByLabel;
-  getByRole: typeof getByRole;
-  getByTestId: typeof getByTestId;
-  getByText: typeof getByText;
-  getByTitle: typeof getByTitle;
-  last: typeof last;
-  locator: typeof locator;
-  nth: typeof nth;
+  first(...args: Parameters<typeof first>): ReturnType<typeof first>;
+  frameLocator(...args: Parameters<typeof frameLocator>): ReturnType<typeof frameLocator>;
+  frameLocator(...args: Parameters<typeof frameLocator>): ReturnType<typeof frameLocator>;
+  getByAltText(...args: Parameters<typeof getByAltText>): ReturnType<typeof getByAltText>;
+  getByLabel(...args: Parameters<typeof getByLabel>): ReturnType<typeof getByLabel>;
+  getByRole(...args: Parameters<typeof getByRole>): ReturnType<typeof getByRole>;
+  getByTestId(...args: Parameters<typeof getByTestId>): ReturnType<typeof getByTestId>;
+  getByText(...args: Parameters<typeof getByText>): ReturnType<typeof getByText>;
+  getByTitle(...args: Parameters<typeof getByTitle>): ReturnType<typeof getByTitle>;
+  last(...args: Parameters<typeof last>): ReturnType<typeof last>;
+  locator(...args: Parameters<typeof locator>): ReturnType<typeof locator>;
+  nth(...args: Parameters<typeof nth>): ReturnType<typeof nth>;
 }

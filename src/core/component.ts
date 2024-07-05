@@ -1,48 +1,101 @@
 import { Locator as LocatorClass } from "@commands/locator/locator";
+import { propertiesOf } from "@common/utils/object";
 
-import type { Locator, Page } from "@commands/types";
+import type { Locator as PlaywrightLocatorType } from "@playwright/test";
+import type { Locator } from "@commands/types";
 
-type From = { page: Page, locator?: never } | { page?: never, locator: Locator };
-export type SubComponent<T extends Component> = new(from: From, options?: LocatorOptions) => T;
-export type LocatorOptions = Parameters<Locator["locator"]>[1]
+export class GenericComponent {
+  private _selector: string;
 
-export abstract class Component {
-  abstract selector: string;
-  private _from: From;
-  private _options: LocatorOptions;
-
-  constructor(from: From, options?: LocatorOptions) {
-    this._from = from;
-    this._options = options;
+  constructor(selector: string) {
+    return GenericComponent.create(selector, this);
   }
 
-  get root() {
-    return (this._from.page ?? this._from.locator as any).locator(this.selector, this._options) as Locator;
+  private static create(selector: string, prototype: GenericComponent, from?: PlaywrightLocatorType) {
+    const proto = Object.assign(Object.create(Object.getPrototypeOf(prototype)), prototype);
+    const source = from ? new LocatorClass(from) : _kyk_world.page.locator(selector);
+    const excluded = propertiesOf({}, proto);
+    const extend = propertiesOf(source).filter(i => !excluded.includes(i)).concat("_selector");
+    extend.forEach(i => proto[i] = source[i]);
+    proto["root"] = selector;
+    return proto;
   }
 
-  private static create<SubComponent extends Component>(sub: SubComponent) {
-    const excluded = ["constructor"];
-    const instance = new LocatorClass(sub.root) as SubComponent & Locator;
-    const subProtoType = Object.getPrototypeOf(sub);
-    const mainPrototype = Object.getPrototypeOf(subProtoType);
+  private chain(from: PlaywrightLocatorType & { _selector: string}) {
+    const delimiter = " >> ";
+    const target = from._selector.split(delimiter).at(-1);
+    const selector = this._selector.split(delimiter).filter(Boolean).concat(target).join(delimiter);
+    from._selector = selector;
+    return GenericComponent.create(selector, this, from);
+  }
 
-    // intentional mutation going on here
-    // we're creating a base locator (instance) then
-    // copy the subcomponents properties, methods and accessors to it.
+  async all(...args: Parameters<Locator["all"]>) {
+    const all: Proto[] = await this["__proto"].all(...args);
+    return all.map(i => GenericComponent.create(i._selector, this, i)) as This<this>[];
+  }
 
-    // assign properties
-    Object.getOwnPropertyNames(sub)
-      .forEach(prop => instance[prop] = sub[prop]);
-    // assign methods
-    Object.getOwnPropertyNames(subProtoType)
-      .filter(i => !excluded.includes(i))
-      .forEach(prop => instance[prop] = subProtoType[prop]);
-    // assign accessors
-    Object.getOwnPropertyNames(Object.getOwnPropertyDescriptors(mainPrototype))
-      .filter(i => !excluded.includes(i))
-      .forEach(prop =>Object.defineProperty(instance, prop, Object.getOwnPropertyDescriptor(mainPrototype, prop)));
+  and(...args: Parameters<Locator["and"]>) {
+    const and: Proto = this["__proto"].and(...args);
+    return this.chain(and) as This<this>;
+  }
 
-    const { _from, _options, ...rest } = instance; // eslint-disable-line
-    return rest;
+  first(...args: Parameters<Locator["first"]>) {
+    const first: Proto = this["__proto"].first(...args);
+    return this.chain(first) as This<this>;
+  }
+
+  getByAltText(...args: Parameters<Locator["getByAltText"]>) {
+    const getByAltText: Proto = this["__proto"].getByAltText(...args);
+    return this.chain(getByAltText) as This<this>;
+  }
+
+  getByLabel(...args: Parameters<Locator["getByLabel"]>) {
+    const getByLabel: Proto = this["__proto"].getByLabel(...args);
+    return this.chain(getByLabel) as This<this>;
+  }
+
+  getByPlaceholder(...args: Parameters<Locator["getByPlaceholder"]>) {
+    const getByPlaceholder: Proto = this["__proto"].getByPlaceholder(...args);
+    return this.chain(getByPlaceholder) as This<this>;
+  }
+
+  getByRole(...args: Parameters<Locator["getByRole"]>) {
+    const getByRole: Proto = this["__proto"].getByRole(...args);
+    return this.chain(getByRole) as This<this>;
+  }
+
+  getByTestId(...args: Parameters<Locator["getByTestId"]>) {
+    const getByTestId: Proto = this["__proto"].getByTestId(...args);
+    return this.chain(getByTestId) as This<this>;
+  }
+
+  getByText(...args: Parameters<Locator["getByText"]>) {
+    const getByText: Proto = this["__proto"].getByText(...args);
+    return this.chain(getByText) as This<this>;
+  }
+
+  getByTitle(...args: Parameters<Locator["getByTitle"]>) {
+    const getByTitle: Proto = this["__proto"].getByTitle(...args);
+    return this.chain(getByTitle) as This<this>;
+  }
+
+  last(...args: Parameters<Locator["last"]>) {
+    const last: Proto = this["__proto"].last(...args);
+    return this.chain(last) as This<this>;
+  }
+
+  nth(...args: Parameters<Locator["nth"]>) {
+    const nth: Proto = this["__proto"].nth(...args);
+    return this.chain(nth) as This<this>;
+  }
+
+  or(...args: Parameters<Locator["or"]>) {
+    const or: Proto = this["__proto"].or(...args);
+    return this.chain(or) as This<this>;
   }
 }
+
+type This<T> = Component & T;
+type Proto = PlaywrightLocatorType & { _selector: string }
+export type Component = GenericComponent & Locator;
+export const Component: new (selector: string) => Component = GenericComponent as any;

@@ -2,9 +2,10 @@ import { When } from "@cucumber/cucumber";
 import { ClickAction } from "../../enums";
 
 import type { Locator } from "@commands/locator/types";
+import type { Component } from "../../../component";
 import type { World as This } from "../../../world";
 
-async function whenClickElement(action: ClickAction, locator: Locator, clickCount: number) {
+export async function whenClickElement(action: ClickAction, locator: Locator | Component, clickCount: number) {
   switch (action) {
     case ClickAction.FORCE: {
       await locator.click({ clickCount, force: true });

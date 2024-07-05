@@ -1,10 +1,13 @@
 import { Component } from "@iamkenos/kyoko/core";
 
 export class Modal extends Component {
-  selector = "#ouibounce-modal";
-  title = this.root.locator("//*[contains(@class,'modal-title')]");
-  body = this.root.locator("//*[contains(@class,'modal-body')]");
-  footer = this.root.locator("//*[contains(@class,'modal-footer')]");
+  title = this.locator("//*[contains(@class,'modal-title')]");
+  body = this.locator("//*[contains(@class,'modal-body')]");
+  footer = this.locator("//*[contains(@class,'modal-footer')]");
+
+  constructor() {
+    super("#ouibounce-modal");
+  }
 
   async close() {
     await this.footer.click();

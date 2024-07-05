@@ -46,9 +46,6 @@ ISC
 
 ## Todo
 
-- WebComponents
-  - component chaining
-  - component return type on locator methods
 - Gherkin:
   - Request validation with JSON snapshot matching
   - Browser storage steps

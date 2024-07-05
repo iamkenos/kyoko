@@ -1,4 +1,4 @@
-export * from "./component";
+export { Component } from "./component";
 export * from "./page-object";
 export * from "./utils/logger";
 export * from "./utils/xpath-builder";

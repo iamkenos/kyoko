@@ -39,6 +39,12 @@ defineParameterType({
 });
 
 defineParameterType({
+  name: "left_or_right",
+  regexp: /left|right/,
+  useForSnippets : false
+});
+
+defineParameterType({
   name: "less_or_more",
   regexp: /less|more/,
   useForSnippets : false
@@ -112,11 +118,10 @@ defineParameterType({
 
 defineParameterType({
   name: "link_locator",
-  regexp: /(?:(\d+)(?:st|nd|rd|th))? "([^"]*)?"|"([^"]*)?"/,
+  regexp: /(?:(\d+)(?:st|nd|rd|th) )?"([^"]*)?"/,
   transformer(this: This, ...matches: string[]) {
-    const [g1index, g1link, g2link] = matches;
-    const index = +(g1index || 1);
-    const link = g1link || g2link;
+    const [ordinal, link] = matches;
+    const index = +ordinal || 1;
     const locator = this.page.locator(new XPathBuilder().textEquals(link).hasExactAttribute(AnchorAttributes.HREF).build()).nth(index -1);
     return locator;
   },
@@ -133,7 +138,7 @@ defineParameterType({
   name: "ordinal",
   regexp: /(\d+)(?:st|nd|rd|th)/,
   transformer(this: This, ordinal: string) {
-    return +ordinal;
+    return +ordinal || 0;
   },
   useForSnippets : false
 });
@@ -142,7 +147,7 @@ defineParameterType({
   name: "repeats",
   regexp: /(?: (\d+) times)?(?: again)?$/,
   transformer(this: This, count: string) {
-    return +(count || 1);
+    return +count || 1;
   },
   useForSnippets : false
 });
@@ -194,12 +199,24 @@ defineParameterType({
 
 defineParameterType({
   name: "page_object_locator",
-  regexp: /"([^"]*)?" (?:page|component)'s(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?"|(?: (\d+)(?:st|nd|rd|th))? "([^"]*)?"|"([^"]*)?"/,
+  regexp: /(?:"([^"]*)?" (?:page|component)'s )?(?:(\d+)(?:st|nd|rd|th) )?"([^"]*)?"/,
   transformer(this: This, ...matches: string[]) {
-    const [page, g1index, g1element, g2index, g2element, g3element] = matches;
-    const index = g1index || g2index;
-    const element = g1element || g2element || g3element;
-    const locator = this.findPageObjectLocator(page, element, +index);
+    const [page, ordinal, selector] = matches;
+    const index = +ordinal || 0;
+    const locator = this.findPageObjectLocator(page, selector, index);
+    return locator;
+  },
+  useForSnippets : false
+});
+
+defineParameterType({
+  name: "page_object_locator_nested",
+  regexp: /(?:"([^"]*)?" (?:page|component)'s )?(?:(\d+)(?:st|nd|rd|th) )?(?:"([^"]*)?'s" )?"([^"]*)?" (?:section|component|element|form)/,
+  transformer(this: This, ...matches: string[]) {
+    const [page, ordinal, selector, nested] = matches;
+    const index = +ordinal || 0;
+    const parent = selector ? this.findPageObjectLocator(page, selector, index) : undefined;
+    const locator = parent ? parent.locator(this.findPageObjectLocator(page, nested)) : this.findPageObjectLocator(page, nested, index);
     return locator;
   },
   useForSnippets : false

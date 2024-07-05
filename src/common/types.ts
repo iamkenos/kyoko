@@ -11,5 +11,7 @@ export type KeyValuePair = { key: string; value: string };
 
 export type MergeTuple<A extends any[], B extends any[]> = [...A, ...B];
 
+export type Constructor<T> = new(...args: any) => T;
+
 /** @see[Exactify](https://github.com/microsoft/TypeScript/issues/12936#issuecomment-368244671) */
 export type ExcludePropertiesOf<X extends T, T> = T & { [K in keyof X]: K extends keyof T ? X[K] : never }
