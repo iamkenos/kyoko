@@ -55,11 +55,11 @@ export function configure(overrides?: Partial<Config>) {
   // cucumber options defaults
   const config = {
     ...overrides,
-    format: ["summary", `"json":"${resultsDir}report.json"`, `"file://${path.join(__dirname, "../core/utils/reporter.js")}":"${resultsDir}allure/report.json"`, ...overrides?.format || [] ],
+    format: ["summary", `"html":"${resultsDir}report.html"`, `"json":"${resultsDir}report.json"`, `"file://${path.join(__dirname, "../core/utils/reporter.js")}":"${resultsDir}allure/report.json"`, ...overrides?.format || [] ],
     formatOptions: { snippetInterface: "async-await", printAttachments: false },
     parallel: debug ? 0 : process.env.PARALLEL ? +process.env.PARALLEL : overrides?.parallel || 0,
     paths: process.env.PATHS ? [process.env.PATHS].filter(Boolean) : (overrides?.paths || ["features/"]).map(i => path.join(baseDir, i)),
-    require: [path.join(__dirname, "../core/gherkin/**/*.{def,step,steps}.js")].concat((overrides?.require || ["fixtures/**/*.{def,step,steps}.ts"]).map(i => path.join(baseDir, i))),
+    require: [path.join(__dirname, "../core/gherkin/**/*.{steps,glue}.js")].concat((overrides?.require || ["fixtures/**/*.{steps,glue}.ts"]).map(i => path.join(baseDir, i))),
     requireModule: ["ts-node/register/transpile-only", "tsconfig-paths/register"],
     strict: false,
     tags: process.env.TAGS ? process.env.TAGS : overrides?.tags,

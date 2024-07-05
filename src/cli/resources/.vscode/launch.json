@@ -29,7 +29,7 @@
     {
       "id": "tags",
       "type": "promptString",
-      "default": "@debug",
+      "default": "",
       "description": "Cucumber tag expression"
     },
     {

@@ -1,7 +1,7 @@
 {
   "cucumberautocomplete.steps": [
-    "./node_modules/@iamkenos/kyoko/src/core/gherkin/**/*.def.ts",
-    "./**/*.{def,step,steps}.ts"
+    "./node_modules/@iamkenos/kyoko/src/core/gherkin/**/*.{steps,glue}.ts",
+    "./**/*.{steps,glue}.ts"
   ],
   "cucumberautocomplete.formatConfOverride": { "And": 3, "But": 3 },
   "cucumberautocomplete.onTypeFormat": true,

@@ -1,7 +1,7 @@
 import { Then, When } from "@cucumber/cucumber";
 import { Modal } from "./modal.component";
 
-import type { This } from "../pages/the-internet.def";
+import type { This } from "../pages/the-internet.steps";
 
 When(
   "I close the modal component",

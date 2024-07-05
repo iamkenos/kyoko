@@ -1,5 +1,5 @@
 {
-  "cucumberautocomplete.steps": ["./{demo,src}/**/*.def.{js,ts}"],
+  "cucumberautocomplete.steps": ["{demo,src}/**/*.{steps,glue}.{js,ts}"],
   "cucumberautocomplete.formatConfOverride": { "And": 3, "But": 3 },
   "cucumberautocomplete.onTypeFormat": true,
   "cucumberautocomplete.stepsInvariants": true,
@@ -7,9 +7,7 @@
   "cucumberautocomplete.pureTextSteps": false,
   "editor.formatOnSave": true,
   "eslint.validate": ["javascript", "typescript"],
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
-  },
+  "editor.codeActionsOnSave": { "source.fixAll.eslint": "explicit" },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "typescript.tsdk": "node_modules/typescript/lib",
   "[feature]": {

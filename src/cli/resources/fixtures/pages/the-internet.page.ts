@@ -1,5 +1,5 @@
 import { PageObject } from "@iamkenos/kyoko/core";
-import type { Parameters } from "./the-internet.def";
+import type { Parameters } from "./the-internet.steps";
 
 export class TheInternetPage extends PageObject<Parameters> {
   url = "/";
