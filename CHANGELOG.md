@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.2](https://github.com/iamkenos/kyoko/compare/v0.3.1...v0.3.2) (2024-07-09)
+
+
+### Refactor
+
+* default extension for step definitions ([5b4a09a](https://github.com/iamkenos/kyoko/commit/5b4a09a5edfade783346dd161679c76681295064))
+* web components ([98315ab](https://github.com/iamkenos/kyoko/commit/98315ab88469365c1d5ac3badb8d675604fd4cb3))
+
 ### [0.3.1](https://github.com/iamkenos/kyoko/compare/v0.3.0...v0.3.1) (2024-07-04)
 
 
