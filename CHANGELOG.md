@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.3](https://github.com/iamkenos/kyoko/compare/v0.3.2...v0.3.3) (2024-07-10)
+
+
+### Bug Fixes
+
+* component chaining ([e1d2f54](https://github.com/iamkenos/kyoko/commit/e1d2f54ab2649d7fe88395580b29077ff021f9af))
+
 ### [0.3.2](https://github.com/iamkenos/kyoko/compare/v0.3.1...v0.3.2) (2024-07-09)
 
 
