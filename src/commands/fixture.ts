@@ -29,7 +29,7 @@ export class Fixture<T> {
       const file = files[i];
       const name = changecase.camelCase(path.basename(file, ext));
       const fn = require(file)[name];
-      instance[name] = (...args: any) => fn.call(instance, ...args);
+      instance[name] = fn;
     }
 
     instance.__proto = this.__proto;

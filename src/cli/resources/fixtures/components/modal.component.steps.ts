@@ -6,14 +6,14 @@ import type { This } from "../pages/the-internet.steps";
 When(
   "I close the modal component",
   async function(this: This) {
-    await this.page.component(Modal).footer.click();
+    await this.page.component(Modal).footer().click();
   }
 );
 
 Then(
   "I expect the modal component body text {to_or_to_not} be:",
   async function(this: This, not: boolean, text: string) {
-    await this.page.component(Modal).body.expect().textEquals(text, !not).poll();
+    await this.page.component(Modal).body().expect().textEquals(text, !not).poll();
   }
 );
 

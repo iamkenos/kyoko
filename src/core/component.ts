@@ -3,6 +3,7 @@ import { propertiesOf } from "@common/utils/object";
 
 import type { Locator as PlaywrightLocatorType } from "@playwright/test";
 import type { Locator } from "@commands/types";
+import type { Constructor } from "@common/types";
 
 export class GenericComponent {
   private _selector: string;
@@ -21,12 +22,15 @@ export class GenericComponent {
     return proto;
   }
 
-  private chain(from: PlaywrightLocatorType & { _selector: string}) {
+  private chain(from: Proto, instance?: GenericComponent) {
     const delimiter = " >> ";
     const target = from._selector.split(delimiter).at(-1);
     const selector = this._selector.split(delimiter).filter(Boolean).concat(target).join(delimiter);
+    const chained: any = instance ?? this;
     from._selector = selector;
-    return GenericComponent.create(selector, this, from);
+    chained._selector = selector;
+    chained.__proto._selector = selector;
+    return chained;
   }
 
   async all(...args: Parameters<Locator["all"]>) {
@@ -77,6 +81,12 @@ export class GenericComponent {
   getByTitle(...args: Parameters<Locator["getByTitle"]>) {
     const getByTitle: Proto = this["__proto"].getByTitle(...args);
     return this.chain(getByTitle) as This<this>;
+  }
+
+  component<T>(this: Component, Component: Constructor<T>) {
+    const instance: any = new Component();
+    const locator: any = this["__proto"].locator(instance.root);
+    return this.chain(locator, instance) as T;
   }
 
   last(...args: Parameters<Locator["last"]>) {

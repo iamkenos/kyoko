@@ -1,11 +1,12 @@
 import { Component } from "@iamkenos/kyoko/core";
 
 export class NavigationBar extends Component {
-  navItem = (text: string) => this.locator("//ul/li", { hasText: text });
 
   constructor() {
     super("//nav");
   }
+
+  navItem = (text: string) => this.locator("//ul/li", { hasText: text });
 
   async clickItem(text: string) {
     const locator = this.navItem(text);
