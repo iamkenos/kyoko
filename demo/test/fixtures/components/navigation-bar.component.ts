@@ -1,9 +1,9 @@
-import { Component } from "@iamkenos/kyoko/core";
+import { Component, LocatorFilters } from "@iamkenos/kyoko/core";
 
 export class NavigationBar extends Component {
 
-  constructor() {
-    super("//nav");
+  constructor(filters?: LocatorFilters) {
+    super("//nav", filters);
   }
 
   navItem = (text: string) => this.locator("//ul/li", { hasText: text });

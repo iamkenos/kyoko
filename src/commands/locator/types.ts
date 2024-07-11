@@ -67,3 +67,5 @@ export interface Locator extends PlaywrightLocatorType, LocatorClassType {
   selectOption(...args: Parameters<typeof selectOption>): ReturnType<typeof selectOption>;
   uploadFiles(...args: Parameters<typeof uploadFiles>): ReturnType<typeof uploadFiles>;
 }
+
+export type LocatorFilters = Parameters<Locator["locator"]>[1];

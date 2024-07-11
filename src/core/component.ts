@@ -2,19 +2,19 @@ import { Locator as LocatorClass } from "@commands/locator/locator";
 import { propertiesOf } from "@common/utils/object";
 
 import type { Locator as PlaywrightLocatorType } from "@playwright/test";
-import type { Locator } from "@commands/types";
+import type { Locator, LocatorFilters } from "@commands/types";
 import type { Constructor } from "@common/types";
 
 export class GenericComponent {
   private _selector: string;
 
-  constructor(selector: string) {
-    return GenericComponent.create(selector, this);
+  constructor(selector: string, options?: LocatorFilters) {
+    return GenericComponent.create(selector, this, undefined, options);
   }
 
-  private static create(selector: string, prototype: GenericComponent, from?: PlaywrightLocatorType) {
+  private static create(selector: string, prototype: GenericComponent, from?: PlaywrightLocatorType, options?: LocatorFilters) {
     const proto = Object.assign(Object.create(Object.getPrototypeOf(prototype)), prototype);
-    const source = from ? new LocatorClass(from) : _kyk_world.page.locator(selector);
+    const source = from ? new LocatorClass(from) : _kyk_world.page.locator(selector, options);
     const excluded = propertiesOf({}, proto);
     const extend = propertiesOf(source).filter(i => !excluded.includes(i)).concat("_selector");
     extend.forEach(i => proto[i] = source[i]);
@@ -23,9 +23,11 @@ export class GenericComponent {
   }
 
   private chain(from: Proto, instance?: GenericComponent) {
-    const delimiter = " >> ";
-    const target = from._selector.split(delimiter).at(-1);
-    const selector = this._selector.split(delimiter).filter(Boolean).concat(target).join(delimiter);
+    const source = this._selector.replace(this["__proto"]["_selector"], "");
+    const target = from._selector.split(" >> ").at(-1);
+    const selector = source
+      ? this["__proto"].locator(source).locator(target)["_selector"]
+      : this["__proto"].locator(target)["_selector"];
     const chained: any = instance ?? this;
     from._selector = selector;
     chained._selector = selector;
@@ -83,8 +85,8 @@ export class GenericComponent {
     return this.chain(getByTitle) as This<this>;
   }
 
-  component<T>(this: Component, Component: Constructor<T>) {
-    const instance: any = new Component();
+  component<T>(this: Component, Component: Constructor<T>, options?: LocatorFilters) {
+    const instance: any = new Component(options);
     const locator: any = this["__proto"].locator(instance.root);
     return this.chain(locator, instance) as T;
   }
@@ -108,4 +110,4 @@ export class GenericComponent {
 type This<T> = Component & T;
 type Proto = PlaywrightLocatorType & { _selector: string }
 export type Component = GenericComponent & Locator;
-export const Component: new (selector: string) => Component = GenericComponent as any;
+export const Component: new (selector: string, options?: LocatorFilters) => Component = GenericComponent as any;
