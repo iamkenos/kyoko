@@ -122,9 +122,10 @@ export abstract class World extends AllureWorld implements PrivateWorld {
   }
 
   findPageObjectProp<T = any>(page: string, prop: string, fallback?: T): T {
+    const [ fnOrProp, ...args] = prop.split("::").map(i => i.trim());
     const pageObject = this.findPageObject(page);
-    const result = pageObject[prop] || pageObject[changecase.camelCase(prop ?? "")] || fallback || prop;
-    return result instanceof Function ? result() : result;
+    const result = pageObject[fnOrProp] || pageObject[changecase.camelCase(fnOrProp ?? "")] || fallback || fnOrProp;
+    return result instanceof Function ? result(...args) : result;
   }
 
   async createBrowserContext() {

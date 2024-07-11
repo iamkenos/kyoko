@@ -51,7 +51,7 @@ Then(
  * I expect the "locator" component "attribute" attribute to not contain "value"
  */
 Then(
-  "I expect the {page_object_locator} element/field/button/component {input_string} attribute {to_or_to_not} {be_or_contain} {input_string}",
+  "I expect the {page_object_locator} element/field/button/component/section/panel {input_string} attribute {to_or_to_not} {be_or_contain} {input_string}",
   async function(this: This, locator: Locator, attribute: string, not: boolean, context: MatchContext, expected: string) {
     switch (context) {
       case MatchContext.BE:
@@ -79,7 +79,7 @@ Then(
  * I expect the "locator" component "attribute" to not exist
  */
 Then(
-  "I expect the {page_object_locator} element/field/button/component {input_string} attribute {to_or_to_not} exist",
+  "I expect the {page_object_locator} element/field/button/component/section/panel {input_string} attribute {to_or_to_not} exist",
   async function(this: This, locator: Locator, expected: string, not: boolean) {
     await locator.expect().attributeExists(expected, !not).poll();
   }
@@ -97,7 +97,7 @@ Then(
  * I expect the "locator" component location at y axis to not be 11.21
  */
 Then(
-  "I expect the {page_object_locator} element/field/button/component location at {x_or_y} axis {to_or_to_not} be {float}",
+  "I expect the {page_object_locator} element/field/button/component/section/panel location at {x_or_y} axis {to_or_to_not} be {float}",
   async function(this: This, locator: Locator, axis: Axis, not: boolean, expected: number) {
     await locator.expect().axisLocationEquals(axis, expected, !not).poll();
   }
@@ -115,7 +115,7 @@ Then(
  * I expect the "locator" component count to not be 21
  */
 Then(
-  "I expect the {page_object_locator} element/field/button/component count {to_or_to_not} be {int}",
+  "I expect the {page_object_locator} element/field/button/component/section/panel count {to_or_to_not} be {int}",
   async function(this: This, locator: Locator, not: boolean, expected: number) {
     await locator.expect().countEquals(expected, !not).poll();
   }
@@ -133,7 +133,7 @@ Then(
  * I expect the "locator" component count to not be less than 21
  */
 Then(
-  "I expect the {page_object_locator} element/field/button/component count {to_or_to_not} be less than {int}",
+  "I expect the {page_object_locator} element/field/button/component/section/panel count {to_or_to_not} be less than {int}",
   async function(this: This, locator: Locator, not: boolean, expected: number) {
     await locator.expect().countLessThan(expected, !not).poll();
   }
@@ -151,7 +151,7 @@ Then(
  * I expect the "locator" component count to not be greater than 21
  */
 Then(
-  "I expect the {page_object_locator} element/field/button/component count {to_or_to_not} be more/greater than {int}",
+  "I expect the {page_object_locator} element/field/button/component/section/panel count {to_or_to_not} be more/greater than {int}",
   async function(this: This, locator: Locator, not: boolean, expected: number) {
     await locator.expect().countMoreThan(expected, !not).poll();
   }
@@ -169,7 +169,7 @@ Then(
  * I expect the "locator" component "property" css property to not exist
  */
 Then(
-  "I expect the {page_object_locator} element/field/button/component {input_string} css property {to_or_to_not} exist",
+  "I expect the {page_object_locator} element/field/button/component/section/panel {input_string} css property {to_or_to_not} exist",
   async function(this: This, locator: Locator, expected: string, not: boolean) {
     await locator.expect().cssPropertyExists(expected, !not).poll();
   }
@@ -187,7 +187,7 @@ Then(
  * I expect the "locator" component to not be 11.21px in width and 21.11 in height
  */
 Then(
-  "I expect the {page_object_locator} element/field/button/component {to_or_to_not} be {float}px in width and {float}px in height",
+  "I expect the {page_object_locator} element/field/button/component/section/panel {to_or_to_not} be {float}px in width and {float}px in height",
   async function(this: This, locator: Locator, not: boolean, width: number, height: number) {
     await locator.expect().dimensionEquals(width, height, !not).poll();
   }
@@ -205,7 +205,7 @@ Then(
  * I expect the "locator" component to not be 11.21px in height
  */
 Then(
-  "I expect the {page_object_locator} element/field/button/component {to_or_to_not} be {float}px in {width_or_height}",
+  "I expect the {page_object_locator} element/field/button/component/section/panel {to_or_to_not} be {float}px in {width_or_height}",
   async function(this: This, locator: Locator, not: boolean, expected: number, side: SizeContext) {
     await locator.expect().dimensionSideEquals(side, expected, !not).poll();
   }
@@ -223,7 +223,7 @@ Then(
  * I expect the "locator" component to not be displayed
  */
 Then(
-  "I expect the {page_object_locator} element/field/button/component {to_or_to_not} be displayed",
+  "I expect the {page_object_locator} element/field/button/component/section/panel {to_or_to_not} be displayed",
   async function(this: This, locator: Locator, not: boolean) {
     await locator.expect().displayed(!not).poll();
   }
@@ -241,7 +241,7 @@ Then(
  * I expect the "locator" component to not be displayed within the viewport
  */
 Then(
-  "I expect the {page_object_locator} element/field/button/component {to_or_to_not} be displayed within the viewport",
+  "I expect the {page_object_locator} element/field/button/component/section/panel {to_or_to_not} be displayed within the viewport",
   async function(this: This, locator: Locator, not: boolean) {
     await locator.expect().displayedInViewport(!not).poll();
   }
@@ -259,7 +259,7 @@ Then(
  * I expect the "locator" component to not be enabled
  */
 Then(
-  "I expect the {page_object_locator} element/field/button/component {to_or_to_not} be enabled",
+  "I expect the {page_object_locator} element/field/button/component/section/panel {to_or_to_not} be enabled",
   async function(this: This, locator: Locator, not: boolean) {
     await locator.expect().enabled(!not).poll();
   }
@@ -277,7 +277,7 @@ Then(
  * I expect the "locator" component to not exist
  */
 Then(
-  "I expect the {page_object_locator} element/field/button/component {to_or_to_not} exist",
+  "I expect the {page_object_locator} element/field/button/component/section/panel {to_or_to_not} exist",
   async function(this: This, locator: Locator, not: boolean) {
     await locator.expect().exists(!not).poll();
   }
@@ -295,7 +295,7 @@ Then(
  * I expect the "locator" component to not be focused
  */
 Then(
-  "I expect the {page_object_locator} element/field/button/component {to_or_to_not} be focused",
+  "I expect the {page_object_locator} element/field/button/component/section/panel {to_or_to_not} be focused",
   async function(this: This, locator: Locator, not: boolean) {
     await locator.expect().focused(!not).poll();
   }
@@ -313,7 +313,7 @@ Then(
  * I expect the "locator" component to not match the snapshot "file/path"
  */
 Then(
-  "I expect the {page_object_locator} element/field/button/component {to_or_to_not} match the snapshot {input_string}",
+  "I expect the {page_object_locator} element/field/button/component/section/panel {to_or_to_not} match the snapshot {input_string}",
   async function(this: This, locator: Locator, not: boolean, filename: string) {
     await locator.expect().snapshotMatch(filename, undefined, !not).poll();
   }
@@ -345,7 +345,7 @@ async function thenTextMatch(locator: Locator, not: boolean, context: MatchConte
  * I expect the "locator" component text to not partially match "value"
  */
 Then(
-  "I expect the {page_object_locator} element/field/button/component text {to_or_to_not} {be_or_contain} {input_string}",
+  "I expect the {page_object_locator} element/field/button/component/section/panel text {to_or_to_not} {be_or_contain} {input_string}",
   async function(this: This, locator: Locator, not: boolean, context: MatchContext, expected: string) {
     await thenTextMatch(locator, not, context, expected);
   }
@@ -363,7 +363,7 @@ Then(
  * I expect the "locator" component text to not partially match:
  */
 Then(
-  "I expect the {page_object_locator} element/field/button/component text {to_or_to_not} {be_or_contain}:",
+  "I expect the {page_object_locator} element/field/button/component/section/panel text {to_or_to_not} {be_or_contain}:",
   async function(this: This, locator: Locator, not: boolean, context: MatchContext, expected: string) {
     await thenTextMatch(locator, not, context, expected);
   }
@@ -381,7 +381,7 @@ Then(
  * I expect the "locator" component text to not be empty
  */
 Then(
-  "I expect the {page_object_locator} element/field/button/component text {to_or_to_not} be empty",
+  "I expect the {page_object_locator} element/field/button/component/section/panel text {to_or_to_not} be empty",
   async function(this: This, locator: Locator, not: boolean) {
     await locator.expect().textEmpty(!not).poll();
   }

@@ -211,7 +211,7 @@ defineParameterType({
 
 defineParameterType({
   name: "page_object_locator_nested",
-  regexp: /(?:"([^"]*)?" (?:page|component)'s )?(?:(\d+)(?:st|nd|rd|th) )?(?:"([^"]*)?'s" )?"([^"]*)?" (?:section|component|element|form)/,
+  regexp: /(?:"([^"]*)?" (?:page|component)'s )?(?:(\d+)(?:st|nd|rd|th) )?(?:"([^"]*)?'s" )?"([^"]*)?" (?:section|component|element|form|section|panel)/,
   transformer(this: This, ...matches: string[]) {
     const [page, ordinal, selector, nested] = matches;
     const index = +ordinal || 0;
