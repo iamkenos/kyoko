@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.4](https://github.com/iamkenos/kyoko/compare/v0.3.3...v0.3.4) (2024-07-11)
+
+
+### Features
+
+* component filters ([c125083](https://github.com/iamkenos/kyoko/commit/c1250839a11b62053d8227c3dca9442854eaf7cf))
+
 ### [0.3.3](https://github.com/iamkenos/kyoko/compare/v0.3.2...v0.3.3) (2024-07-10)
 
 
