@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.1](https://github.com/iamkenos/kyoko/compare/v0.4.0...v0.4.1) (2024-07-12)
+
+
+### Refactor
+
+* fixtures ([dbd1893](https://github.com/iamkenos/kyoko/commit/dbd18936a60ddbab23202d9286fb5331b6e33d26))
+
 ## [0.4.0](https://github.com/iamkenos/kyoko/compare/v0.3.5...v0.4.0) (2024-07-12)
 
 ### [0.3.5](https://github.com/iamkenos/kyoko/compare/v0.3.4...v0.3.5) (2024-07-12)
