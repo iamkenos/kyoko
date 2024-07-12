@@ -1,6 +1,6 @@
 import { ExpectedCondition } from "../expected-condition";
 
-import type { Locator } from "@commands/locator/types";
+import type { Locator } from "@fixtures/locator/types";
 
 export abstract class LocatorCondition extends ExpectedCondition {
   protected readonly locator: Locator;

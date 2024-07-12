@@ -1,7 +1,7 @@
 import { When } from "@cucumber/cucumber";
 
-import type { Locator } from "@commands/locator/types";
-import type { World as This } from "../../../world";
+import type { World as This } from "@core/world";
+import type { Locator } from "@fixtures/locator/types";
 
 /**
  * Samples:
@@ -14,7 +14,7 @@ import type { World as This } from "../../../world";
 When(
   "I search for locators/elements/fields/buttons/components under the {page_object_locator_nested}",
   async function(this: This, locator: Locator) {
-    this.context.locatorSearchLimit = locator;
+    this.context.locator = locator;
   }
 );
 
@@ -28,6 +28,6 @@ When(
 When(
   "I remove the locator/element/field/component search limit/restriction",
   async function(this: This) {
-    this.context.locatorSearchLimit = undefined;
+    this.context.locator = undefined;
   }
 );

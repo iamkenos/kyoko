@@ -38,8 +38,7 @@ export function configure(overrides?: Partial<Config>) {
       maxDiffPixelRatio: 0
     }
   };
-  // resolve and prepare snapshot directories
-  globalThis._kyk_allure_results_dir = resultsDir;
+
   process.env.LOG_LEVEL = debug ? "debug" : logLevel;
   fs.removeSync(resultsDir);
   Object.keys(snapshots).forEach(key => {
@@ -69,6 +68,7 @@ export function configure(overrides?: Partial<Config>) {
   // assign the whole thing to world parameters so these can be accessible from cucumber's world context
   const { worldParameters, ...rest } = config;
   config.worldParameters = { config: { ...rest, ...custom }, ...worldParameters };
+  globalThis.world = { config: config.worldParameters.config } as any;
 
   return config;
 }

@@ -1,6 +1,6 @@
+import type { Config } from "@config/types";
 import type { This as World } from "./world";
 
 declare global {
-  var _kyk_allure_results_dir: string;
-  var _kyk_world: World;
+  var world: World & { config: Config };
 }

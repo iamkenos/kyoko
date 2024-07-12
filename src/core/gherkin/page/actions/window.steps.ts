@@ -2,10 +2,10 @@ import { Given, When } from "@cucumber/cucumber";
 import {
   WindowDirection,
   WindowNavigation
-} from "../../enums";
+} from "@core/gherkin/enums";
 
-import type { World as This } from "../../../world";
-import type { PageObject } from "../../../page-object";
+import type { PageObject } from "@core/page-object";
+import type { World as This } from "@core/world";
 
 /**
  * Samples:

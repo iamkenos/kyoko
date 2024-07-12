@@ -4,7 +4,7 @@ import * as path from "path";
 import { PageCondition } from "@conditions/page/page-condition";
 
 import type { AllureCommandStepExecutable } from "allure-js-commons";
-import type { Locator } from "@commands/locator/types";
+import type { Locator } from "@fixtures/locator/types";
 import type { PageSnapshotOptions } from "@config/types";
 
 export class SnapshotMatch extends PageCondition {
@@ -28,10 +28,10 @@ export class SnapshotMatch extends PageCondition {
   }
 
   async onFailure() {
-    const { outDir } = this.page.context().config.snapshots.images;
+    const { outDir } = world.config.snapshots.images;
     const attach = (title: string, filename: string) => {
       if (fs.existsSync(filename)) {
-        _kyk_world.reporter.step(title, (step: AllureCommandStepExecutable) => step.attach(fs.readFileSync(filename), "image/png"));
+        world.reporter.step(title, (step: AllureCommandStepExecutable) => step.attach(fs.readFileSync(filename), "image/png"));
       }
     };
 
@@ -51,7 +51,7 @@ export class SnapshotMatch extends PageCondition {
 
   async evaluate() {
     try {
-      const { browser, snapshots } = this.page.context().config;
+      const { browser, snapshots } = world.config;
       const { actualDir, expectedDir, diffDir, maxDiffPixelRatio, mask, skipCompare } = snapshots.images;
       this.actualFilePath = path.join(actualDir, browser, this.filename);
       this.diffFilePath = path.join(diffDir, browser, this.filename);

@@ -1,9 +1,9 @@
 import { When } from "@cucumber/cucumber";
-import { ClickAction } from "../../enums";
+import { ClickAction } from "@core/gherkin/enums";
 
-import type { Locator } from "@commands/locator/types";
-import type { Component } from "../../../component";
-import type { World as This } from "../../../world";
+import type { World as This } from "@core/world";
+import type { Locator } from "@fixtures/locator/types";
+import type { Component } from "@fixtures/component/component";
 
 export async function whenClickElement(action: ClickAction, locator: Locator | Component, clickCount: number) {
   switch (action) {

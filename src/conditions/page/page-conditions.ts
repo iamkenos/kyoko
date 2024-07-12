@@ -16,7 +16,7 @@ import { WindowCountEquals } from "./condition/window-count-equals";
 import { WindowCountLessThan } from "./condition/window-count-less-than";
 import { WindowCountMoreThan } from "./condition/window-count-more-than";
 
-import type { Page } from "@commands/page/types";
+import type { Page } from "@fixtures/page/types";
 import type { PageSnapshotOptions } from "@config/types";
 import type { ExpectedConditionOptions } from "../types";
 

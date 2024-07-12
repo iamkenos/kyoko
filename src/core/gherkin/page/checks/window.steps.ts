@@ -1,8 +1,8 @@
 import { Then } from "@cucumber/cucumber";
-import { Count } from "../../enums";
+import { Count } from "@core/gherkin/enums";
 
-import type { World as This } from "../../../world";
-import type { PageObject } from "../../../page-object";
+import type { PageObject } from "@core/page-object";
+import type { World as This } from "@core/world";
 
 /**
  * Samples:

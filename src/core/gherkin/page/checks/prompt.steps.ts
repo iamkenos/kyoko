@@ -1,6 +1,6 @@
 import { Then } from "@cucumber/cucumber";
 
-import type { World as This } from "../../../world";
+import type { World as This } from "@core/world";
 
 /**
  * Samples:

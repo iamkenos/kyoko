@@ -3,18 +3,19 @@ import * as path from "path";
 import * as files from "@common/utils/files";
 
 import { CucumberAllureWorld as AllureWorld } from "allure-cucumberjs";
-import { BrowserContext as BrowserContextClass } from "@commands/context/context";
+import { BrowserContext as BrowserContextClass } from "@fixtures/context/context";
 import { changecase } from "@common/utils/string";
 import { Logger } from "./utils/logger";
 import { PageObject } from "./page-object";
 
 import type { IWorldOptions } from "@cucumber/cucumber";
-import type { BrowserContext, Locator, Page } from "@commands/types";
+import type { BrowserContext, Locator, Page } from "@fixtures/types";
 import type { Config, WorldParameters } from "@config/types";
 
 interface Reporter extends Pick<AllureWorld, "attach" | "step" | "issue" | "link" | "description"> { }
 
 interface PrivateWorld {
+  config: Config;
   findPageObject: <T = PageObject>(page: string, persist?: boolean) => T;
   findPageObjectLocator: (page: string, element: string, index?: number) => Locator;
   findPageObjectProp: <T = any>(page: string, prop: string, fallback?: T) => T;
@@ -37,7 +38,7 @@ export abstract class World extends AllureWorld implements PrivateWorld {
   private pageObjectsFiles: PageObjectFile[];
   private pageObjectFile: PageObjectFile;
   /** The resolved Cucumber configuration object. */
-  private config: Config;
+  config: Config;
   logger: Logger;
   /** Playwright's BrowserContext instance with added custom commands and presets.
    * @see [BrowserContext](https://playwright.dev/docs/api/class-browsercontext)
@@ -61,7 +62,7 @@ export abstract class World extends AllureWorld implements PrivateWorld {
     this.setPageObjects();
     this.setReporter();
     this.loadCommands();
-    globalThis._kyk_world = this;
+    globalThis.world = this;
   }
 
   private setPageObjects() {
@@ -83,7 +84,7 @@ export abstract class World extends AllureWorld implements PrivateWorld {
   }
 
   private loadCommands() {
-    files.fromGlob([path.join(path.dirname(__dirname), "commands/**/command/*.js")]).filter(Boolean).forEach(file => require(file));
+    files.fromGlob([path.join(path.dirname(__dirname), "fixtures/**/commands/*.js")]).filter(Boolean).forEach(file => require(file));
   }
 
   findPageObject<T = PageObject>(page?: string, persist = false) {
@@ -134,7 +135,6 @@ export abstract class World extends AllureWorld implements PrivateWorld {
     const from = await browser.newContext(this.config.contextOptions);
     const context = new BrowserContextClass(from) as BrowserContext;
     context.setDefaultTimeout(this.config.timeout);
-    context.config = this.config;
     return context;
   }
 }

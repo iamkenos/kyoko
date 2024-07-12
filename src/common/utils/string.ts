@@ -72,5 +72,5 @@ export const changecase = {
   /** Convert a string to snake case (`foo_bar`). */
   snakeCase,
   /** Split any cased input strings into an array of words. */
-  split: (input: string) => noCase(input).split(" ")
+  split: (input: string) => noCase(input, { transform: (part) => part }).split(" ")
 };

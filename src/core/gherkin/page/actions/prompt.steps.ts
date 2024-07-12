@@ -1,7 +1,7 @@
 import { When } from "@cucumber/cucumber";
-import { WindowPromptAction } from "../../enums";
+import { WindowPromptAction } from "@core/gherkin/enums";
 
-import type { World as This } from "../../../world";
+import type { World as This } from "@core/world";
 
 /**
  * Samples:

@@ -1,6 +1,6 @@
 import { ExpectedCondition } from "../expected-condition";
 
-import type { Page } from "@commands/page/types";
+import type { Page } from "@fixtures/page/types";
 
 export abstract class PageCondition extends ExpectedCondition {
   protected page: Page;

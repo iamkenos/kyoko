@@ -1,6 +1,6 @@
 import type { IConfiguration } from "@cucumber/cucumber/lib/configuration";
 import type { BrowserContextOptions, LaunchOptions } from "@playwright/test";
-import type { Locator } from "@commands/locator/types";
+import type { Locator } from "@fixtures/locator/types";
 
 export type WorldParameters = { [key: string]: any };
 

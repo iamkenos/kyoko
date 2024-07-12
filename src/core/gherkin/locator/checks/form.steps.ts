@@ -2,10 +2,10 @@ import { DataTable, Then } from "@cucumber/cucumber";
 import {
   MatchContext,
   SelectOptionContext
-} from "../../enums";
+} from "@core/gherkin/enums";
 
-import type { Locator } from "@commands/locator/types";
-import type { World as This } from "../../../world";
+import type { World as This } from "@core/world";
+import type { Locator } from "@fixtures/locator/types";
 
 /**
  * Samples:

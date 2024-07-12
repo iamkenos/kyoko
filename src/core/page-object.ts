@@ -1,5 +1,5 @@
 import type { This as World } from "./world";
-import type { BrowserContext, Page } from "@commands/types";
+import type { BrowserContext, Page } from "@fixtures/types";
 import type { ExpectedConditionOptions } from "@conditions/types";
 import type { WorldParameters } from "@config/types";
 
@@ -13,11 +13,11 @@ export abstract class PageObject<ParametersType = WorldParameters> {
   abstract title: string;
 
   constructor() {
-    this.reporter = _kyk_world.reporter;
-    this.logger = _kyk_world.logger;
-    this.context = _kyk_world.context;
-    this.page = _kyk_world.page;
-    this.parameters = _kyk_world.parameters as any;
+    this.reporter = world.reporter;
+    this.logger = world.logger;
+    this.context = world.context;
+    this.page = world.page;
+    this.parameters = world.parameters as any;
   }
 
   async navigate() {
@@ -26,7 +26,9 @@ export abstract class PageObject<ParametersType = WorldParameters> {
   }
 
   expect(options?: ExpectedConditionOptions) {
-    const loaded = () => this.page.expect(options).domContentLoaded().urlEquals(this.url).titleEquals(this.title);
+    const loaded = (preferred?: boolean) => this.page.expect(options).domContentLoaded()
+      .urlEquals(this.url, preferred)
+      .titleEquals(this.title, preferred);
     return {
       loaded
     };

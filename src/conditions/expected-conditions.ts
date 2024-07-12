@@ -40,7 +40,7 @@ export class ExpectedConditions {
       evaluations,
       passed: failed === 0,
       message: `${failed}/${total} expected conditions not met after waiting for ${this.timeout}ms:
-  Expression: ${this.name}${this["locator"] ? `\n  Locator: ${this["locator"]["__proto"]}` : ""}
+  Expression: ${this.name}${this["locator"] ? `\n  Locator: ${this["locator"].__proto}` : ""}
   ${evaluations.map((result) => result.message).join("\n  ------------------------------")}`
     };
   }

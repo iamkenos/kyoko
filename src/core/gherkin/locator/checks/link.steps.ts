@@ -5,11 +5,11 @@ import {
   HrefSchemeContext,
   HrefTarget,
   HrefTargetContext
-} from "../../enums";
+} from "@core/gherkin/enums";
 
-import type { Locator } from "@commands/locator/types";
-import type { World as This } from "../../../world";
-import type { PageObject } from "../../../page-object";
+import type { PageObject } from "@core/page-object";
+import type { World as This } from "@core/world";
+import type { Locator } from "@fixtures/locator/types";
 
 async function thenLinkOpensOn(locator: Locator, not: boolean, target: HrefTargetContext) {
   const [context] = Object.entries(HrefTargetContext).find(([, value]) => value === target);
