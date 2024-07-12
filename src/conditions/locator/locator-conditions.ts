@@ -33,7 +33,6 @@ export class LocatorConditions extends ExpectedConditions {
 
   constructor(locator: Locator, options?: ExpectedConditionOptions) {
     super(options);
-    this.name = this.name + `\n  With: ${locator}`;
     this.locator = locator;
   }
 
