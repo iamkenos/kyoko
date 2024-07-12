@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.5](https://github.com/iamkenos/kyoko/compare/v0.3.4...v0.3.5) (2024-07-12)
+
+
+### Features
+
+* support for function args when getting page object prop ([fb6e855](https://github.com/iamkenos/kyoko/commit/fb6e8554d283d576da56a43a0a07276f6847fbe8))
+
+
+### Bug Fixes
+
+* add locator on the expected conditions result ([c306e23](https://github.com/iamkenos/kyoko/commit/c306e23ac330b5a91a4e1c54c9dda77c3e90f1e0))
+
 ### [0.3.4](https://github.com/iamkenos/kyoko/compare/v0.3.3...v0.3.4) (2024-07-11)
 
 
