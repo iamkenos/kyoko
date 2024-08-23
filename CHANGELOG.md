@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.2](https://github.com/iamkenos/kyoko/compare/v0.4.1...v0.4.2) (2024-08-23)
+
+
+### Features
+
+* remove downloads dir before start of process ([eb75e93](https://github.com/iamkenos/kyoko/commit/eb75e935f99dd0ba87041709fbbc7eccbe287791))
+
+
+### Bug Fixes
+
+* use suggestedfilename of downloaded file by default ([c3f7168](https://github.com/iamkenos/kyoko/commit/c3f716800f3c39afc5d0cfef5da99325001063a5))
+
 ### [0.4.1](https://github.com/iamkenos/kyoko/compare/v0.4.0...v0.4.1) (2024-07-12)
 
 
