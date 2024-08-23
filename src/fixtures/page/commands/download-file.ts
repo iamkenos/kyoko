@@ -2,18 +2,16 @@ import * as path from "path";
 
 import type { Page } from "@fixtures/page/types";
 
-export async function downloadFile(this: Page, trigger: (() => Promise<void>), ext: string) {
+export async function downloadFile(this: Page, trigger: (() => Promise<void>), newFilename?: string) {
   let filename: string, filepath: string;
 
   try {
+    const { downloadsDir } = world.config;
     const event = this.waitForEvent("download");
     await trigger();
 
     const download = await event;
-    const downloadPath = await download.path();
-
-    const { downloadsDir } = world.config;
-    filename = path.basename(downloadPath) + `.${ext}`;
+    filename = newFilename || download.suggestedFilename();
     filepath = path.join(downloadsDir, filename);
 
     await download.saveAs(filepath);
