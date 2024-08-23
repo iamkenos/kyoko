@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.3](https://github.com/iamkenos/kyoko/compare/v0.4.2...v0.4.3) (2024-08-23)
+
+
+### Bug Fixes
+
+* broken glob ([e5e3ec8](https://github.com/iamkenos/kyoko/commit/e5e3ec8545b7fe7f21b1e7eb77e27f844bc8b33a))
+* husky permissions ([bf1c327](https://github.com/iamkenos/kyoko/commit/bf1c32703826525e19712bafbc71cb90639f5c34))
+
+
+### Refactor
+
+* config file ([41623f3](https://github.com/iamkenos/kyoko/commit/41623f3887d9e141a6be3cebd69a2a03450684ce))
+
 ### [0.4.2](https://github.com/iamkenos/kyoko/compare/v0.4.1...v0.4.2) (2024-08-23)
 
 
