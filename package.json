@@ -24,7 +24,8 @@
     "debug:demo": "npm run test:demo",
     "prereport:demo": "allure -q generate demo/test/results/allure/ -c -o demo/test/results/allure/html/",
     "report:demo": "allure open demo/test/results/allure/html/",
-    "cucumber:demo": "cucumber-js -c demo/test/cucumber.js"
+    "cucumber:demo": "cucumber-js -c demo/test/cucumber.js",
+    "test:unit": "echo TODO"
   },
   "keywords": [
     "playwright",

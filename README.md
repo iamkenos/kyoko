@@ -2,10 +2,13 @@
 <h1 align="center">KYOKO</h1>
 
 <!-- TODO: CHANGE THIS -->
-<p align="center">
-  <a href="https://github.com/iamkenos/hornet/actions/workflows/unit-tests.yml">
-      <img alt="Unit Tests" src="https://github.com/iamkenos/hornet/actions/workflows/unit-tests.yml/badge.svg">
-  </a>
+<p align="center" width="100%">
+    <a href="https://github.com/iamkenos/kyoko/actions/workflows/unit-tests.yml">
+        <img alt="Unit Tests" src="https://github.com/iamkenos/kyoko/actions/workflows/unit-tests.yml/badge.svg">
+    </a>
+    <a href="https://github.com/iamkenos/kyoko/actions/workflows/feature-tests.yml">
+        <img alt="Feature Tests" src="https://github.com/iamkenos/kyoko/actions/workflows/feature-tests.yml/badge.svg">
+    </a>
 </p>
 
 ## About
