@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Get started with Playwright and Cucumber.",
   "scripts": {
-    "pretest": "playwright install",
+    "pretest": "playwright install --with-deps chromium",
     "test": "cucumber-js -c cucumber.js",
     "prereport": "allure -q generate results/allure/ -c -o results/allure/html/",
     "report": "allure open results/allure/html/"

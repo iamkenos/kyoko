@@ -8,28 +8,95 @@ import type { Config } from "./types";
 
 export * from "./types";
 
-/**
- * Creates a cucumber config object with default values.
- * @see [CucumberConfig](https://github.com/cucumber/cucumber-js/blob/main/docs/configuration.md)
- */
-export function configure(overrides?: Partial<Config>) {
-  const baseDir = path.dirname(callsites()[1].getFileName()).replace("file://", "");
-  dotenv.config({ path: process.env.NODE_ENV ? path.join(baseDir, `.env.${process.env.NODE_ENV}`) : path.join(baseDir, ".env") });
+function loadEnv(baseDir: string) {
+  const { NODE_ENV } = process.env;
+  dotenv.config({ path: NODE_ENV ? path.join(baseDir, `.env.${NODE_ENV}`) : path.join(baseDir, ".env") });
+}
 
-  // custom options defaults
-  const baseURL = process.env.BASE_URL ? process.env.BASE_URL : overrides?.baseURL || "";
-  const browser = process.env.BROWSER ? process.env.BROWSER : overrides?.browser || "chromium";
-  const debug = process.env.DEBUG ? process.env.DEBUG === "true" : overrides?.debug || false;
-  const downloadsDir = path.join(baseDir, process.env.DOWNLOADS_DIR ? process.env.DOWNLOADS_DIR : overrides?.downloadsDir || "downloads/");
-  const headless = process.env.HEADLESS ? process.env.HEADLESS === "true" : overrides?.headless || false;
-  const locale = process.env.LOCALE ? process.env.LOCALE : overrides?.locale || undefined;
-  const logLevel = process.env.LOG_LEVEL ? process.env.LOG_LEVEL : overrides?.logLevel || "info";
-  const pages = (overrides?.pages || ["fixtures/pages/**/*.page{,.*}.ts"]).map(i => path.join(baseDir, i));
-  const resultsDir = path.join(baseDir, process.env.RESULTS_DIR ? process.env.RESULTS_DIR : overrides?.resultsDir || "results/");
-  const snapshotsDir = path.join(baseDir, process.env.SNAPSHOTS_DIR ? process.env.SNAPSHOTS_DIR : overrides?.snapshotsDir || "snapshots/");
-  const timeout = +process.env.TIMEOUT ? +process.env.TIMEOUT : overrides?.timeout || 30000;
-  const browserOptions = { headless, ...overrides?.browserOptions };
-  const contextOptions = { baseURL, ignoreHTTPSErrors: false, viewport: { width: 1675, height: 1020 }, ...overrides?.contextOptions };
+function getConfigBaseURL(overrides: Partial<Config>) {
+  const { BASE_URL } = process.env;
+  const { baseURL = "" } = overrides;
+  return BASE_URL ? BASE_URL : baseURL;
+}
+
+function getConfigBrowser(overrides: Partial<Config>) {
+  const SUPPORTED_BROWSERS = ["chromium", "firefox", "webkit"];
+  const { BROWSER } = process.env;
+  const { browser = SUPPORTED_BROWSERS[0] } = overrides;
+  return BROWSER && SUPPORTED_BROWSERS.includes(BROWSER) ? BROWSER : browser;
+}
+
+function getConfigDebug(overrides: Partial<Config>) {
+  const { DEBUG } = process.env;
+  const { debug = false } = overrides;
+  return DEBUG ? DEBUG === "true" : debug;
+}
+
+function getConfigDownloadsDir(overrides: Partial<Config>) {
+  const { DOWNLOADS_DIR } = process.env;
+  const { downloadsDir = "downloads/", baseDir } = overrides;
+  const directory = path.join(baseDir, DOWNLOADS_DIR ? DOWNLOADS_DIR : downloadsDir);
+  fs.removeSync(directory);
+  return directory;
+}
+
+function getConfigHeadless(overrides: Partial<Config>) {
+  const { HEADLESS } = process.env;
+  const { headless = false } = overrides;
+  return HEADLESS ? HEADLESS === "true" : headless;
+}
+
+function getConfigLocale(overrides: Partial<Config>) {
+  const { LOCALE } = process.env;
+  const { locale } = overrides;
+  return LOCALE ? LOCALE : locale;
+}
+
+function getConfigLogLevel(overrides: Partial<Config>) {
+  const { LOG_LEVEL } = process.env;
+  const { logLevel = "info" } = overrides;
+  const debug = getConfigDebug(overrides);
+  process.env.LOG_LEVEL = debug ? "debug" : LOG_LEVEL ? LOG_LEVEL : logLevel;
+  return process.env.LOG_LEVEL;
+}
+
+function getConfigPages(overrides: Partial<Config>) {
+  const { pages = ["fixtures/pages/**/*.page{,.*}.ts"], baseDir } = overrides;
+  return pages.map(i => path.join(baseDir, i));
+}
+
+function getConfigResultsDir(overrides: Partial<Config>) {
+  const { RESULTS_DIR } = process.env;
+  const { resultsDir = "results/", baseDir } = overrides;
+  return path.join(baseDir, RESULTS_DIR ? RESULTS_DIR : resultsDir);
+}
+
+function getConfigSnapshotsDir(overrides: Partial<Config>) {
+  const { SNAPSHOTS_DIR } = process.env;
+  const { snapshotsDir = "snapshots/", baseDir } = overrides;
+  return path.join(baseDir, SNAPSHOTS_DIR ? SNAPSHOTS_DIR : snapshotsDir);
+}
+
+function getConfigTimeout(overrides: Partial<Config>) {
+  const { TIMEOUT } = process.env;
+  const { timeout = 30000 } = overrides;
+  return +TIMEOUT ? +TIMEOUT : timeout;
+}
+
+function getConfigBrowserOptions(overrides: Partial<Config>) {
+  const { browserOptions } = overrides;
+  const headless = getConfigHeadless(overrides);
+  return { headless, ...browserOptions };
+}
+
+function getConfigContextOptions(overrides: Partial<Config>) {
+  const { contextOptions } = overrides;
+  const baseURL = getConfigBaseURL(overrides);
+  return { baseURL, ignoreHTTPSErrors: false, viewport: { width: 1675, height: 1020 }, ...contextOptions };
+}
+
+function getConfigSnapshots(overrides: Partial<Config>) {
+  const snapshotsDir = getConfigSnapshotsDir(overrides);
   const snapshots = {
     images: {
       outDir: "images",
@@ -38,10 +105,6 @@ export function configure(overrides?: Partial<Config>) {
       maxDiffPixelRatio: 0
     }
   };
-
-  process.env.LOG_LEVEL = debug ? "debug" : logLevel;
-  fs.removeSync(resultsDir);
-  fs.removeSync(downloadsDir);
   Object.keys(snapshots).forEach(key => {
     snapshots[key].outDir = path.resolve(snapshotsDir, snapshots[key].outDir);
     snapshots[key].actualDir = path.resolve(snapshots[key].outDir, "actual");
@@ -50,20 +113,97 @@ export function configure(overrides?: Partial<Config>) {
     fs.removeSync(snapshots[key].actualDir);
     fs.removeSync(snapshots[key].diffDir);
   });
+  return snapshots;
+}
+
+function getCukesFormat(overrides: Partial<Config>) {
+  const resultsDir = getConfigResultsDir(overrides);
+  const { format = [] } = overrides;
+  fs.removeSync(resultsDir);
+  return [
+    "summary",
+    `"html":"${resultsDir}report.html"`,
+    `"json":"${resultsDir}report.json"`,
+    `"file://${path.join(__dirname, "../core/utils/reporter.js")}":"${resultsDir}allure/report.json"`,
+    ...format
+  ];
+}
+
+function getCukesFormatOptions() {
+  return { snippetInterface: "async-await", printAttachments: false };
+}
+
+function getCukesParallel(overrides: Partial<Config>) {
+  const { PARALLEL } = process.env;
+  const { parallel = 0 } = overrides;
+  const debug = getConfigDebug(overrides);
+  return debug ? 0 : PARALLEL ? +PARALLEL : parallel;
+}
+
+function getCukesPaths(overrides: Partial<Config>) {
+  const { PATHS } = process.env;
+  const { paths = ["features/"], baseDir } = overrides;
+  return PATHS ? [PATHS].filter(Boolean) : paths.map(i => path.join(baseDir, i));
+}
+
+function getCukesRequire(overrides: Partial<Config>) {
+  const { require = ["fixtures/**/*.{steps,glue}.ts"], baseDir } = overrides;
+  return [path.join(__dirname, "../core/gherkin/**/*.{steps,glue}.js")]
+    .concat(require.map(i => path.join(baseDir, i)));
+}
+
+function getCukesRequireModule() {
+  return ["ts-node/register/transpile-only", "tsconfig-paths/register"];
+}
+
+function getCukesTags(overrides: Partial<Config>) {
+  const { TAGS } = process.env;
+  const { tags } = overrides;
+  return TAGS ? TAGS : tags;
+}
+
+function getCukesWorldParameters(overrides: Partial<Config>) {
+  const { worldParameters = {} } = overrides;
+  return worldParameters;
+}
+
+/**
+ * Creates a cucumber config object with default values.
+ * @see [CucumberConfig](https://github.com/cucumber/cucumber-js/blob/main/docs/configuration.md)
+ */
+export function configure(overrides: Partial<Config> = {}) {
+  const baseDir = path.dirname(callsites()[1].getFileName()).replace("file://", "");
+  loadEnv(baseDir);
+
+  // custom options defaults
+  overrides.baseDir = baseDir;
+  const baseURL = getConfigBaseURL(overrides);
+  const browser = getConfigBrowser(overrides);
+  const debug = getConfigDebug(overrides);
+  const downloadsDir = getConfigDownloadsDir(overrides);
+  const headless = getConfigHeadless(overrides);
+  const locale = getConfigLocale(overrides);
+  const logLevel = getConfigLogLevel(overrides);
+  const pages = getConfigPages(overrides);
+  const resultsDir = getConfigResultsDir(overrides);
+  const timeout = getConfigTimeout(overrides);
+  const browserOptions = getConfigBrowserOptions(overrides);
+  const contextOptions = getConfigContextOptions(overrides);
+  const snapshots = getConfigSnapshots(overrides);
   const custom = { baseDir, baseURL, browser, browserOptions, contextOptions, debug, downloadsDir, headless, locale, logLevel, pages, resultsDir, snapshots, timeout };
 
   // cucumber options defaults
   const config = {
     ...overrides,
-    format: ["summary", `"html":"${resultsDir}report.html"`, `"json":"${resultsDir}report.json"`, `"file://${path.join(__dirname, "../core/utils/reporter.js")}":"${resultsDir}allure/report.json"`, ...overrides?.format || [] ],
-    formatOptions: { snippetInterface: "async-await", printAttachments: false },
-    parallel: debug ? 0 : process.env.PARALLEL ? +process.env.PARALLEL : overrides?.parallel || 0,
-    paths: process.env.PATHS ? [process.env.PATHS].filter(Boolean) : (overrides?.paths || ["features/"]).map(i => path.join(baseDir, i)),
-    require: [path.join(__dirname, "../core/gherkin/**/*.{steps,glue}.js")].concat((overrides?.require || ["fixtures/**/*.{steps,glue}.ts"]).map(i => path.join(baseDir, i))),
-    requireModule: ["ts-node/register/transpile-only", "tsconfig-paths/register"],
+    format: getCukesFormat(overrides),
+    formatOptions: getCukesFormatOptions(),
+    parallel: getCukesParallel(overrides),
+    paths: getCukesPaths(overrides),
+    require: getCukesRequire(overrides),
+    requireModule: getCukesRequireModule(),
     strict: false,
-    tags: process.env.TAGS ? process.env.TAGS : overrides?.tags,
-    worldParameters: overrides?.worldParameters || {}
+    tags: getCukesTags(overrides),
+    worldParameters: getCukesWorldParameters(overrides)
   };
 
   // assign the whole thing to world parameters so these can be accessible from cucumber's world context
