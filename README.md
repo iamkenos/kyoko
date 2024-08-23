@@ -9,6 +9,9 @@
     <a href="https://github.com/iamkenos/kyoko/actions/workflows/feature-tests.yml">
         <img alt="Feature Tests" src="https://github.com/iamkenos/kyoko/actions/workflows/feature-tests.yml/badge.svg">
     </a>
+    <a href="https://snyk.io/advisor/npm-package/@iamkenos/kyoko">
+        <img alt="Package Health" src="https://snyk.io/advisor/npm-package/@iamkenos/kyoko/badge.svg">
+    </a>
 </p>
 
 ## About
