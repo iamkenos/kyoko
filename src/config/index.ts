@@ -41,6 +41,7 @@ export function configure(overrides?: Partial<Config>) {
 
   process.env.LOG_LEVEL = debug ? "debug" : logLevel;
   fs.removeSync(resultsDir);
+  fs.removeSync(downloadsDir);
   Object.keys(snapshots).forEach(key => {
     snapshots[key].outDir = path.resolve(snapshotsDir, snapshots[key].outDir);
     snapshots[key].actualDir = path.resolve(snapshots[key].outDir, "actual");
