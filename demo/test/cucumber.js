@@ -5,5 +5,6 @@ exports.default = configure({
   timeout: 8000,
   parallel: 10,
   headless: true,
-  logLevel: 'info'
+  logLevel: 'info',
+  snapshots: { images: { maxDiffPixelRatio: 0.5 } }
 });

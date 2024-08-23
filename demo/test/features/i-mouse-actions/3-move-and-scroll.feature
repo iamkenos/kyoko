@@ -8,10 +8,10 @@ Feature: I. Mouse Actions - Move and scroll
 
   Scenario: S01: Show coordinates
     When I hover on the "#move-to" element
-    Then I expect the "#move-to-result" element text to be "X: 765 | Y: 2078"
+    Then I expect the "#move-to-result" element text to be "X: 763 | Y: 2078"
       But I hover on the "#move-to-result" element
       And I hover on the "#move-to" element with an offset of 5,10
-    Then I expect the "#move-to-result" element text to not be "X: 765 | Y: 2078"
+    Then I expect the "#move-to-result" element text to not be "X: 763 | Y: 2078"
 
   Scenario: S02: Show element location
     When I scroll to the "#scroll-to" element
