@@ -21,7 +21,7 @@ export class Fixture<T> {
 
   private addCommands(instance: any) {
     const ext = ".js";
-    const parts = changecase.split(this.constructor.name);
+    const parts = changecase.split(this.constructor.name).map(i => i.toLowerCase());
     const fixtureDir = parts.length > 1 ? `{${parts.join()}}` : parts[0];
     const files = fromGlob([path.join(__dirname, fixtureDir, "commands", `*${ext}`)]);
 
