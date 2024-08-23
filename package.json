@@ -20,6 +20,7 @@
     "pack": "npm run build && npm pack",
     "lint": "eslint ./",
     "serve:demo": "http-server ./demo/app -s",
+    "pretest:demo": "playwright install --with-deps chromium",
     "test:demo": "start-test serve:demo 8080 cucumber:demo",
     "debug:demo": "npm run test:demo",
     "prereport:demo": "allure -q generate demo/test/results/allure/ -c -o demo/test/results/allure/html/",
