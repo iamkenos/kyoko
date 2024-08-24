@@ -23,3 +23,10 @@ jobs:
         run: npm run build
       - name: Run feature tests
         run: npm run test:demo
+      - name: Upload Artifact
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: results
+          path: demo/test/results/report.html
+          retention-days: 3
