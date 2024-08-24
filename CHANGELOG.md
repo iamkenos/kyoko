@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.4](https://github.com/iamkenos/kyoko/compare/v0.4.3...v0.4.4) (2024-08-24)
+
+
+### Features
+
+* chromium install ([d7421dc](https://github.com/iamkenos/kyoko/commit/d7421dce143a86d96f674a144611a88e517f3d9a))
+* skip tests with cucumber tags ([2102d47](https://github.com/iamkenos/kyoko/commit/2102d47b782ea39b0d4be456b4a2248dde477d08))
+
+
+### Bug Fixes
+
+* image tolerance option ([88fcba8](https://github.com/iamkenos/kyoko/commit/88fcba8710e130f66d1e7c5160defd6e916dfba4))
+
 ### [0.4.3](https://github.com/iamkenos/kyoko/compare/v0.4.2...v0.4.3) (2024-08-23)
 
 
