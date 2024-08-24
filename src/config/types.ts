@@ -4,7 +4,7 @@ import type { Locator } from "@fixtures/locator/types";
 
 export type WorldParameters = { [key: string]: any };
 
-export interface Config extends Omit<IConfiguration, "publish" | "publishQuiet"> {
+export interface Config extends Omit<IConfiguration, "publishQuiet"> {
   /** Custom: The base directory where most config paths will be resolved from */
   baseDir: string;
   baseURL: string;
@@ -43,19 +43,24 @@ type SnapshotDirectories = {
 
 type SnapshotOptions = {
   /** Directory to store the output of this comparable object in, relative to the config file */
-  outDir?: string;
+  readonly outDir?: string;
   /** Skip comparison, just save the actual files */
   skipCompare?: boolean;
 } & SnapshotDirectories;
 
 type ImageSnapshotOptions = {
+  /** The pixel difference tolerance level when comparing image snapshots */
   maxDiffPixelRatio?: number;
+  /** Array of locators to mask every time image comaprison is performed */
   mask?: Locator[];
 } & SnapshotOptions;
 
 export type LocatorSnapshotOptions = ImageSnapshotOptions;
 
-export type PageSnapshotOptions = { fullPage?: boolean } & ImageSnapshotOptions;
+export type PageSnapshotOptions = {
+  /** Whether to take a snapshot of the entire page (not just the viewport) when doing image comparison */
+  fullPage?: boolean
+} & ImageSnapshotOptions;
 
 type Snapshots = {
   /** Options used for comparing images */

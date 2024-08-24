@@ -4,9 +4,12 @@ import * as path from "path";
 import callsites from "callsites";
 import dotenv from "dotenv";
 
-import type { Config } from "./types";
+import type { Config as BaseConfig } from "./types";
+import type { NestedOmit } from "../common/types";
 
 export * from "./types";
+
+type Config = NestedOmit<BaseConfig, "snapshots.images.outDir">;
 
 function loadEnv(baseDir: string) {
   const { NODE_ENV } = process.env;
@@ -96,24 +99,27 @@ function getConfigContextOptions(overrides: Partial<Config>) {
 }
 
 function getConfigSnapshots(overrides: Partial<Config>) {
+  const [ actualDir, expectedDir, diffDir ] = ["actual", "expected", "diff"];
+  const { snapshots } = overrides;
   const snapshotsDir = getConfigSnapshotsDir(overrides);
-  const snapshots = {
+  const snapshotOptions = {
     images: {
       outDir: "images",
       skipCompare: false,
       mask: [],
-      maxDiffPixelRatio: 0
+      maxDiffPixelRatio: 0,
+      ...snapshots?.images
     }
   };
-  Object.keys(snapshots).forEach(key => {
-    snapshots[key].outDir = path.resolve(snapshotsDir, snapshots[key].outDir);
-    snapshots[key].actualDir = path.resolve(snapshots[key].outDir, "actual");
-    snapshots[key].expectedDir = path.resolve(snapshots[key].outDir, "expected");
-    snapshots[key].diffDir = path.resolve(snapshots[key].outDir, "diff");
-    fs.removeSync(snapshots[key].actualDir);
-    fs.removeSync(snapshots[key].diffDir);
+  Object.keys(snapshotOptions).forEach(key => {
+    snapshotOptions[key].outDir = path.resolve(snapshotsDir, snapshotOptions[key].outDir);
+    snapshotOptions[key].actualDir = path.resolve(snapshotOptions[key].outDir, actualDir);
+    snapshotOptions[key].expectedDir = path.resolve(snapshotOptions[key].outDir, expectedDir);
+    snapshotOptions[key].diffDir = path.resolve(snapshotOptions[key].outDir, diffDir);
+    fs.removeSync(snapshotOptions[key].actualDir);
+    fs.removeSync(snapshotOptions[key].diffDir);
   });
-  return snapshots;
+  return snapshotOptions;
 }
 
 function getCukesFormat(overrides: Partial<Config>) {

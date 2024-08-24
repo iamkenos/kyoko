@@ -132,8 +132,8 @@ export abstract class World extends AllureWorld implements PrivateWorld {
   async createBrowserContext() {
     const browserType: playwright.BrowserType = playwright[this.config.browser];
     const browser = await browserType.launch(this.config.browserOptions) as any;
-    const from = await browser.newContext(this.config.contextOptions);
-    const context = new BrowserContextClass(from) as BrowserContext;
+    const playwrightContext = await browser.newContext(this.config.contextOptions);
+    const context = new BrowserContextClass(playwrightContext) as BrowserContext;
     context.setDefaultTimeout(this.config.timeout);
     return context;
   }
