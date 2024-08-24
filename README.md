@@ -25,6 +25,7 @@
 - multiple locale support
 - web components support
 - internal polling and retries
+- skip tests using cucumber tags
 - reporters:
   - [built-in cucumber reporter plugins](https://cucumber.io/docs/cucumber/reporting/?sbsearch=reporting&lang=javascript)
   - [allure](https://allurereport.org/docs/cucumberjs/)

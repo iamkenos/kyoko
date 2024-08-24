@@ -21,6 +21,11 @@ import chalk from "chalk";
 setDefaultTimeout(process.env.DEBUG === "true" ? -1 : undefined);
 setWorldConstructor(World);
 
+/** Dont run tests but still show these in the formatter */
+Before({ tags: "@SKIP or @skip or @IGNORE or @ignore" }, () => Status.SKIPPED.toLowerCase());
+
+Before({ tags: "@PENDING or @pending" }, () => Status.PENDING.toLowerCase());
+
 Before({}, async function(this: World) {
   this.context = await this.createBrowserContext();
   this.page = await this.context.newPage();
@@ -42,9 +47,11 @@ AfterStep({}, async function(this: This, params: ITestStepHookParameter) {
 });
 
 After({}, async function(this: This) {
-  await this.page.close();
-  await this.page.context().close();
-  await this.page.context().browser().close();
+  if (this.page) {
+    await this.page.close();
+    await this.page.context().close();
+    await this.page.context().browser().close();
+  }
 });
 
 /** [CucumberExpressions](https://cucumber.github.io/try-cucumber-expressions/) */
