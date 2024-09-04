@@ -27,9 +27,10 @@ export class Logger {
       },
       format(level, name, timestamp) {
         const [, , , caller] = callsites();
-        const stack = caller.toString();
-        const from = caller.getFunctionName() || stack.substring(0, stack.indexOf("."));
-        return `${chalk.gray(`${timestamp}`)} ${COLORS[level.toUpperCase()](level)} ${chalk.yellow.bold(from)}:`;
+        const file = caller.toString();
+        const func = caller.getFunctionName();
+        const fn = func ? ` ${file.substring(0, file.indexOf("(")).trim()}:` : "";
+        return `${chalk.gray(timestamp)} ${COLORS[level.toUpperCase()](level)}${chalk.magenta(fn)}`;
       }
     });
   }
