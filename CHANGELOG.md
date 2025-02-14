@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.6](https://github.com/iamkenos/kyoko/compare/v0.4.5...v0.4.6) (2025-02-14)
+
+
+### Refactor
+
+* only print caller file when logger is called from a named function ([c7d05d9](https://github.com/iamkenos/kyoko/commit/c7d05d9797700ae54ff5e83dfeaf013892246070))
+
 ### [0.4.5](https://github.com/iamkenos/kyoko/compare/v0.4.4...v0.4.5) (2025-02-14)
 
 
