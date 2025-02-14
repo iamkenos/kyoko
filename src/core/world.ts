@@ -15,7 +15,6 @@ import type { Config, WorldParameters } from "@config/types";
 interface Reporter extends Pick<AllureWorld, "attach" | "step" | "issue" | "link" | "description"> { }
 
 interface PrivateWorld {
-  config: Config;
   findPageObject: <T = PageObject>(page: string, persist?: boolean) => T;
   findPageObjectLocator: (page: string, element: string, index?: number) => Locator;
   findPageObjectProp: <T = any>(page: string, prop: string, fallback?: T) => T;
@@ -31,7 +30,10 @@ interface PageObjectFile {
 }
 
 export interface This<ParametersType = WorldParameters> extends Omit<World, keyof AllureWorld | keyof PrivateWorld> {
-  readonly reporter: Reporter, parameters: ParametersType, readonly context: BrowserContext;
+  readonly reporter: Reporter;
+  readonly context: BrowserContext;
+  readonly config: Config;
+  parameters: ParametersType;
 }
 
 export abstract class World extends AllureWorld implements PrivateWorld {
