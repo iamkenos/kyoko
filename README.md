@@ -1,13 +1,19 @@
 <!-- markdownlint-disable MD033 -->
 <h1 align="center">KYOKO</h1>
 
-<!-- TODO: CHANGE THIS -->
 <p align="center" width="100%">
-  <img alt="Unit Tests" src="https://github.com/iamkenos/kyoko/actions/workflows/unit-tests.yml/badge.svg">
-  <img alt="Feature Tests" src="https://github.com/iamkenos/kyoko/actions/workflows/feature-tests.yml/badge.svg">
+  <a href="https://github.com/iamkenos/kyoko/actions/workflows/unit-tests.yml" target="_blank">
+    <img src="https://img.shields.io/github/actions/workflow/status/iamkenos/kyoko/unit-tests.yml?label=unit%20tests&logo=github">
+  </a>
+  <a href="https://github.com/iamkenos/kyoko/actions/workflows/feature-tests.yml" target="_blank">
+    <img src="https://img.shields.io/github/actions/workflow/status/iamkenos/kyoko/unit-tests.yml?label=feature%20tests&logo=github">
+  </a>
   <br/>
   <a href="https://www.npmjs.com/package/@iamkenos/kyoko?activeTab=readme" target="_blank">
-    <img alt="" src="https://img.shields.io/npm/v/@iamkenos/kyoko?logo=npm&logoColor=red&color=red">
+    <img alt="" src="https://img.shields.io/npm/v/@iamkenos/kyoko?label=version&logo=npm&logoColor=red&color=red">
+  </a>
+  <a href="https://www.npmjs.com/package/@iamkenos/kyoko?activeTab=readme" target="_blank">
+    <img alt="" src="https://img.shields.io/npm/dm/@iamkenos/kyoko?label=downloads&logo=npm&logoColor=red&color=red">
   </a>
 </p>
 
