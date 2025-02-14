@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.5](https://github.com/iamkenos/kyoko/compare/v0.4.4...v0.4.5) (2025-02-14)
+
+
+### Features
+
+* allow access to cucumber config ([59bb4c8](https://github.com/iamkenos/kyoko/commit/59bb4c8dbd8c6db004d48958de0c5faa95477725))
+
+
+### Chore
+
+* audit fixes ([0ed71ec](https://github.com/iamkenos/kyoko/commit/0ed71ec0707ea7d5eda68ebdc636683716d7f94b))
+* ci upload artifact ([6d8dff3](https://github.com/iamkenos/kyoko/commit/6d8dff37073e2343a8e50e97639431c7a87ac115))
+* typecast buffer on snapshot match ([cb05c64](https://github.com/iamkenos/kyoko/commit/cb05c64eff89f306d6534e26166a9d87547be8d8))
+
 ### [0.4.4](https://github.com/iamkenos/kyoko/compare/v0.4.3...v0.4.4) (2024-08-24)
 
 
