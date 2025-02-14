@@ -24,7 +24,7 @@ export class SnapshotMatch extends PageCondition {
   }
 
   private createFile(filename: string, data: Buffer) {
-    fs.outputFileSync(filename, data);
+    fs.outputFileSync(filename, data as any);
   }
 
   async onFailure() {
