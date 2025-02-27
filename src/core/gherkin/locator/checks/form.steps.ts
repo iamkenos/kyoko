@@ -7,6 +7,8 @@ import {
 import type { World as This } from "@core/world";
 import type { Locator } from "@fixtures/locator/types";
 
+import * as fn from "./form.glue";
+
 /**
  * Samples:
  * I expect the "my-app" page's 2nd "locator" element to be checked
@@ -21,7 +23,7 @@ import type { Locator } from "@fixtures/locator/types";
 Then(
   "I expect the {page_object_locator} element/option {to_or_to_not} be checked/selected/ticked",
   async function(this: This, locator: Locator, not: boolean) {
-    await locator.expect().checked(!not).poll();
+    await fn.expectElementIsSelected(locator, { not });
   }
 );
 
@@ -39,7 +41,7 @@ Then(
 Then(
   "I expect the {page_object_locator} check box {to_or_to_not} be checked/selected/ticked",
   async function(this: This, locator: Locator, not: boolean) {
-    await locator.expect().checked(!not).poll();
+    await fn.expectElementIsSelected(locator, { not });
   }
 );
 
@@ -57,7 +59,7 @@ Then(
 Then(
   "I expect the {page_object_locator} toggle item {to_or_to_not} be checked/selected/ticked",
   async function(this: This, locator: Locator, not: boolean) {
-    await locator.expect().checked(!not).poll();
+    await fn.expectElementIsSelected(locator, { not });
   }
 );
 
@@ -75,7 +77,7 @@ Then(
 Then(
   "I expect the {page_object_locator} radio button {to_or_to_not} be checked/selected/ticked",
   async function(this: This, locator: Locator, not: boolean) {
-    await locator.expect().checked(!not).poll();
+    await fn.expectElementIsSelected(locator, { not });
   }
 );
 
@@ -93,17 +95,7 @@ Then(
 Then(
   "I expect the option with {label_or_value} {input_string} from the {page_object_locator} dropdown {to_or_to_not} be selected",
   async function(this: This, context: SelectOptionContext, expected: string, locator: Locator, not: boolean) {
-    const options = await locator.dropdownOptions();
-    switch (context) {
-      case SelectOptionContext.LABEL: {
-        await options.find(i => i.label === expected).locator.expect().selected(!not).poll();
-        break;
-      }
-      default: {
-        await options.find(i => i.value === expected).locator.expect().selected(!not).poll();
-        break;
-      }
-    }
+    await fn.expectDropdownOptionIsSelected(locator, expected, context, { not });
   }
 );
 
@@ -121,8 +113,7 @@ Then(
 Then(
   "I expect the {ordinal} option from the {page_object_locator} dropdown {to_or_to_not} be selected",
   async function(this: This, expected: number, locator: Locator, not: boolean) {
-    const options = await locator.dropdownOptions();
-    await options.find(i => i.index === expected - 1).locator.expect().selected(!not).poll();
+    await fn.expectDropdownOptionIsSelected(locator, expected, SelectOptionContext.INDEX, { not });
   }
 );
 
@@ -140,42 +131,13 @@ Then(
 Then(
   "I expect the options from the {page_object_locator} multi select dropdown {to_or_to_not} be selected:",
   async function(this: This, locator: Locator, not: boolean, table: DataTable) {
-    const options = await locator.dropdownOptions();
-    const values = table.raw().slice(1).map(([context, value]) => ({ context, value: context === "index" ? +value : value }));
-
+    const values = table.raw().slice(1).map(([context, value]) => ({ context, value }));
     for (let i = 0; i < values.length; i++) {
       const { context, value: expected } = values[i];
-      switch (context) {
-        case SelectOptionContext.LABEL: {
-          await options.find(i => i.label === expected).locator.expect().selected(!not).poll();
-          break;
-        }
-        case SelectOptionContext.VALUE: {
-          await options.find(i => i.value === expected).locator.expect().selected(!not).poll();
-          break;
-        }
-        default: {
-          await options.find(i => i.index === expected).locator.expect().selected(!not).poll();
-          break;
-        }
-      }
+      await fn.expectDropdownOptionIsSelected(locator, expected, context as SelectOptionContext, { not });
     }
   }
 );
-
-async function thenValueMatch(locator: Locator, not: boolean, context: MatchContext, expected: string) {
-  switch (context) {
-    case MatchContext.BE:
-    case MatchContext.MATCH: {
-      await locator.expect().valueEquals(expected, !not).poll();
-      break;
-    }
-    default: {
-      await locator.expect().valueContains(expected, !not).poll();
-      break;
-    }
-  }
-}
 
 /**
  * Samples:
@@ -191,7 +153,7 @@ async function thenValueMatch(locator: Locator, not: boolean, context: MatchCont
 Then(
   "I expect the {page_object_locator} element/field/button/component value {to_or_to_not} {be_or_contain} {input_string}",
   async function(this: This, locator: Locator, not: boolean, context: MatchContext, expected: string) {
-    await thenValueMatch(locator, not, context, expected);
+    await fn.expectElementValueMatches(locator, expected, context, { not });
   }
 );
 
@@ -209,7 +171,7 @@ Then(
 Then(
   "I expect the {page_object_locator} element/field/button/component value {to_or_to_not} {be_or_contain}:",
   async function(this: This, locator: Locator, not: boolean, context: MatchContext, expected: string) {
-    await thenValueMatch(locator, not, context, expected);
+    await fn.expectElementValueMatches(locator, expected, context, { not });
   }
 );
 
@@ -227,6 +189,6 @@ Then(
 Then(
   "I expect the {page_object_locator} element/field/button/component value {to_or_to_not} be empty",
   async function(this: This, locator: Locator, not: boolean) {
-    await locator.expect().valueEmpty(!not).poll();
+    await fn.expectElementValueIsEmpty(locator, { not });
   }
 );

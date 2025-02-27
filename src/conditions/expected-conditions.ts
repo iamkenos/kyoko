@@ -1,5 +1,7 @@
 import { expect } from "@playwright/test";
 
+import { changecase } from "@common/utils/string";
+
 import type { ExpectedCondition } from "./expected-condition";
 import type { ExpectedConditionOptions, ExpectedConditionsResult } from "./types";
 
@@ -19,7 +21,7 @@ export class ExpectedConditions {
   private soft: boolean;
 
   constructor(options?: ExpectedConditionOptions) {
-    this.name = this.constructor.name;
+    this.name = changecase.capitalCase(this.constructor.name);
     this.conditions = [];
     this.timeout = options?.timeout;
     this.interval = options?.interval || 250;
@@ -41,12 +43,15 @@ export class ExpectedConditions {
       passed: failed === 0,
       message: `${failed}/${total} expected conditions not met after waiting for ${this.timeout}ms:
   Expression: ${this.name}${this["locator"] ? `\n  Locator: ${this["locator"].__proto}` : ""}
-  ${evaluations.map((result) => result.message).join("\n  ------------------------------")}`
+  ${evaluations.map((result) => result.message).join("\n  ------------------------------")}
+
+  Traceback:`
     };
   }
 
   addCondition(condition: ExpectedCondition) {
-    const [locator, page] = ["locator", "page"];
+    const [index, locator, page] = ["index", "locator", "page"];
+    condition[index] = this.conditions.length;
     condition[locator] = this[locator];
     condition[page] = this[page];
     this.conditions.push(condition);
@@ -59,7 +64,7 @@ export class ExpectedConditions {
   }
 
   setName(name: string) {
-    this.name = name;
+    this.name = changecase.sentenceCase(name);
     return this;
   }
 
@@ -81,6 +86,7 @@ export class ExpectedConditions {
         throw new Error(`Unhandled exception: ${e}`);
       }
     }
+    this.conditions = [];
     return this.result.passed;
   }
 }

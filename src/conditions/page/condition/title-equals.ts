@@ -1,9 +1,11 @@
 import { PageCondition } from "@conditions/page/page-condition";
 
+import type { ExpectedConditionKwargs } from "@conditions/types";
+
 export class TitleEquals extends PageCondition {
-  constructor(expected?: string, preferred?: boolean) {
-    super(preferred);
-    this.expected = expected || "";
+  constructor(expected: string = "", kwargs: ExpectedConditionKwargs) {
+    super(kwargs);
+    this.expected = expected;
   }
 
   async evaluate() {

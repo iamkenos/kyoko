@@ -5,6 +5,7 @@ import { PageCondition } from "@conditions/page/page-condition";
 
 import type { AllureCommandStepExecutable } from "allure-js-commons";
 import type { Locator } from "@fixtures/locator/types";
+import type { ExpectedConditionKwargs } from "@conditions/types";
 import type { PageSnapshotOptions } from "@config/types";
 
 export class SnapshotMatch extends PageCondition {
@@ -16,11 +17,11 @@ export class SnapshotMatch extends PageCondition {
   private diffFilePath: string;
   private expectedFilePath: string;
 
-  constructor(filename: string, options?: PageSnapshotOptions, preferred?: boolean) {
-    super(preferred);
+  constructor(filename: string, kwargs: ExpectedConditionKwargs & { options?: PageSnapshotOptions }) {
+    super(kwargs);
     this.filename = filename + ".png";
-    this.options = options;
-    this.on = this.filename;
+    this.options = this.kwargs.options;
+    this.kwargs.filename = this.filename;
   }
 
   private createFile(filename: string, data: Buffer) {

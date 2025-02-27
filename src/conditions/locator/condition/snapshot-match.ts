@@ -1,11 +1,12 @@
 import { SnapshotMatch as LocatorCondition } from "@conditions/page/condition/snapshot-match";
 
+import type { ExpectedConditionKwargs } from "@conditions/types";
 import type { LocatorSnapshotOptions } from "@config/types";
 
 export class SnapshotMatch extends LocatorCondition {
 
-  constructor(filename: string, options?: LocatorSnapshotOptions, preferred?: boolean) {
-    super(filename, options, preferred);
+  constructor(filename: string, kwargs: ExpectedConditionKwargs & { options?: LocatorSnapshotOptions }) {
+    super(filename, kwargs);
   }
 
   async evaluate() {

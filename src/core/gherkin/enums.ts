@@ -19,6 +19,7 @@ export enum ClickAction {
 export enum Count {
   LESS = "less",
   MORE = "more",
+  GREATER = "greater",
   EQUAL = "equal"
 }
 

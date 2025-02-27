@@ -1,15 +1,17 @@
 import { LocatorCondition } from "@conditions/locator/locator-condition";
 
+import type { ExpectedConditionKwargs } from "@conditions/types";
+
 export class AttributeContains extends LocatorCondition {
-  constructor(attribute: string, expected: string, preferred?: boolean) {
-    super(preferred);
+  constructor(attribute: string, expected: string, kwargs: ExpectedConditionKwargs) {
+    super(kwargs);
     this.expected = expected;
-    this.on = attribute;
+    this.kwargs.attribute = attribute;
   }
 
   async evaluate() {
     try {
-      this.actual = await this.locator.getAttribute(this.on);
+      this.actual = await this.locator.getAttribute(this.kwargs.attribute);
       this.passed = this.actual.includes(this.expected);
     } catch (e) {
       this.actual = e.message;

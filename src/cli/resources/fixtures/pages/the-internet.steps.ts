@@ -50,6 +50,6 @@ When(
 Then(
   "I expect the something parameter value {to_or_to_not} be {input_string}",
   async function(this: This, not: boolean, value: string) {
-    await this.page.expect().equals(this.parameters.something, value, !not).poll();
+    await this.page.expect().equals(this.parameters.something, value, { not }).poll();
   }
 );

@@ -1,16 +1,18 @@
 import { LocatorCondition } from "@conditions/locator/locator-condition";
 
+import type { ExpectedConditionKwargs } from "@conditions/types";
+
 export class CssPropertyExists extends LocatorCondition {
-  constructor(property: string, preferred?: boolean) {
-    super(preferred);
+  constructor(property: string, kwargs: ExpectedConditionKwargs) {
+    super(kwargs);
     this.expected = true;
-    this.on = property;
+    this.kwargs.property = property;
   }
 
   async evaluate() {
     try {
       const style: Object = await this.locator.evaluate((node: HTMLElement) => getComputedStyle(node));
-      this.actual = !!Object.values(style).find(i => i === this.on);
+      this.actual = !!Object.values(style).find(i => i === this.kwargs.property);
       this.passed = this.actual === this.expected;
     } catch (e) {
       this.actual = e.message;

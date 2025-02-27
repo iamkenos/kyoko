@@ -18,7 +18,7 @@ import { WindowCountMoreThan } from "./condition/window-count-more-than";
 
 import type { Page } from "@fixtures/page/types";
 import type { PageSnapshotOptions } from "@config/types";
-import type { ExpectedConditionOptions } from "../types";
+import type { ExpectedConditionKwargs, ExpectedConditionOptions } from "../types";
 
 export class PageConditions extends ExpectedConditions {
   protected page: Page;
@@ -28,67 +28,67 @@ export class PageConditions extends ExpectedConditions {
     this.page = page;
   }
 
-  arrayContains<T>(actual: Array<T>, expected: Array<T>, preferred?: boolean) {
-    return this.addCondition(new ArrayContains(actual, expected, preferred));
+  arrayContains<T>(actual: Array<T>, expected: Array<T>, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new ArrayContains(actual, expected, kwargs));
   }
 
-  arrayEquals<T>(actual: Array<T>, expected: Array<T>, preferred?: boolean) {
-    return this.addCondition(new ArrayEquals(actual, expected, preferred));
+  arrayEquals<T>(actual: Array<T>, expected: Array<T>, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new ArrayEquals(actual, expected, kwargs));
   }
 
-  dialogTextContains(expected: string, preferred?: boolean) {
-    return this.addCondition(new DialogTextContains(expected, preferred));
+  dialogTextContains(expected: string, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new DialogTextContains(expected, kwargs));
   }
 
-  dialogTextEquals(expected?: string, preferred?: boolean) {
-    return this.addCondition(new DialogTextEquals(expected, preferred));
+  dialogTextEquals(expected?: string, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new DialogTextEquals(expected, kwargs));
   }
 
-  domContentLoaded(preferred?: boolean) {
-    return this.addCondition(new DomContentLoaded(preferred));
+  domContentLoaded(kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new DomContentLoaded(kwargs));
   }
 
-  equals<T = any>(actual: T, expected: T, preferred?: boolean) {
-    return this.addCondition(new Equals(actual, expected, preferred));
+  equals<T = any>(actual: T, expected: T, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new Equals(actual, expected, kwargs));
   }
 
-  fileExists(path: string, preferred?: boolean) {
-    return this.addCondition(new FileExists(path, preferred));
+  fileExists(path: string, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new FileExists(path, kwargs));
   }
 
-  snapshotMatch(filename: string, options?: PageSnapshotOptions, preferred?: boolean) {
-    return this.addCondition(new SnapshotMatch(filename, options, preferred));
+  snapshotMatch(filename: string, kwargs?: ExpectedConditionKwargs & { options?: PageSnapshotOptions }) {
+    return this.addCondition(new SnapshotMatch(filename, kwargs));
   }
 
-  titleContains(expected: string, preferred?: boolean) {
-    return this.addCondition(new TitleContains(expected, preferred));
+  titleContains(expected: string, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new TitleContains(expected, kwargs));
   }
 
-  titleEquals(expected?: string, preferred?: boolean) {
-    return this.addCondition(new TitleEquals(expected, preferred));
+  titleEquals(expected?: string, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new TitleEquals(expected, kwargs));
   }
 
-  truthy(truthy: boolean | (() => Promise<boolean>) | (() => boolean), preferred?: boolean) {
-    return this.addCondition(new Truthy(truthy, preferred));
+  truthy(truthy: boolean | (() => Promise<boolean>) | (() => boolean), kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new Truthy(truthy, kwargs));
   }
 
-  urlContains(expected: string, preferred?: boolean) {
-    return this.addCondition(new UrlContains(expected, preferred));
+  urlContains(expected: string, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new UrlContains(expected, kwargs));
   }
 
-  urlEquals(expected?: string, preferred?: boolean) {
-    return this.addCondition(new UrlEquals(expected, preferred));
+  urlEquals(expected?: string, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new UrlEquals(expected, kwargs));
   }
 
-  windowCountEquals(count:number, preferred?: boolean) {
-    return this.addCondition(new WindowCountEquals(count, preferred));
+  windowCountEquals(count:number, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new WindowCountEquals(count, kwargs));
   }
 
-  windowCountLessThan(count:number, preferred?: boolean) {
-    return this.addCondition(new WindowCountLessThan(count, preferred));
+  windowCountLessThan(count:number, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new WindowCountLessThan(count, kwargs));
   }
 
-  windowCountMoreThan(count:number, preferred?: boolean) {
-    return this.addCondition(new WindowCountMoreThan(count, preferred));
+  windowCountMoreThan(count:number, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new WindowCountMoreThan(count, kwargs));
   }
 }

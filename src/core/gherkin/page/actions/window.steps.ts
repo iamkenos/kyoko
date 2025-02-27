@@ -7,6 +7,8 @@ import {
 import type { PageObject } from "@core/page-object";
 import type { World as This } from "@core/world";
 
+import * as fn from "./window.glue";
+
 /**
  * Samples:
  * I am on the "my-app" page
@@ -16,7 +18,7 @@ import type { World as This } from "@core/world";
 Given(
   "I am on the {page_object_persisted} page/site/portal",
   async function(this: This, page: PageObject) {
-    await page.navigate();
+    await fn.navigate(page);
   }
 );
 
@@ -27,7 +29,7 @@ Given(
 When(
   "I move out of the viewport",
   async function(this: This) {
-    await this.page.locator("html").dispatchEvent("mouseleave");
+    await fn.leaveViewport(this.page);
   }
 );
 
@@ -39,7 +41,7 @@ When(
 When(
   "I close the last opened window/tab",
   async function(this: This) {
-    this.page = await this.context.closeLastPage();
+    this.page = await fn.closeLastOpenedPage(this);
   }
 );
 
@@ -51,7 +53,7 @@ When(
 When(
   "I close all the other windows/tabs",
   async function(this: This) {
-    this.page = await this.context.closeOtherPages();
+    this.page = await fn.closeOtherPages(this);
   }
 );
 
@@ -66,7 +68,7 @@ When(
   "I press the {input_string} key(s){repeats}",
   async function(this: This, key: string, count: number) {
     for (let i = 0; i < count; i++) {
-      await this.page.keyboard.press(key);
+      await fn.press(this.page, key);
     }
   }
 );
@@ -78,7 +80,7 @@ When(
 When(
   "I start recording the network requests",
   async function(this: This) {
-    this.page.requestsInterceptor();
+    fn.recordRequests(this.page);
   }
 );
 
@@ -90,7 +92,7 @@ When(
 When(
   "I scroll to the {float},{float} coordinates of the page",
   async function(this: This, x: number, y: number) {
-    await this.page.scrollTo({ x, y });
+    fn.scrollToCoordinates(this.page, { x, y });
   }
 );
 
@@ -102,16 +104,7 @@ When(
 When(
   "I scroll to the {top_or_bottom} of the page",
   async function(this: This, direction: WindowDirection) {
-    switch (direction) {
-      case WindowDirection.BOTTOM: {
-        await this.page.scrollToBottom();
-        break;
-      }
-      default: {
-        await this.page.scrollToTop();
-        break;
-      }
-    }
+    await fn.scrollTo(this.page, direction);
   }
 );
 
@@ -125,7 +118,7 @@ When(
 When(
   "I focus/switch on/to the {page_object_prop} iframe",
   async function(this: This, frame: string) {
-    this.page.switchToFrame(frame);
+    await fn.switchToFrame(this.page, frame);
   }
 );
 
@@ -139,7 +132,7 @@ When(
 When(
   "I focus/switch on/to the parent/main context",
   async function(this: This) {
-    this.page.switchToFrame();
+    await fn.switchToFrame(this.page);
   }
 );
 
@@ -151,7 +144,7 @@ When(
 When(
   "I open the {page_object_url}",
   async function(this: This, url: string) {
-    await this.page.goto(url);
+    await fn.open(this.page, url);
   }
 );
 
@@ -165,8 +158,7 @@ When(
 When(
   "I open the {page_object_url} on a new window/tab",
   async function(this: This, url: string) {
-    const newPage = await this.context.newPage();
-    await newPage.goto(url);
+    await fn.openInNewTab(this.context, url);
   }
 );
 
@@ -180,8 +172,7 @@ When(
 When(
   "I focus/switch on/to the last opened window/tab",
   async function(this: This) {
-    await this.page.expect().windowCountMoreThan(1).poll();
-    this.page = this.context.lastPage();
+    this.page = await fn.focusOnTheLastOpenedTab(this);
   }
 );
 
@@ -194,18 +185,9 @@ When(
  */
 When(
   "I navigate {back_or_forward} from the current page{repeats}",
-  async function(this: This, navigate: WindowNavigation, count: number) {
+  async function(this: This, direction: WindowNavigation, count: number) {
     for (let i = 0; i < count; i++) {
-      switch (navigate) {
-        case WindowNavigation.BACK: {
-          await this.page.goBack();
-          break;
-        }
-        default: {
-          await this.page.goForward();
-          break;
-        }
-      }
+      await fn.navigateDirection(this.page, direction);
     }
   }
 );

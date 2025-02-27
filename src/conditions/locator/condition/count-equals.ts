@@ -1,8 +1,10 @@
 import { LocatorCondition } from "@conditions/locator/locator-condition";
 
+import type { ExpectedConditionKwargs } from "@conditions/types";
+
 export class CountEquals extends LocatorCondition {
-  constructor(expected: number, preferred?: boolean) {
-    super(preferred);
+  constructor(expected: number, kwargs: ExpectedConditionKwargs) {
+    super(kwargs);
     this.expected = expected;
   }
 

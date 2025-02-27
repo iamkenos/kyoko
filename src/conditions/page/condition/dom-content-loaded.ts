@@ -1,8 +1,10 @@
 import { PageCondition } from "@conditions/page/page-condition";
 
+import type { ExpectedConditionKwargs } from "@conditions/types";
+
 export class DomContentLoaded extends PageCondition {
-  constructor(preferred?: boolean) {
-    super(preferred);
+  constructor(kwargs: ExpectedConditionKwargs) {
+    super(kwargs);
     this.expected = this.constructor.name.toLowerCase();
   }
 

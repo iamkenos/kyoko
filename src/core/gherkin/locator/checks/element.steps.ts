@@ -8,36 +8,7 @@ import {
 import type { World as This } from "@core/world";
 import type { Locator } from "@fixtures/locator/types";
 
-/**
- * Samples:
- * I expect the "my-app" page's 2nd "locator" elements text array to be:
- * I expect the "my-app" page's "locator" elements text array to contain:
- * I expect the 2nd "locator" elements text array to be:
- * I expect the "locator" elements text array to contain:
- * I expect the "my-app" page's 2nd "locator" elements text array to not be:
- * I expect the "my-app" page's "locator" elements text array to not contain:
- * I expect the 2nd "locator" elements text array to not be:
- * I expect the "locator" elements text array to not contain:
- */
-Then(
-  "I expect the {page_object_locator} elements text array {to_or_to_not} {be_or_contain}:",
-  async function(this: This, locator: Locator, not: boolean, context: MatchContext, values: DataTable) {
-    const actual = await locator.allTextContents();
-    const expected = [].concat(...values.rows());
-
-    switch (context) {
-      case MatchContext.BE:
-      case MatchContext.MATCH: {
-        await locator.page().expect().arrayEquals(actual, expected, !not).poll();
-        break;
-      }
-      default: {
-        await locator.page().expect().arrayContains(actual, expected, !not).poll();
-        break;
-      }
-    }
-  }
-);
+import * as fn from "./element.glue";
 
 /**
  * Samples:
@@ -53,17 +24,7 @@ Then(
 Then(
   "I expect the {page_object_locator} element/field/button/component/section/panel {input_string} attribute {to_or_to_not} {be_or_contain} {input_string}",
   async function(this: This, locator: Locator, attribute: string, not: boolean, context: MatchContext, expected: string) {
-    switch (context) {
-      case MatchContext.BE:
-      case MatchContext.MATCH: {
-        await locator.expect().attributeEquals(attribute, expected, !not).poll();
-        break;
-      }
-      default: {
-        await locator.expect().attributeContains(attribute, expected, !not).poll();
-        break;
-      }
-    }
+    await fn.expectElementAttributeMatches(locator, attribute, expected, context, { not });
   }
 );
 
@@ -80,8 +41,8 @@ Then(
  */
 Then(
   "I expect the {page_object_locator} element/field/button/component/section/panel {input_string} attribute {to_or_to_not} exist",
-  async function(this: This, locator: Locator, expected: string, not: boolean) {
-    await locator.expect().attributeExists(expected, !not).poll();
+  async function(this: This, locator: Locator, attribute: string, not: boolean) {
+    await fn.expectElementAttributeExists(locator, attribute, { not });
   }
 );
 
@@ -99,7 +60,7 @@ Then(
 Then(
   "I expect the {page_object_locator} element/field/button/component/section/panel location at {x_or_y} axis {to_or_to_not} be {float}",
   async function(this: This, locator: Locator, axis: Axis, not: boolean, expected: number) {
-    await locator.expect().axisLocationEquals(axis, expected, !not).poll();
+    await fn.expectElementAxisLocationEquals(locator, axis, expected, { not });
   }
 );
 
@@ -117,7 +78,7 @@ Then(
 Then(
   "I expect the {page_object_locator} element/field/button/component/section/panel count {to_or_to_not} be {int}",
   async function(this: This, locator: Locator, not: boolean, expected: number) {
-    await locator.expect().countEquals(expected, !not).poll();
+    await fn.expectElementCountEquals(locator, expected, { not });
   }
 );
 
@@ -135,7 +96,7 @@ Then(
 Then(
   "I expect the {page_object_locator} element/field/button/component/section/panel count {to_or_to_not} be less than {int}",
   async function(this: This, locator: Locator, not: boolean, expected: number) {
-    await locator.expect().countLessThan(expected, !not).poll();
+    await fn.expectElementCountLessThan(locator, expected, { not });
   }
 );
 
@@ -153,7 +114,7 @@ Then(
 Then(
   "I expect the {page_object_locator} element/field/button/component/section/panel count {to_or_to_not} be more/greater than {int}",
   async function(this: This, locator: Locator, not: boolean, expected: number) {
-    await locator.expect().countMoreThan(expected, !not).poll();
+    await fn.expectElementCountMoreThan(locator, expected, { not });
   }
 );
 
@@ -170,8 +131,8 @@ Then(
  */
 Then(
   "I expect the {page_object_locator} element/field/button/component/section/panel {input_string} css property {to_or_to_not} exist",
-  async function(this: This, locator: Locator, expected: string, not: boolean) {
-    await locator.expect().cssPropertyExists(expected, !not).poll();
+  async function(this: This, locator: Locator, property: string, not: boolean) {
+    await fn.expectElementCssPropertyExists(locator, property, { not });
   }
 );
 
@@ -189,7 +150,7 @@ Then(
 Then(
   "I expect the {page_object_locator} element/field/button/component/section/panel {to_or_to_not} be {float}px in width and {float}px in height",
   async function(this: This, locator: Locator, not: boolean, width: number, height: number) {
-    await locator.expect().dimensionEquals(width, height, !not).poll();
+    await fn.expectElementDimensionEquals(locator, width, height, { not });
   }
 );
 
@@ -207,7 +168,7 @@ Then(
 Then(
   "I expect the {page_object_locator} element/field/button/component/section/panel {to_or_to_not} be {float}px in {width_or_height}",
   async function(this: This, locator: Locator, not: boolean, expected: number, side: SizeContext) {
-    await locator.expect().dimensionSideEquals(side, expected, !not).poll();
+    await fn.expectElementDimensionSideEquals(locator, expected, side, { not });
   }
 );
 
@@ -225,7 +186,7 @@ Then(
 Then(
   "I expect the {page_object_locator} element/field/button/component/section/panel {to_or_to_not} be displayed",
   async function(this: This, locator: Locator, not: boolean) {
-    await locator.expect().displayed(!not).poll();
+    await fn.expectElementIsDisplayed(locator, { not });
   }
 );
 
@@ -243,7 +204,7 @@ Then(
 Then(
   "I expect the {page_object_locator} element/field/button/component/section/panel {to_or_to_not} be displayed within the viewport",
   async function(this: This, locator: Locator, not: boolean) {
-    await locator.expect().displayedInViewport(!not).poll();
+    await fn.expectElementIsDisplayedInViewport(locator, { not });
   }
 );
 
@@ -261,7 +222,7 @@ Then(
 Then(
   "I expect the {page_object_locator} element/field/button/component/section/panel {to_or_to_not} be enabled",
   async function(this: This, locator: Locator, not: boolean) {
-    await locator.expect().enabled(!not).poll();
+    await fn.expectElementIsEnabled(locator, { not });
   }
 );
 
@@ -279,7 +240,7 @@ Then(
 Then(
   "I expect the {page_object_locator} element/field/button/component/section/panel {to_or_to_not} exist",
   async function(this: This, locator: Locator, not: boolean) {
-    await locator.expect().exists(!not).poll();
+    await fn.expectElementExists(locator, { not });
   }
 );
 
@@ -297,7 +258,7 @@ Then(
 Then(
   "I expect the {page_object_locator} element/field/button/component/section/panel {to_or_to_not} be focused",
   async function(this: This, locator: Locator, not: boolean) {
-    await locator.expect().focused(!not).poll();
+    await fn.expectElementHasFocus(locator, { not });
   }
 );
 
@@ -315,23 +276,9 @@ Then(
 Then(
   "I expect the {page_object_locator} element/field/button/component/section/panel {to_or_to_not} match the snapshot {input_string}",
   async function(this: This, locator: Locator, not: boolean, filename: string) {
-    await locator.expect().snapshotMatch(filename, undefined, !not).poll();
+    await fn.expectElementSnapshotMatches(locator, filename, { not });
   }
 );
-
-async function thenTextMatch(locator: Locator, not: boolean, context: MatchContext, expected: string) {
-  switch (context) {
-    case MatchContext.BE:
-    case MatchContext.MATCH: {
-      await locator.expect().textEquals(expected, !not).poll();
-      break;
-    }
-    default: {
-      await locator.expect().textContains(expected, !not).poll();
-      break;
-    }
-  }
-}
 
 /**
  * Samples:
@@ -347,7 +294,7 @@ async function thenTextMatch(locator: Locator, not: boolean, context: MatchConte
 Then(
   "I expect the {page_object_locator} element/field/button/component/section/panel text {to_or_to_not} {be_or_contain} {input_string}",
   async function(this: This, locator: Locator, not: boolean, context: MatchContext, expected: string) {
-    await thenTextMatch(locator, not, context, expected);
+    await fn.expectElementTextMatches(locator, expected, context, { not });
   }
 );
 
@@ -365,7 +312,7 @@ Then(
 Then(
   "I expect the {page_object_locator} element/field/button/component/section/panel text {to_or_to_not} {be_or_contain}:",
   async function(this: This, locator: Locator, not: boolean, context: MatchContext, expected: string) {
-    await thenTextMatch(locator, not, context, expected);
+    await fn.expectElementTextMatches(locator, expected, context, { not });
   }
 );
 
@@ -383,6 +330,26 @@ Then(
 Then(
   "I expect the {page_object_locator} element/field/button/component/section/panel text {to_or_to_not} be empty",
   async function(this: This, locator: Locator, not: boolean) {
-    await locator.expect().textEmpty(!not).poll();
+    await fn.expectElementTextIsEmpty(locator, { not });
+  }
+);
+
+
+/**
+ * Samples:
+ * I expect the "my-app" page's 2nd "locator" elements text array to be:
+ * I expect the "my-app" page's "locator" elements text array to contain:
+ * I expect the 2nd "locator" elements text array to be:
+ * I expect the "locator" elements text array to contain:
+ * I expect the "my-app" page's 2nd "locator" elements text array to not be:
+ * I expect the "my-app" page's "locator" elements text array to not contain:
+ * I expect the 2nd "locator" elements text array to not be:
+ * I expect the "locator" elements text array to not contain:
+ */
+Then(
+  "I expect the {page_object_locator} elements text array {to_or_to_not} {be_or_contain}:",
+  async function(this: This, locator: Locator, not: boolean, context: MatchContext, values: DataTable) {
+    const expected = [].concat(...values.rows());
+    await fn.expectElementTextsMatches(locator, expected, context, { not });
   }
 );

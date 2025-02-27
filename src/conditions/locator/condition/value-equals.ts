@@ -1,9 +1,11 @@
 import { LocatorCondition } from "@conditions/locator/locator-condition";
 
+import type { ExpectedConditionKwargs } from "@conditions/types";
+
 export class ValueEquals extends LocatorCondition {
-  constructor(expected?: string, preferred?: boolean) {
-    super(preferred);
-    this.expected = expected || "";
+  constructor(expected: string = "", kwargs: ExpectedConditionKwargs) {
+    super(kwargs);
+    this.expected = expected;
   }
 
   async evaluate() {

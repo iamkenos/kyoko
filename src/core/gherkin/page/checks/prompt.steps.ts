@@ -1,6 +1,9 @@
 import { Then } from "@cucumber/cucumber";
+import { MatchContext } from "@core/gherkin/enums";
 
 import type { World as This } from "@core/world";
+
+import * as fn from "./prompt.glue";
 
 /**
  * Samples:
@@ -14,8 +17,7 @@ import type { World as This } from "@core/world";
 Then(
   "I expect a/an/the alert/confirm/prompt box {to_or_to_not} have been opened",
   async function(this: This, not: boolean) {
-    const dialogOpened = () => this.page.dialog.handled;
-    await this.page.expect().truthy(dialogOpened, !not).poll();
+    await fn.expectDialogWasOpened(this.page, { not });
   }
 );
 
@@ -31,7 +33,7 @@ Then(
 Then(
   "I expect the alert/confirm/prompt box text {to_or_to_not} contain {input_string}",
   async function(this: This, not: boolean, expected: string) {
-    await this.page.expect().dialogTextContains(expected, !not).poll();
+    await fn.expectDialogTextMatches(this.page, expected, MatchContext.CONTAIN, { not });
   }
 );
 
@@ -47,6 +49,6 @@ Then(
 Then(
   "I expect the alert/confirm/prompt box text {to_or_to_not} be {input_string}",
   async function(this: This, not: boolean, expected: string) {
-    await this.page.expect().dialogTextEquals(expected, !not).poll();
+    await fn.expectDialogTextMatches(this.page, expected, MatchContext.MATCH, { not });
   }
 );

@@ -8,6 +8,8 @@ import {
 import type { World as This } from "@core/world";
 import type { Locator } from "@fixtures/locator/types";
 
+import * as fn from "./form.glue";
+
 /**
  * Samples:
  * I clear the "my-app" page's 2nd "locator" element
@@ -18,22 +20,9 @@ import type { Locator } from "@fixtures/locator/types";
 When(
   "I clear the {page_object_locator} element/field",
   async function(this: This, locator: Locator) {
-    await locator.clear();
+    await fn.clear(locator);
   }
 );
-
-async function whenTypeOnField(locator: Locator, value: string, action: SetValueAction) {
-  switch (action) {
-    case SetValueAction.APPEND: {
-      await locator.fill(value, { append: true });
-      break;
-    }
-    default: {
-      await locator.fill(value);
-      break;
-    }
-  }
-}
 
 /**
  * Samples:
@@ -49,7 +38,7 @@ async function whenTypeOnField(locator: Locator, value: string, action: SetValue
 When(
   "I {type_or_append} {input_string} on the {page_object_locator} element/field",
   async function(this: This, action: SetValueAction, value: string, locator: Locator) {
-    await whenTypeOnField(locator, value, action);
+    await fn.fill(locator, value, action);
   }
 );
 
@@ -67,7 +56,7 @@ When(
 When(
   "I {type_or_append} a multi line value on the {page_object_locator} element:/field:",
   async function(this: This, action: SetValueAction, locator: Locator, value: string) {
-    await whenTypeOnField(locator, value, action);
+    await fn.fill(locator, value, action);
   }
 );
 
@@ -79,12 +68,12 @@ When(
 When(
   "I {type_or_append} on the fields:",
   async function(this: This, action: SetValueAction, table: DataTable) {
-    const values = table.raw()
-      .slice(1)
-      .map(([element, value, index]) => ({ locator: this.findPageObjectLocator(undefined, element, +index), value }));
+    const values = table.raw().slice(1).map(([element, value, index]) =>
+      ({ locator: this.findPageObjectLocator(undefined, element, +index), value }));
+
     for (let i = 0; i < values.length; i++) {
       const { locator, value } = values[i];
-      await whenTypeOnField(locator, value, action);
+      await fn.fill(locator, value, action);
     }
   }
 );
@@ -96,19 +85,16 @@ When(
  */
 When(
   "I {type_or_append} on the {input_string} page's fields:",
-  async function(this: This, action: SetValueAction, table: DataTable) {
-    const values = table.raw().slice(1).map(([element, value, index]) => ({ locator: this.findPageObjectLocator(undefined, element, +index), value }));
+  async function(this: This, action: SetValueAction, page: string, table: DataTable) {
+    const values = table.raw().slice(1).map(([element, value, index]) =>
+      ({ locator: this.findPageObjectLocator(page, element, +index), value }));
+
     for (let i = 0; i < values.length; i++) {
       const { locator, value } = values[i];
-      await whenTypeOnField(locator, value, action);
+      await fn.fill(locator, value, action);
     }
   }
 );
-
-
-async function whenToggleOption(action: ToggleAction, locator: Locator) {
-  action === ToggleAction.TICK ? await locator.check({ force: true }) : await locator.uncheck({ force: true });
-}
 
 /**
  * Samples:
@@ -124,7 +110,7 @@ async function whenToggleOption(action: ToggleAction, locator: Locator) {
 When(
   "I {tick_or_untick} the {page_object_locator} element/option",
   async function(this: This, action: ToggleAction, locator: Locator) {
-    await whenToggleOption(action, locator);
+    await fn.toggle(locator, action);
   }
 );
 
@@ -142,7 +128,7 @@ When(
 When(
   "I {tick_or_untick} the {page_object_locator} check box",
   async function(this: This, action: ToggleAction, locator: Locator) {
-    await whenToggleOption(action, locator);
+    await fn.toggle(locator, action);
   }
 );
 
@@ -160,7 +146,7 @@ When(
 When(
   "I {tick_or_untick} the {page_object_locator} toggle item",
   async function(this: This, action: ToggleAction, locator: Locator) {
-    await whenToggleOption(action, locator);
+    await fn.toggle(locator, action);
   }
 );
 
@@ -178,7 +164,7 @@ When(
 When(
   "I {tick_or_untick} the {page_object_locator} radio button",
   async function(this: This, action: ToggleAction, locator: Locator) {
-    await whenToggleOption(action, locator);
+    await fn.toggle(locator, action);
   }
 );
 
@@ -196,16 +182,7 @@ When(
 When(
   "I select the option with {label_or_value} {input_string} from the {page_object_locator} dropdown",
   async function(this: This, context: SelectOptionContext, option: string, locator: Locator) {
-    switch (context) {
-      case SelectOptionContext.LABEL: {
-        await locator.selectOption({ label: option }, { force: true });
-        break;
-      }
-      default: {
-        await locator.selectOption({ value: option }, { force: true });
-        break;
-      }
-    }
+    await fn.selectOption(locator, option, context);
   }
 );
 
@@ -218,8 +195,8 @@ When(
  */
 When(
   "I select the {ordinal} option from the {page_object_locator} dropdown",
-  async function(this: This, ordinal: number, locator: Locator) {
-    await locator.selectOption({ index: ordinal - 1 }, { force: true });
+  async function(this: This, option: number, locator: Locator) {
+    await fn.selectOption(locator, option, SelectOptionContext.INDEX);
   }
 );
 
@@ -233,8 +210,10 @@ When(
 When(
   "I select the options from the {page_object_locator} multi select dropdown:",
   async function(this: This, locator: Locator, table: DataTable) {
-    const values = table.raw().slice(1).map(([context, value]) => ({ [context]: context === "index" ? +value : value }));
-    await locator.selectOption(values, { force: true });
+    const values = table.raw().slice(1).map(([context, value]) =>
+      ({ [context]: context === SelectOptionContext.INDEX ? +value : value }));
+
+    await fn.selectOptions(locator, values);
   }
 );
 
@@ -248,6 +227,6 @@ When(
 When(
   "I upload the {input_string} file to the {page_object_locator} element/field",
   async function(this: This, filepath: string, locator: Locator) {
-    await locator.uploadFiles(filepath);
+    await fn.uploadFiles(locator, filepath);
   }
 );

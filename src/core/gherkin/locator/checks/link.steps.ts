@@ -1,9 +1,6 @@
 import { Then } from "@cucumber/cucumber";
 import {
-  AnchorAttributes,
-  HrefScheme,
   HrefSchemeContext,
-  HrefTarget,
   HrefTargetContext
 } from "@core/gherkin/enums";
 
@@ -11,11 +8,7 @@ import type { PageObject } from "@core/page-object";
 import type { World as This } from "@core/world";
 import type { Locator } from "@fixtures/locator/types";
 
-async function thenLinkOpensOn(locator: Locator, not: boolean, target: HrefTargetContext) {
-  const [context] = Object.entries(HrefTargetContext).find(([, value]) => value === target);
-  const expected = HrefTarget[context];
-  await locator.expect().attributeEquals(AnchorAttributes.TARGET, expected, !not).poll();
-}
+import * as fn from "./link.glue";
 
 /**
  * Samples:
@@ -31,7 +24,7 @@ async function thenLinkOpensOn(locator: Locator, not: boolean, target: HrefTarge
 Then(
   "I expect the {page_object_locator} element/button {to_or_to_not} open on a/the {link_target}",
   async function(this: This, locator: Locator, not: boolean, expected: HrefTargetContext) {
-    await thenLinkOpensOn(locator, not, expected);
+    await fn.expectLinkOpensOn(locator, expected, { not });
   }
 );
 
@@ -49,7 +42,7 @@ Then(
 Then(
   "I expect the {page_object_locator} element/button {to_or_to_not} open without a target",
   async function(this: This, locator: Locator, not: boolean) {
-    await locator.expect().attributeExists(AnchorAttributes.TARGET, not).poll();
+    await fn.expectLinkOpensOnTheSameWindow(locator, { not });
   }
 );
 
@@ -65,9 +58,9 @@ Then(
  * I expect the "locator" button to not open on a named frame "frame"
  */
 Then(
-  "I expect the {page_object_locator} element/button {to_or_to_not} open on a named frame {input_string}",
+  "I expect the {page_object_locator} element/button {to_or_to_not} open on a/the named frame {input_string}",
   async function(this: This, locator: Locator, not: boolean, expected: string) {
-    await locator.expect().attributeEquals(AnchorAttributes.TARGET, expected, !not).poll();
+    await fn.expectLinkOpensOnTheNamedFrame(locator, expected, { not });
   }
 );
 
@@ -85,7 +78,7 @@ Then(
 Then(
   "I expect the {link_locator} link {to_or_to_not} open on a/the {link_target}",
   async function(this: This, locator: Locator, not: boolean, expected: HrefTargetContext) {
-    await thenLinkOpensOn(locator, not, expected);
+    await fn.expectLinkOpensOn(locator, expected, { not });
   }
 );
 
@@ -99,7 +92,7 @@ Then(
 Then(
   "I expect the {link_locator} link {to_or_to_not} open without a target",
   async function(this: This, locator: Locator, not: boolean) {
-    await locator.expect().attributeExists(AnchorAttributes.TARGET, not).poll();
+    await fn.expectLinkOpensOnTheSameWindow(locator, { not });
   }
 );
 
@@ -111,21 +104,11 @@ Then(
  * I expect the "link text" link to not open on a named frame "frame"
  */
 Then(
-  "I expect the {link_locator} link {to_or_to_not} open on a named frame {input_string}",
+  "I expect the {link_locator} link {to_or_to_not} open on a/the named frame {input_string}",
   async function(this: This, locator: Locator, not: boolean, expected: string) {
-    await locator.expect().attributeEquals(AnchorAttributes.TARGET, expected, !not).poll();
+    await fn.expectLinkOpensOnTheNamedFrame(locator, expected, { not });
   }
 );
-
-async function thenLinkSchemeEquals(locator: Locator, not: boolean, scheme: HrefSchemeContext, value: string) {
-  const [context] = Object.entries(HrefSchemeContext).find(([, value]) => value === scheme);
-  const expected = `${HrefScheme[context]}${value}`;
-  await locator.expect().attributeEquals(AnchorAttributes.HREF, expected, !not).poll();
-}
-
-async function thenLinkHrefEquals(locator: Locator, not: boolean, value: string) {
-  await locator.expect().attributeEquals(AnchorAttributes.HREF, value, !not).poll();
-}
 
 /**
  * Samples:
@@ -140,8 +123,8 @@ async function thenLinkHrefEquals(locator: Locator, not: boolean, value: string)
  */
 Then(
   "I expect the {page_object_locator} element/button {to_or_to_not} point to a {link_scheme} scheme {input_string}",
-  async function(this: This, locator: Locator, not: boolean, target: HrefSchemeContext, expected: string) {
-    await thenLinkSchemeEquals(locator, not, target, expected);
+  async function(this: This, locator: Locator, not: boolean, scheme: HrefSchemeContext, expected: string) {
+    await fn.expectLinkSchemeEquals(locator, expected, scheme, { not });
   }
 );
 
@@ -159,7 +142,7 @@ Then(
 Then(
   "I expect the {page_object_locator} element/button {to_or_to_not} point to a path/section {input_string}",
   async function(this: This, locator: Locator, not: boolean, expected: string) {
-    await thenLinkHrefEquals(locator, not, expected);
+    await fn.expectLinkHrefEquals(locator, expected, { not });
   }
 );
 
@@ -177,7 +160,7 @@ Then(
 Then(
   "I expect the {page_object_locator} element/button {to_or_to_not} point to( an absolute url) {input_string}",
   async function(this: This, locator: Locator, not: boolean, expected: string) {
-    await thenLinkHrefEquals(locator, not, expected);
+    await fn.expectLinkHrefEquals(locator, expected, { not });
   }
 );
 
@@ -190,8 +173,8 @@ Then(
  */
 Then(
   "I expect the {link_locator} link {to_or_to_not} point to a {link_scheme} scheme {input_string}",
-  async function(this: This, locator: Locator, not: boolean, target: HrefSchemeContext, expected: string) {
-    await thenLinkSchemeEquals(locator, not, target, expected);
+  async function(this: This, locator: Locator, not: boolean, scheme: HrefSchemeContext, expected: string) {
+    await fn.expectLinkSchemeEquals(locator, expected, scheme, { not });
   }
 );
 
@@ -205,7 +188,7 @@ Then(
 Then(
   "I expect the {link_locator} link {to_or_to_not} point to a path/section {input_string}",
   async function(this: This, locator: Locator, not: boolean, expected: string) {
-    await thenLinkHrefEquals(locator, not, expected);
+    await fn.expectLinkHrefEquals(locator, expected, { not });
   }
 );
 
@@ -219,7 +202,7 @@ Then(
 Then(
   "I expect the {link_locator} link {to_or_to_not} point to( an absolute url) {input_string}",
   async function(this: This, locator: Locator, not: boolean, expected: string) {
-    await thenLinkHrefEquals(locator, not, expected);
+    await fn.expectLinkHrefEquals(locator, expected, { not });
   }
 );
 
@@ -237,7 +220,7 @@ Then(
 Then(
   "I expect the {page_object_locator} element/button {to_or_to_not} point to the {page_object} page",
   async function(this: This, locator: Locator, not: boolean, page: PageObject) {
-    await thenLinkHrefEquals(locator, not, page.url);
+    await fn.expectLinkHrefEquals(locator, page.url, { not });
   }
 );
 
@@ -251,6 +234,6 @@ Then(
 Then(
   "I expect the {link_locator} link {to_or_to_not} point to the {page_object} page",
   async function(this: This, locator: Locator, not: boolean, page: PageObject) {
-    await thenLinkHrefEquals(locator, not, page.url);
+    await fn.expectLinkHrefEquals(locator, page.url, { not });
   }
 );

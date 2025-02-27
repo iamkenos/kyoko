@@ -3,6 +3,8 @@ import { When } from "@cucumber/cucumber";
 import type { World as This } from "@core/world";
 import type { Locator } from "@fixtures/locator/types";
 
+import * as fn from "./window.glue";
+
 /**
  * Samples:
  * I search for locators under the "my-app" page's 1st "locator's" "sublocator" section
@@ -14,7 +16,7 @@ import type { Locator } from "@fixtures/locator/types";
 When(
   "I search for locators/elements/fields/buttons/components under the {page_object_locator_nested}",
   async function(this: This, locator: Locator) {
-    this.context.locator = locator;
+    fn.setLocatorSearchRestriction(this, locator);
   }
 );
 
@@ -28,6 +30,6 @@ When(
 When(
   "I remove the locator/element/field/component search limit/restriction",
   async function(this: This) {
-    this.context.locator = undefined;
+    fn.unsetLocatorSearchRestriction(this);
   }
 );

@@ -1,5 +1,7 @@
 import { Component, LocatorFilters } from "@iamkenos/kyoko/core";
 
+import type { ExpectedConditionKwargs } from "@iamkenos/kyoko/conditions";
+
 export class NavigationBar extends Component {
 
   constructor(filters?: LocatorFilters) {
@@ -14,13 +16,13 @@ export class NavigationBar extends Component {
     await locator.click();
   }
 
-  async expectItemSelected(text: string, not?: boolean) {
+  async expectNavBarItemIsSelected(text: string, kwargs?: ExpectedConditionKwargs) {
     const locator = this.navItem(text);
-    await locator.expect().attributeEquals("class", "active", !not).poll();
+    await locator.expect().attributeEquals("class", "active", kwargs).poll();
   }
 
-  async expectItemExists(text: string, not?: boolean) {
+  async expectNavBarItemExists(text: string, kwargs?: ExpectedConditionKwargs) {
     const locator = this.navItem(text);
-    await locator.expect().exists(!not).poll();
+    await locator.expect().exists(kwargs).poll();
   }
 }

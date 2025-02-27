@@ -3,6 +3,8 @@ import { WindowPromptAction } from "@core/gherkin/enums";
 
 import type { World as This } from "@core/world";
 
+import * as fn from "./prompt.glue";
+
 /**
  * Samples:
  * I auto accept the page dialog
@@ -11,7 +13,7 @@ import type { World as This } from "@core/world";
 When(
   "I auto {accept_or_dismiss} the page dialog",
   async function(this: This, action: WindowPromptAction) {
-    this.page.dialogListener({ action, once: true });
+    fn.dialogHandleOnce(this.page, action);
   }
 );
 
@@ -23,7 +25,7 @@ When(
 When(
   "I auto {accept_or_dismiss} and type {input_string} on the page dialog",
   async function(this: This, action: WindowPromptAction, text: string) {
-    this.page.dialogListener({ action, once: true, text });
+    fn.dialogHandleOnce(this.page, action, text);
   }
 );
 
@@ -35,7 +37,7 @@ When(
 When(
   "I always auto {accept_or_dismiss} the page dialogs",
   async function(this: This, action: WindowPromptAction) {
-    this.page.dialogListener({ action, once: false });
+    fn.dialogHandleAlways(this.page, action);
   }
 );
 
@@ -47,6 +49,6 @@ When(
 When(
   "I always auto {accept_or_dismiss} and type {input_string} the page dialogs",
   async function(this: This, action: WindowPromptAction, text: string) {
-    this.page.dialogListener({ action, text, once: false });
+    fn.dialogHandleAlways(this.page, action, text);
   }
 );

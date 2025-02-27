@@ -23,3 +23,5 @@ export type ExpectedConditionOptions = {
   interval?: number,
   soft?: boolean
 }
+
+export type ExpectedConditionKwargs = { not?: boolean } & Record<string, any>

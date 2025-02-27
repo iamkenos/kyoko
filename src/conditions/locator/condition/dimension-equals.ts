@@ -1,13 +1,15 @@
 import { LocatorCondition } from "@conditions/locator/locator-condition";
 
+import type { ExpectedConditionKwargs } from "@conditions/types";
+
 export class DimensionEquals extends LocatorCondition {
-  constructor(width: number, height: number, preferred?: boolean) {
-    super(preferred);
+  constructor(width: number, height: number, kwargs: ExpectedConditionKwargs) {
+    super(kwargs);
     this.expected = this.toString(width, height);
   }
 
   private toString(width: number, height: number) {
-    return `${width}px x ${height}px`;
+    return `(W x H) ${width}px x ${height}px`;
   }
 
   async evaluate() {

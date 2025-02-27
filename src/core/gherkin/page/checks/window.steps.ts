@@ -1,19 +1,22 @@
 import { Then } from "@cucumber/cucumber";
-import { Count } from "@core/gherkin/enums";
+import { Count, MatchContext } from "@core/gherkin/enums";
 
 import type { PageObject } from "@core/page-object";
 import type { World as This } from "@core/world";
+
+import * as fn from "./window.glue";
 
 /**
  * Samples:
  * I expect to be on the "my-app" page
  * I expect to be on the "my-app" site
  * I expect to be on the "my-app" portal
+ * I expect to not be on the "my-app" portal
  */
 Then(
-  "I expect to be on the {page_object} page/site/portal",
-  async function(this: This, page: PageObject) {
-    await page.expect().loaded().poll();
+  "I expect {to_or_to_not} be on the {page_object} page/site/portal",
+  async function(this: This, not: boolean, page: PageObject) {
+    await fn.expectPageHasFullyLoaded(page, { not });
   }
 );
 
@@ -26,7 +29,7 @@ Then(
 Then(
   "I expect to still be on the {page_object} page/site/portal",
   async function(this: This, page: PageObject) {
-    await page.expect().loaded().poll();
+    await fn.expectPageHasFullyLoaded(page);
   }
 );
 
@@ -35,11 +38,12 @@ Then(
  * I expect to be back to the "my-app" page
  * I expect to be back to the "my-app" site
  * I expect to be back to the "my-app" portal
+ * I expect to not be back to the "my-app" portal
  */
 Then(
-  "I expect to be back to the {page_object} page/site/portal",
-  async function(this: This, page: PageObject) {
-    await page.expect().loaded().poll();
+  "I expect {to_or_to_not} be back to the {page_object} page/site/portal",
+  async function(this: This, not: boolean, page: PageObject) {
+    await fn.expectPageHasFullyLoaded(page, { not });
   }
 );
 
@@ -51,7 +55,7 @@ Then(
 Then(
   "I expect the {page_or_viewport} {to_or_to_not} match the snapshot {input_string}",
   async function(this: This, context: string, not: boolean, filename: string) {
-    await this.page.expect().snapshotMatch(filename, { fullPage: context.length === 4 }, !not).poll();
+    await fn.expectPageSnapshotMatches(this.page, filename, { not, fullPage: context.length === 4 });
   }
 );
 
@@ -61,25 +65,15 @@ Then(
  * I expect the page title to contain "title"
  * I expect the page title to not contain the "my-app" page's title
  * I expect the page title to not contain "title"
- */
-Then(
-  "I expect the page title {to_or_to_not} contain {the_page_object_title}",
-  async function(this: This, not: boolean, title: string) {
-    await this.page.expect().titleContains(title, !not).poll();
-  }
-);
-
-/**
- * Samples:
  * I expect the page title to match the "my-app" page's title
  * I expect the page title to be "title"
  * I expect the page title to not match the "my-app" page's title
  * I expect the page title to not be "title"
  */
 Then(
-  "I expect the page title {to_or_to_not} be/match {the_page_object_title}",
-  async function(this: This, not: boolean, title: string) {
-    await this.page.expect().titleEquals(title, !not).poll();
+  "I expect the page title {to_or_to_not} {be_or_contain} {the_page_object_title}",
+  async function(this: This, not: boolean, context: MatchContext, title: string) {
+    await fn.expectPageTitleMatches(this.page, title, context, { not });
   }
 );
 
@@ -93,7 +87,7 @@ Then(
 Then(
   "I expect the url {to_or_to_not} contain {the_page_object_url}",
   async function(this: This, not: boolean, url: string) {
-    await this.page.expect().urlContains(url, !not).poll();
+    await fn.expectPageUrlMatches(this.page, url, MatchContext.CONTAIN, { not });
   }
 );
 
@@ -107,7 +101,7 @@ Then(
 Then(
   "I expect the url {to_or_to_not} be/match {the_page_object_url}",
   async function(this: This, not: boolean, url: string) {
-    await this.page.expect().urlEquals(url, !not).poll();
+    await fn.expectPageUrlMatches(this.page, url, MatchContext.BE, { not });
   }
 );
 
@@ -119,7 +113,7 @@ Then(
 Then(
   "I expect the window/tab count {to_or_to_not} be {int}",
   async function(this: This, not: boolean, value: number) {
-    await this.page.expect().windowCountEquals(value, !not).poll();
+    await fn.expectWindowCountMatches(this.page, value, Count.EQUAL, { not });
   }
 );
 
@@ -133,16 +127,7 @@ Then(
 Then(
   "I expect the window/tab count {to_or_to_not} be {less_or_more} than {int}",
   async function(this: This, not: boolean, count: Count, value: number) {
-    switch (count) {
-      case Count.LESS: {
-        await this.page.expect().windowCountLessThan(value, !not).poll();
-        break;
-      }
-      default: {
-        await this.page.expect().windowCountMoreThan(value, !not).poll();
-        break;
-      }
-    }
+    await fn.expectWindowCountMatches(this.page, value, count, { not });
   }
 );
 

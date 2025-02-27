@@ -3,32 +3,8 @@ import { ClickAction } from "@core/gherkin/enums";
 
 import type { World as This } from "@core/world";
 import type { Locator } from "@fixtures/locator/types";
-import type { Component } from "@fixtures/component/component";
 
-export async function whenClickElement(action: ClickAction, locator: Locator | Component, clickCount: number) {
-  switch (action) {
-    case ClickAction.FORCE: {
-      await locator.click({ clickCount, force: true });
-      break;
-    }
-    case ClickAction.DOUBLE: {
-      await locator.dblclick();
-      break;
-    }
-    case ClickAction.MIDDLE: {
-      await locator.click({ button: ClickAction.MIDDLE, clickCount });
-      break;
-    }
-    case ClickAction.RIGHT: {
-      await locator.click({ button: ClickAction.RIGHT, clickCount });
-      break;
-    }
-    default: {
-      await locator.click({ clickCount });
-      break;
-    }
-  }
-}
+import * as fn from "./mouse.glue";
 
 /**
  * Samples:
@@ -41,7 +17,7 @@ export async function whenClickElement(action: ClickAction, locator: Locator | C
 When(
   "I {click} the {page_object_locator} element/field/button{repeats}",
   async function(this: This, action: ClickAction, locator: Locator, clickCount: number) {
-    await whenClickElement(action, locator, clickCount);
+    await fn.click(locator, action, clickCount);
   }
 );
 
@@ -56,7 +32,7 @@ When(
 When(
   "I {click} the {link_locator} link{repeats}",
   async function(this: This, action: ClickAction, locator: Locator, clickCount: number) {
-    await whenClickElement(action, locator, clickCount);
+    await fn.click(locator, action, clickCount);
   }
 );
 
@@ -69,7 +45,7 @@ When(
 When(
   "I drag the {page_object_locator} element to the {page_object_locator} element",
   async function(this: This, source: Locator, target: Locator) {
-    await source.dragAndDrop(target);
+    await fn.dragAndDrop(source, target);
   }
 );
 
@@ -83,7 +59,7 @@ When(
 When(
   "I focus on the {page_object_locator} element/field/button/component",
   async function(this: This, locator: Locator) {
-    await locator.focus();
+    await fn.focus(locator);
   }
 );
 
@@ -97,7 +73,7 @@ When(
 When(
   "I hover on the {page_object_locator} element/field/button/component",
   async function(this: This, locator: Locator) {
-    await locator.hoverIntoView();
+    await fn.hoverIntoView(locator);
   }
 );
 
@@ -111,7 +87,7 @@ When(
 When(
   "I hover on the {page_object_locator} element/field/button/component with an offset of {int},{int}",
   async function(this: This, locator: Locator, x: number, y: number) {
-    await locator.hoverIntoView({ position: { x, y } });
+    await fn.hoverIntoView(locator, { position: { x, y } });
   }
 );
 

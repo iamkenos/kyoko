@@ -1,8 +1,10 @@
 import { LocatorCondition } from "@conditions/locator/locator-condition";
 
+import type { ExpectedConditionKwargs } from "@conditions/types";
+
 export class TextContains extends LocatorCondition {
-  constructor(expected: string, preferred?: boolean) {
-    super(preferred);
+  constructor(expected: string, kwargs: ExpectedConditionKwargs) {
+    super(kwargs);
     this.expected = expected;
   }
 

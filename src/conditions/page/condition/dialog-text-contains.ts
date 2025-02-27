@@ -1,8 +1,10 @@
 import { PageCondition } from "@conditions/page/page-condition";
 
+import type { ExpectedConditionKwargs } from "@conditions/types";
+
 export class DialogTextContains extends PageCondition {
-  constructor(expected: string, preferred?: boolean) {
-    super(preferred);
+  constructor(expected: string, kwargs: ExpectedConditionKwargs) {
+    super(kwargs);
     this.expected = expected;
   }
 

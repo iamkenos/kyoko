@@ -26,7 +26,7 @@ import { ValueEquals } from "./condition/value-equals";
 import type { Locator } from "@fixtures/locator/types";
 import type { LocatorSnapshotOptions } from "@config/types";
 import type { Axis, SizeContext } from "@core/gherkin/enums";
-import type { ExpectedConditionOptions } from "../types";
+import type { ExpectedConditionKwargs, ExpectedConditionOptions } from "../types";
 
 export class LocatorConditions extends ExpectedConditions {
   protected locator: Locator;
@@ -36,103 +36,104 @@ export class LocatorConditions extends ExpectedConditions {
     this.locator = locator;
   }
 
-  attributeContains(attribute: string, expected: string, preferred?: boolean) {
-    return this.addCondition(new AttributeContains(attribute, expected, preferred));
+  attributeContains(attribute: string, expected: string, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new AttributeContains(attribute, expected, kwargs));
   }
 
-  attributeEquals(attribute: string, expected?: string, preferred?: boolean) {
-    return this.addCondition(new AttributeEquals(attribute, expected, preferred));
+  attributeEquals(attribute: string, expected: string, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new AttributeEquals(attribute, expected, kwargs));
   }
 
-  attributeExists(attribute: string, preferred?: boolean) {
-    return this.addCondition(new AttributeExists(attribute, preferred));
+
+  attributeExists(attribute: string, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new AttributeExists(attribute, kwargs));
   }
 
-  axisLocationEquals(axis: Axis, expected: number, preferred?: boolean) {
-    return this.addCondition(new AxisLocationEquals(axis, expected, preferred));
+  axisLocationEquals(axis: Axis, expected: number, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new AxisLocationEquals(axis, expected, kwargs));
   }
 
-  checked(preferred?: boolean) {
-    return this.addCondition(new Checked(preferred));
+  checked(kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new Checked(kwargs));
   }
 
-  countEquals(expected: number, preferred?: boolean) {
-    return this.addCondition(new CountEquals(expected, preferred));
+  countEquals(expected: number, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new CountEquals(expected, kwargs));
   }
 
-  countLessThan(expected: number, preferred?: boolean) {
-    return this.addCondition(new CountLessThan(expected, preferred));
+  countLessThan(expected: number, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new CountLessThan(expected, kwargs));
   }
 
-  countMoreThan(expected: number, preferred?: boolean) {
-    return this.addCondition(new CountMoreThan(expected, preferred));
+  countMoreThan(expected: number, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new CountMoreThan(expected, kwargs));
   }
 
-  cssPropertyExists(property: string, preferred?: boolean) {
-    return this.addCondition(new CssPropertyExists(property, preferred));
+  cssPropertyExists(property: string, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new CssPropertyExists(property, kwargs));
   }
 
-  dimensionEquals(width: number, height: number, preferred?: boolean) {
-    return this.addCondition(new DimensionEquals(width, height, preferred));
+  dimensionEquals(width: number, height: number, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new DimensionEquals(width, height, kwargs));
   }
 
-  dimensionSideEquals(side: SizeContext, expected: number, preferred?: boolean) {
-    return this.addCondition(new DimensionSideEquals(side, expected, preferred));
+  dimensionSideEquals(side: SizeContext, expected: number, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new DimensionSideEquals(side, expected, kwargs));
   }
 
-  displayed(preferred?: boolean) {
-    return this.addCondition(new Displayed(preferred));
+  displayed(kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new Displayed(kwargs));
   }
 
-  displayedInViewport(preferred?: boolean) {
-    return this.addCondition(new DisplayedInViewport(preferred));
+  displayedInViewport(kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new DisplayedInViewport(kwargs));
   }
 
-  enabled(preferred?: boolean) {
-    return this.addCondition(new Enabled(preferred));
+  enabled(kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new Enabled(kwargs));
   }
 
-  exists(preferred?: boolean) {
-    return this.addCondition(new Exists(preferred));
+  exists(kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new Exists(kwargs));
   }
 
-  focused(preferred?: boolean) {
-    return this.addCondition(new Focused(preferred));
+  focused(kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new Focused(kwargs));
   }
 
-  selected(preferred?: boolean) {
-    return this.addCondition(new Selected(preferred));
+  selected(kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new Selected(kwargs));
   }
 
-  snapshotMatch(filename: string, options?: LocatorSnapshotOptions, preferred?: boolean) {
-    return this.addCondition(new SnapshotMatch(filename, options, preferred));
+  snapshotMatch(filename: string, kwargs?: ExpectedConditionKwargs & { options?: LocatorSnapshotOptions }) {
+    return this.addCondition(new SnapshotMatch(filename, kwargs));
   }
 
-  textContains(expected: string, preferred?: boolean) {
-    return this.addCondition(new TextContains(expected, preferred));
+  textContains(expected: string, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new TextContains(expected, kwargs));
   }
 
-  textEmpty(preferred?: boolean) {
-    return this.addCondition(new TextEquals(undefined, preferred));
+  textEmpty(kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new TextEquals(undefined, kwargs));
   }
 
-  textEquals(expected?: string, preferred?: boolean) {
-    return this.addCondition(new TextEquals(expected, preferred));
+  textEquals(expected: string, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new TextEquals(expected, kwargs));
   }
 
-  truthy(truthy: boolean | (() => Promise<boolean>) | (() => boolean), preferred?: boolean) {
-    return this.addCondition(new Truthy(truthy, preferred));
+  truthy(truthy: boolean | (() => Promise<boolean>) | (() => boolean), kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new Truthy(truthy, kwargs));
   }
 
-  valueContains(expected: string, preferred?: boolean) {
-    return this.addCondition(new ValueContains(expected, preferred));
+  valueContains(expected: string, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new ValueContains(expected, kwargs));
   }
 
-  valueEmpty(preferred?: boolean) {
-    return this.addCondition(new ValueEquals(undefined, preferred));
+  valueEmpty(kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new ValueEquals(undefined, kwargs));
   }
 
-  valueEquals(expected?: string, preferred?: boolean) {
-    return this.addCondition(new ValueEquals(expected, preferred));
+  valueEquals(expected: string, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new ValueEquals(expected, kwargs));
   }
 }

@@ -1,8 +1,10 @@
 import { PageCondition } from "@conditions/page/page-condition";
 
+import type { ExpectedConditionKwargs } from "@conditions/types";
+
 export class WindowCountLessThan extends PageCondition {
-  constructor(expected: number, preferred?: boolean) {
-    super(preferred);
+  constructor(expected: number, kwargs: ExpectedConditionKwargs) {
+    super(kwargs);
     this.expected = expected;
   }
 

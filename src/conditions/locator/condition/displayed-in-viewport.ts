@@ -1,9 +1,11 @@
 import { expect } from "@playwright/test";
 import { LocatorCondition } from "@conditions/locator/locator-condition";
 
+import type { ExpectedConditionKwargs } from "@conditions/types";
+
 export class DisplayedInViewport extends LocatorCondition {
-  constructor(preferred?: boolean) {
-    super(preferred);
+  constructor(kwargs: ExpectedConditionKwargs) {
+    super(kwargs);
     this.expected = true;
   }
 

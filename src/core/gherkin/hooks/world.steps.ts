@@ -1,3 +1,4 @@
+import * as fs from "fs";
 import * as path from "path";
 import * as object from "@common/utils/object";
 
@@ -7,6 +8,7 @@ import {
   Before,
   BeforeStep,
   defineParameterType,
+  ITestCaseHookParameter,
   ITestStepHookParameter,
   setDefaultTimeout,
   setWorldConstructor,
@@ -41,16 +43,30 @@ AfterStep({}, async function(this: This, params: ITestStepHookParameter) {
   const { result } = params;
 
   if (result.status !== Status.PASSED) {
-    const buffer = await this.page.screenshot({ fullPage: true });
-    this.reporter.attach(buffer, "image/png");
+    if (this.page) {
+      const buffer = await this.page.screenshot({ fullPage: true });
+      this.reporter.attach(buffer, "image/png");
+    }
   }
 });
 
-After({}, async function(this: This) {
+After({}, async function(this: This, params: ITestCaseHookParameter) {
+  const { result } = params;
+
   if (this.page) {
-    await this.page.close();
-    await this.page.context().close();
-    await this.page.context().browser().close();
+    const teardown = async() => {
+      await this.page.close();
+      await this.page.context().close();
+      await this.page.context().browser().close();
+    };
+
+    if (result.status !== Status.PASSED) {
+      const path = await this.page.video().path();
+      await teardown();
+      this.reporter.attach(fs.readFileSync(path), "video/webm");
+    } else {
+      teardown();
+    }
   }
 });
 
@@ -58,61 +74,61 @@ After({}, async function(this: This) {
 defineParameterType({
   name: "accept_or_dismiss",
   regexp: /accept|dismiss/,
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
   name: "back_or_forward",
   regexp: /back|forward/,
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
   name: "be_or_contain",
   regexp: /be|match|contain|partially match/,
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
   name: "page_or_viewport",
   regexp: /page|viewport/,
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
   name: "label_or_value",
   regexp: /label|value/,
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
   name: "left_or_right",
   regexp: /left|right/,
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
   name: "less_or_more",
-  regexp: /less|more/,
-  useForSnippets : false
+  regexp: /less|more|greater/,
+  useForSnippets: false
 });
 
 defineParameterType({
   name: "tick_or_untick",
   regexp: /tick|untick/,
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
   name: "selected_or_deselected",
   regexp: /selected|deselected/,
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
   name: "top_or_bottom",
   regexp: /top|bottom/,
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
@@ -121,31 +137,31 @@ defineParameterType({
   transformer(this: World, not: string) {
     return !!not;
   },
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
   name: "type_or_append",
   regexp: /type|append/,
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
   name: "width_or_height",
   regexp: /width|height/,
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
   name: "x_or_y",
   regexp: /x|y/,
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
   name: "click",
   regexp: /(?:(double|force|middle|right) click|click)/,
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
@@ -154,19 +170,19 @@ defineParameterType({
   transformer(this: World, filepath: string) {
     return path.isAbsolute(filepath) ? filepath : path.join(world.config.baseDir, filepath);
   },
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
   name: "input_string",
   regexp: /"([^"]*)?"/,
-  useForSnippets : true
+  useForSnippets: true
 });
 
 defineParameterType({
   name: "link_target",
   regexp: /new window|same frame|parent frame|top frame/,
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
@@ -178,13 +194,13 @@ defineParameterType({
     const locator = this.page.locator(new XPathBuilder().textEquals(link).hasExactAttribute(AnchorAttributes.HREF).build()).nth(index -1);
     return locator;
   },
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
   name: "link_scheme",
   regexp: /mail|tel/,
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
@@ -193,7 +209,7 @@ defineParameterType({
   transformer(this: World, ordinal: string) {
     return +ordinal || 0;
   },
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
@@ -202,7 +218,7 @@ defineParameterType({
   transformer(this: World, count: string) {
     return +count || 1;
   },
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
@@ -211,7 +227,7 @@ defineParameterType({
   transformer(this: World, url: string) {
     return this.page.urlFromBase(url);
   },
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
@@ -220,7 +236,7 @@ defineParameterType({
   transformer(this: World, page: string) {
     return this.findPageObject(page, true);
   },
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
@@ -229,7 +245,7 @@ defineParameterType({
   transformer(this: World, page: string) {
     return this.findPageObject(page);
   },
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
@@ -238,7 +254,7 @@ defineParameterType({
   transformer(this: World, page: string, prop: string, justProp: string) {
     return this.findPageObjectProp(page, prop || justProp);
   },
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
@@ -247,7 +263,7 @@ defineParameterType({
   transformer(this: World, page: string, url: string) {
     return url || this.findPageObject(page).url;
   },
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
@@ -259,7 +275,7 @@ defineParameterType({
     const locator = this.findPageObjectLocator(page, selector, index);
     return locator;
   },
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
@@ -272,7 +288,7 @@ defineParameterType({
     const locator = parent ? parent.locator(this.findPageObjectLocator(page, nested)) : this.findPageObjectLocator(page, nested, index);
     return locator;
   },
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
@@ -281,7 +297,7 @@ defineParameterType({
   transformer(this: World, page: string, title: string) {
     return title || this.findPageObject(page).title;
   },
-  useForSnippets : false
+  useForSnippets: false
 });
 
 defineParameterType({
@@ -290,6 +306,6 @@ defineParameterType({
   transformer(this: World, page: string, url: string) {
     return url || this.findPageObject(page).url;
   },
-  useForSnippets : false
+  useForSnippets: false
 });
 

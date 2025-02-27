@@ -1,6 +1,6 @@
 import type { This as World } from "./world";
 import type { BrowserContext, Page } from "@fixtures/types";
-import type { ExpectedConditionOptions } from "@conditions/types";
+import type { ExpectedConditionKwargs, ExpectedConditionOptions } from "@conditions/types";
 import type { Config, WorldParameters } from "@config/types";
 
 export abstract class PageObject<ParametersType = WorldParameters> {
@@ -28,9 +28,12 @@ export abstract class PageObject<ParametersType = WorldParameters> {
   }
 
   expect(options?: ExpectedConditionOptions) {
-    const loaded = (preferred?: boolean) => this.page.expect(options).domContentLoaded()
-      .urlEquals(this.url, preferred)
-      .titleEquals(this.title, preferred);
+    const loaded = (kwargs: ExpectedConditionKwargs) => this.page.expect(options)
+      .setName(`expect page has fully ${loaded.name}`)
+      .domContentLoaded(kwargs)
+      .urlEquals(this.url, kwargs)
+      .titleEquals(this.title, kwargs);
+
     return {
       loaded
     };
