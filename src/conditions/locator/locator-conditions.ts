@@ -28,7 +28,7 @@ import type { LocatorSnapshotOptions } from "@config/types";
 import type { Axis, SizeContext } from "@core/gherkin/enums";
 import type { ExpectedConditionKwargs, ExpectedConditionOptions } from "../types";
 
-export class LocatorConditions<T = Locator> extends ExpectedConditions {
+export class LocatorConditions<T extends Locator = Locator> extends ExpectedConditions {
   protected locator: T;
 
   constructor(locator: T, options?: ExpectedConditionOptions) {
@@ -43,7 +43,6 @@ export class LocatorConditions<T = Locator> extends ExpectedConditions {
   attributeEquals(attribute: string, expected: string, kwargs?: ExpectedConditionKwargs) {
     return this.addCondition(new AttributeEquals(attribute, expected, kwargs));
   }
-
 
   attributeExists(attribute: string, kwargs?: ExpectedConditionKwargs) {
     return this.addCondition(new AttributeExists(attribute, kwargs));

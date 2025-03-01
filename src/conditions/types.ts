@@ -19,8 +19,11 @@ export type ExpectedConditionsResult = {
 };
 
 export type ExpectedConditionOptions = {
+  /** The timeout before giving up */
   timeout?: number,
+  /** The polling interval or jitter value */
   interval?: number,
+  /** Return the result as a boolean value instead of throwing when calling `poll()` */
   soft?: boolean
 }
 

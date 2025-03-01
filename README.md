@@ -56,6 +56,9 @@ ISC
 
 ## Todo
 
+- Allow component and expected condition overrides
+- Rename given to wait
+- Allow conditions add with addconditions / change signature
 - Gherkin:
   - Request validation with JSON snapshot matching
   - Browser storage steps
