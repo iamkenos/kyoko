@@ -90,7 +90,7 @@ export abstract class World extends AllureWorld implements PrivateWorld {
   }
 
   findPageObject<T = PageObject>(page?: string, persist = false) {
-    let pageObjectFile = this.pageObjectFile;
+    let pageObjectFile: PageObjectFile = this.pageObjectFile;
 
     if (page) {
       const pageObjectFiles = this.pageObjectsFiles.filter(i => i.name === changecase.kebabCase(page));
@@ -102,7 +102,11 @@ export abstract class World extends AllureWorld implements PrivateWorld {
     }
 
     if (!pageObjectFile) {
-      throw new Error(`Unable to resolve "${page}" name from any of the available page object files:\n${JSON.stringify(this.pageObjectsFiles, null, 2)}`);
+      if (page) {
+        throw new Error(`Unable to resolve "${page}" name from any of the available page object files:\n${JSON.stringify(this.pageObjectsFiles, null, 2)}`);
+      } else {
+        throw new Error(`Unable to load page object without a page identifier. Select one from:\n${JSON.stringify(this.pageObjectsFiles.map(i => i.name), null, 2)}`);
+      }
     }
 
     const module = require(pageObjectFile.filepath);

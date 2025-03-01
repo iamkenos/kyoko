@@ -1,5 +1,6 @@
 Feature: III. Browser Context - Browser windows
 
+  Background:
     Given I am on the "demo" site
       And I expect the navigation item "I. Mouse Actions" to be selected
       And I click the "III. Browser Context" navigation item
