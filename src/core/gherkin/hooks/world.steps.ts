@@ -44,8 +44,10 @@ AfterStep({}, async function(this: This, params: ITestStepHookParameter) {
 
   if (result.status !== Status.PASSED) {
     if (this.page) {
-      const buffer = await this.page.screenshot({ fullPage: true });
-      this.reporter.attach(buffer, "image/png");
+      if (!this.config.shouldUseVideoAttachment) {
+        const buffer = await this.page.screenshot({ fullPage: true });
+        this.reporter.attach(buffer, "image/png");
+      }
     }
   }
 });
@@ -53,21 +55,25 @@ AfterStep({}, async function(this: This, params: ITestStepHookParameter) {
 After({}, async function(this: This, params: ITestCaseHookParameter) {
   const { result } = params;
 
-  if (this.page) {
-    const teardown = async() => {
+  const teardown = async() => {
+    if (this.page) {
       await this.page.close();
       await this.page.context().close();
       await this.page.context().browser().close();
-    };
+    }
+  };
 
-    if (result.status !== Status.PASSED) {
-      const path = await this.page.video().path();
-      await teardown();
-      this.reporter.attach(fs.readFileSync(path), "video/webm");
-    } else {
-      teardown();
+  if (result.status !== Status.PASSED) {
+    if (this.page) {
+      if (this.config.shouldUseVideoAttachment) {
+        const path = await this.page.video().path();
+        await teardown();
+        this.reporter.attach(fs.readFileSync(path), "video/webm");
+      }
     }
   }
+
+  teardown();
 });
 
 /** [CucumberExpressions](https://cucumber.github.io/try-cucumber-expressions/) */

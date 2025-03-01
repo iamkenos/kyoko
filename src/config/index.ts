@@ -74,6 +74,12 @@ function getConfigResultsDir(overrides: Partial<Config>) {
   return path.join(baseDir, RESULTS_DIR ? RESULTS_DIR : resultsDir);
 }
 
+function getConfigShouldUseVideoAttachment(overrides: Partial<Config>) {
+  const { SHOULD_USE_VIDEO_ATTACHMENT } = process.env;
+  const { shouldUseVideoAttachment = false } = overrides;
+  return SHOULD_USE_VIDEO_ATTACHMENT ? SHOULD_USE_VIDEO_ATTACHMENT === "true" : shouldUseVideoAttachment;
+}
+
 function getConfigSnapshotsDir(overrides: Partial<Config>) {
   const { SNAPSHOTS_DIR } = process.env;
   const { snapshotsDir = "snapshots/", baseDir } = overrides;
@@ -95,7 +101,14 @@ function getConfigBrowserOptions(overrides: Partial<Config>) {
 function getConfigContextOptions(overrides: Partial<Config>) {
   const { contextOptions } = overrides;
   const baseURL = getConfigBaseURL(overrides);
-  return { baseURL, ignoreHTTPSErrors: false, viewport: { width: 1675, height: 1020 }, ...contextOptions };
+  const shouldUseVideoAttachment = getConfigShouldUseVideoAttachment(overrides);
+  const dir = path.join(getConfigResultsDir(overrides), "videos");
+  return {
+    baseURL, ignoreHTTPSErrors: false,
+    viewport: { width: 1675, height: 1020 },
+    recordVideo: shouldUseVideoAttachment ? { dir } : undefined,
+    ...contextOptions
+  };
 }
 
 function getConfigSnapshots(overrides: Partial<Config>) {
@@ -192,11 +205,16 @@ export function configure(overrides: Partial<Config> = {}) {
   const logLevel = getConfigLogLevel(overrides);
   const pages = getConfigPages(overrides);
   const resultsDir = getConfigResultsDir(overrides);
+  const shouldUseVideoAttachment = getConfigShouldUseVideoAttachment(overrides);
   const timeout = getConfigTimeout(overrides);
   const browserOptions = getConfigBrowserOptions(overrides);
   const contextOptions = getConfigContextOptions(overrides);
   const snapshots = getConfigSnapshots(overrides);
-  const custom = { baseDir, baseURL, browser, browserOptions, contextOptions, debug, downloadsDir, headless, locale, logLevel, pages, resultsDir, snapshots, timeout };
+  const custom = {
+    baseDir, baseURL, browser, browserOptions, contextOptions,
+    debug, downloadsDir, headless, locale, logLevel, pages,
+    resultsDir, shouldUseVideoAttachment, snapshots, timeout
+  };
 
   // cucumber options defaults
   const config = {

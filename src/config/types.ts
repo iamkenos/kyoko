@@ -24,6 +24,8 @@ export interface Config extends Omit<IConfiguration, "publishQuiet"> {
   pages: string[];
   /** Custom: Directory to store the reports in, relative to the config file */
   resultsDir: string;
+  /** Custom: Whether to attach a video on test failure. If false, attach a full page screenshot instead. Defaults to true  */
+  shouldUseVideoAttachment: boolean;
   /** Custom: Directory to store the snapshots in, relative to the config file */
   snapshotsDir: string;
   /** Custom: Object containing properties of comparable files */
