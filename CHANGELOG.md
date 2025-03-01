@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.5.0](https://github.com/iamkenos/kyoko/compare/v0.4.7...v0.5.0) (2025-03-01)
+
+
+### Features
+
+* added support for video recordings ([fe89268](https://github.com/iamkenos/kyoko/commit/fe892688fbe12b74b29bfb6dc7e65505da1b4b6a))
+
+
+### Bug Fixes
+
+* throw error on findPageObject when both persisted page object and page identifier is undefined ([089026b](https://github.com/iamkenos/kyoko/commit/089026bb9353772be6edbb9b59a07a2ba9a349c4))
+
+
+### Refactor
+
+* expected conditions kwargs ([d52757e](https://github.com/iamkenos/kyoko/commit/d52757e90c9dd2789b0d85efceff18f744795c56))
+* updated fixture typings ([54a8f0a](https://github.com/iamkenos/kyoko/commit/54a8f0a0965fd0a55f1e83b2b04c249adcebac35))
+
 ### [0.4.7](https://github.com/iamkenos/kyoko/compare/v0.4.6...v0.4.7) (2025-02-14)
 
 ### [0.4.6](https://github.com/iamkenos/kyoko/compare/v0.4.5...v0.4.6) (2025-02-14)
