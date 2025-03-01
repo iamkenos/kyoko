@@ -3,6 +3,8 @@
     "baseUrl": "./",
     "checkJs": true,
     "declaration": true,
+    "declarationMap": true,
+    "inlineSources": true,
     "downlevelIteration": true,
     "esModuleInterop": true,
     "lib": ["ESNext", "DOM"],
