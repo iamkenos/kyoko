@@ -118,5 +118,5 @@ export class GenericComponent {
 type This<T> = Component & T;
 type OmitLocatorKeys = "__proto";
 type OmitComponentKeys = OmitLocatorKeys | "root" | "create" | "chain";
-export type Component = Omit<GenericComponent, OmitComponentKeys> & Omit<Locator, OmitLocatorKeys>;
+export type Component = Omit<GenericComponent, OmitComponentKeys> & Locator;
 export const Component: new(selector: string, filters?: LocatorFilters) => Component = GenericComponent as any;

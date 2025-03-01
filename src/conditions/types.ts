@@ -6,11 +6,11 @@ export type { ExpectedConditions } from "./expected-conditions";
 
 export type { LocatorCondition } from "./locator/locator-condition";
 
-export type { LocatorConditions } from "./locator/locator-conditions";
-
 export type { PageCondition } from "./page/page-condition";
 
-export type { PageConditions } from "./page/page-conditions";
+export { LocatorConditions } from "./locator/locator-conditions";
+
+export { PageConditions } from "./page/page-conditions";
 
 export type ExpectedConditionsResult = {
   evaluations: ExpectedCondition[];

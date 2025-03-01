@@ -28,10 +28,10 @@ import type { LocatorSnapshotOptions } from "@config/types";
 import type { Axis, SizeContext } from "@core/gherkin/enums";
 import type { ExpectedConditionKwargs, ExpectedConditionOptions } from "../types";
 
-export class LocatorConditions extends ExpectedConditions {
-  protected locator: Locator;
+export class LocatorConditions<T = Locator> extends ExpectedConditions {
+  protected locator: T;
 
-  constructor(locator: Locator, options?: ExpectedConditionOptions) {
+  constructor(locator: T, options?: ExpectedConditionOptions) {
     super(options);
     this.locator = locator;
   }

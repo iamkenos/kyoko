@@ -10,4 +10,4 @@ export function component<T>(this: Locator, Component: Constructor<T>, filters?:
   return GenericComponent.create({ prototype, from }) as T;
 }
 
-export type ComponentCommand = typeof component;
+export type ComponentCommand<T> = typeof component<T>;

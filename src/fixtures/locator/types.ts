@@ -42,7 +42,7 @@ export interface Locator extends PlaywrightLocator, LocatorClass {
   and(...args: Parameters<AndCommand>): ReturnType<AndCommand>;
   centerPoint(...args: Parameters<CenterPointCommand>): ReturnType<CenterPointCommand>;
   clickUntil(...args: Parameters<ClickUntilCommand>): ReturnType<ClickUntilCommand>;
-  component(...args: Parameters<ComponentCommand>): ReturnType<ComponentCommand>;
+  component<T>(...args: Parameters<ComponentCommand<T>>): ReturnType<ComponentCommand<T>>;
   doUntil(...args: Parameters<DoUntilCommand>): ReturnType<DoUntilCommand>;
   dragAndDrop(...args: Parameters<DragAndDropCommand>): ReturnType<DragAndDropCommand>;
   dropdownOptions(...args: Parameters<DropdownOptionsCommand>): ReturnType<DropdownOptionsCommand>;
