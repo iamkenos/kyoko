@@ -8,3 +8,5 @@ export function getByText(this: Page, ...args: Parameters<PlaywrightPage["getByT
   const from = this.activeFrame ? this.activeFrame.getByText(...args) : this.__proto.getByText(...args);
   return new LocatorClass(this["getLocatorFrom"](from)) as Locator;
 }
+
+export type GetByTextCommand = typeof getByText;

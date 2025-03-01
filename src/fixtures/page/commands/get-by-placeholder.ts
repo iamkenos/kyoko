@@ -8,3 +8,5 @@ export function getByPlaceholder(this: Page, ...args: Parameters<PlaywrightPage[
   const from = this.activeFrame ? this.activeFrame.getByPlaceholder(...args) : this.__proto.getByPlaceholder(...args);
   return new LocatorClass(this["getLocatorFrom"](from)) as Locator;
 }
+
+export type GetByPlaceholderCommand = typeof getByPlaceholder;

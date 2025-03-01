@@ -12,3 +12,5 @@ export async function closeOtherPages(this: BrowserContext) {
 
   return main;
 }
+
+export type CloseOtherPagesCommand = typeof closeOtherPages;

@@ -21,3 +21,5 @@ export async function press(this: Locator, ...args: PressArgs) {
 
   this.__proto.press(...args);
 }
+
+export type PressCommand = typeof press;

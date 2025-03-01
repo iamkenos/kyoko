@@ -8,3 +8,5 @@ export function frameLocator(this: Page, ...args: Parameters<PlaywrightPage["fra
   const from = this.activeFrame ? this.activeFrame.frameLocator(...args) : this.__proto.frameLocator(...args);
   return new FrameLocatorClass(this["getLocatorFrom"](from)) as FrameLocator;
 }
+
+export type FrameLocatorCommand = typeof frameLocator;

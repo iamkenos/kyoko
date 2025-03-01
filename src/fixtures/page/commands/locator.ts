@@ -8,3 +8,5 @@ export function locator(this: Page, ...args: Parameters<PlaywrightPage["locator"
   const from = this.activeFrame ? this.activeFrame.locator(...args) : this.__proto.locator(...args);
   return new LocatorClass(this["getLocatorFrom"](from)) as Locator;
 }
+
+export type LocatorCommand = typeof locator;

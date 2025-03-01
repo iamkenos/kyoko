@@ -6,3 +6,5 @@ import type { FrameLocator } from "@fixtures/frame/types";
 export function nth(this: FrameLocator, ...args: Parameters<PlaywrightFrameLocator["nth"]>) {
   return new FrameLocatorClass(this.__proto.nth(...args)) as FrameLocator;
 }
+
+export type NthCommand = typeof nth;

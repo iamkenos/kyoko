@@ -7,3 +7,5 @@ import type { Locator } from "@fixtures/locator/types";
 export function getByTitle(this: FrameLocator, ...args: Parameters<PlaywrightFrameLocator["getByTitle"]>) {
   return new LocatorClass(this.__proto.getByTitle(...args)) as Locator;
 }
+
+export type GetByTitleCommand = typeof getByTitle;

@@ -7,3 +7,5 @@ import type { Locator } from "@fixtures/locator/types";
 export function getByRole(this: FrameLocator, ...args: Parameters<PlaywrightFrameLocator["getByRole"]>) {
   return new LocatorClass(this.__proto.getByRole(...args)) as Locator;
 }
+
+export type GetByRoleCommand = typeof getByRole;

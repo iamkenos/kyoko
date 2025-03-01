@@ -8,3 +8,5 @@ export function getByRole(this: Page, ...args: Parameters<PlaywrightPage["getByR
   const from = this.activeFrame ? this.activeFrame.getByRole(...args) : this.__proto.getByRole(...args);
   return new LocatorClass(this["getLocatorFrom"](from)) as Locator;
 }
+
+export type GetByRoleCommand = typeof getByRole;

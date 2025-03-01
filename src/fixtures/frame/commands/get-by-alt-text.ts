@@ -7,3 +7,5 @@ import type { Locator } from "@fixtures/locator/types";
 export function getByAltText(this: FrameLocator, ...args: Parameters<PlaywrightFrameLocator["getByAltText"]>) {
   return new LocatorClass(this.__proto.getByAltText(...args)) as Locator;
 }
+
+export type GetByAltTextCommand = typeof getByAltText;

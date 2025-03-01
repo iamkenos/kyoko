@@ -13,3 +13,5 @@ export function requestsInterceptor(this: Page | any, options?: { teardown?: boo
     this.on("request", listener);
   }
 }
+
+export type RequestsInterceptorCommand = typeof requestsInterceptor;

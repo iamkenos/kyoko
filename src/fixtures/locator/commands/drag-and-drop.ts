@@ -9,3 +9,5 @@ export async function dragAndDrop(this: Locator, target: Locator | Component) {
   await target.hoverIntoView();
   await page.mouse.up();
 }
+
+export type DragAndDropCommand = typeof dragAndDrop;

@@ -7,3 +7,5 @@ export function lastPage(this: BrowserContext) {
   const [last] = this.pages().slice(-1);
   return new PageClass(last) as Page;
 }
+
+export type LastPageCommand = typeof lastPage;

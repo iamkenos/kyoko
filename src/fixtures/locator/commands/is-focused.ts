@@ -10,3 +10,5 @@ export async function isFocused(this: Locator) {
     return false;
   }
 }
+
+export type IsFocusedCommand = typeof isFocused;

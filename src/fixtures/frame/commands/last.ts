@@ -6,3 +6,5 @@ import type { FrameLocator } from "@fixtures/frame/types";
 export function last(this: FrameLocator, ...args: Parameters<PlaywrightFrameLocator["last"]>) {
   return new FrameLocatorClass(this.__proto.last(...args)) as FrameLocator;
 }
+
+export type LastCommand = typeof last;

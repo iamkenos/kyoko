@@ -14,3 +14,5 @@ export async function dropdownOptions(this: Locator, group?: { index: number }) 
   }
   return options;
 }
+
+export type DropdownOptionsCommand = typeof dropdownOptions;

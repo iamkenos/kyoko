@@ -17,3 +17,5 @@ export function dialogListener(
   this.dialog = { handled: false, message: undefined };
   options.once ? this.once("dialog", listener) : this.on("dialog", listener);
 }
+
+export type DialogListenerCommand = typeof dialogListener;

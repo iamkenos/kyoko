@@ -7,3 +7,5 @@ export async function newPage(this: BrowserContext) {
   const from = await this.__proto.newPage();
   return new PageClass(from) as Page;
 }
+
+export type NewPageCommand = typeof newPage;

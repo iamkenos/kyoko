@@ -14,3 +14,5 @@ export function urlFromBase(this: Page, path: string) {
     new Error(`Unable to resolve a valid URL from:\n  ${[withBaseURL, path].join(",\n  ")}`);
   }
 }
+
+export type UrlFromBaseCommand = typeof urlFromBase;

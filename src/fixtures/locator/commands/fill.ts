@@ -29,3 +29,5 @@ export async function fill(this: Locator, ...args: FillArgs) {
     await this.__proto.fill(...args);
   }
 }
+
+export type FillCommand = typeof fill;

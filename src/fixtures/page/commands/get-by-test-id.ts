@@ -8,3 +8,5 @@ export function getByTestId(this: Page, ...args: Parameters<PlaywrightPage["getB
   const from = this.activeFrame ? this.activeFrame.getByTestId(...args) : this.__proto.getByTestId(...args);
   return new LocatorClass(this["getLocatorFrom"](from)) as Locator;
 }
+
+export type GetByTestIdCommand = typeof getByTestId;

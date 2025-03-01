@@ -6,3 +6,5 @@ export async function all(this: Locator, ...args: Parameters<PlaywrightLocator["
   const all = await this.__proto.all(...args);
   return all.map(locator => new LocatorClass(locator)) as Locator[];
 }
+
+export type AllCommand = typeof all;

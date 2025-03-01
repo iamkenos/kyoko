@@ -8,3 +8,5 @@ export function getByAltText(this: Page, ...args: Parameters<PlaywrightPage["get
   const from = this.activeFrame ? this.activeFrame.getByAltText(...args) : this.__proto.getByAltText(...args);
   return new LocatorClass(this["getLocatorFrom"](from)) as Locator;
 }
+
+export type GetByAltTextCommand = typeof getByAltText;

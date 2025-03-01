@@ -8,3 +8,5 @@ export function getByLabel(this: Page, ...args: Parameters<PlaywrightPage["getBy
   const from = this.activeFrame ? this.activeFrame.getByLabel(...args) : this.__proto.getByLabel(...args);
   return new LocatorClass(this["getLocatorFrom"](from)) as Locator;
 }
+
+export type GetByLabelCommand = typeof getByLabel;

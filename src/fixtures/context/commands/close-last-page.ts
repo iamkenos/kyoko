@@ -8,3 +8,5 @@ export async function closeLastPage(this: BrowserContext) {
 
   return main;
 }
+
+export type CloseLastPageCommand = typeof closeLastPage;

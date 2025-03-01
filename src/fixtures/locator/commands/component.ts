@@ -9,3 +9,5 @@ export function component<T>(this: Locator, Component: Constructor<T>, filters?:
   const from = this.locator(prototype.root);
   return GenericComponent.create({ prototype, from }) as T;
 }
+
+export type ComponentCommand = typeof component;

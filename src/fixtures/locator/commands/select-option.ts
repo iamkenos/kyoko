@@ -57,3 +57,5 @@ export async function selectOption(this: Locator, ...args: SelectOptionArgs) {
     return this.__proto.selectOption(...args);
   }
 }
+
+export type SelectOptionCommand = typeof selectOption;

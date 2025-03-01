@@ -8,3 +8,5 @@ export function getByTitle(this: Page, ...args: Parameters<PlaywrightPage["getBy
   const from = this.activeFrame ? this.activeFrame.getByTitle(...args) : this.__proto.getByTitle(...args);
   return new LocatorClass(this["getLocatorFrom"](from)) as Locator;
 }
+
+export type GetByTitleCommand = typeof getByTitle;

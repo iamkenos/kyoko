@@ -1,6 +1,7 @@
+import type { Component } from "@fixtures/component/component";
 import type { Locator } from "@fixtures/locator/types";
 
-export async function hoverIntoView(this: Locator, options?: { position?: { x: number, y: number } }) {
+export async function hoverIntoView(this: Locator | Component, options?: { position?: { x: number, y: number } }) {
   const hasOffset = options?.position;
   const page = this.page();
   await this.scrollIntoView();
@@ -17,3 +18,5 @@ export async function hoverIntoView(this: Locator, options?: { position?: { x: n
 
   await page.mouse.move(x, y);
 }
+
+export type HoverIntoViewCommand = typeof hoverIntoView;

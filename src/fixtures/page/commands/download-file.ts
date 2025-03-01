@@ -22,3 +22,5 @@ export async function downloadFile(this: Page, trigger: (() => Promise<void>), n
   await this.expect().fileExists(filepath).poll();
   return { filename, filepath };
 }
+
+export type DownloadFileCommand = (...args: Parameters<typeof downloadFile>) => ReturnType<typeof downloadFile>;

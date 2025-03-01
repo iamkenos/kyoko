@@ -6,3 +6,5 @@ import type { FrameLocator } from "@fixtures/frame/types";
 export function first(this: FrameLocator, ...args: Parameters<PlaywrightFrameLocator["first"]>) {
   return new FrameLocatorClass(this.__proto.first(...args)) as FrameLocator;
 }
+
+export type FirstCommand = typeof first;
