@@ -27,5 +27,10 @@ Feature: II. Form Elements - Links
       And I expect the "phone number" link to point to a tel scheme "+4733378901"
 
   Scenario: S06: Javascript
+    When I auto dismiss the page dialog
+      And I click the "javascript function" link 2 times
     Then I expect the "javascript function" link to open without a target
       And I expect the "javascript function" link to point to "javascript:alert('Javascript link result');"
+      And I expect an alert box to have been opened
+      And I expect the "#link-6" element "href" attribute to exist
+      And I expect the "#link-6" element "target" attribute to not exist

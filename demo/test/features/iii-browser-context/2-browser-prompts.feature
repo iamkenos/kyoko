@@ -14,6 +14,10 @@ Feature: III. Browser Context - Browser prompts
 
   Scenario: S02: Show confirm prompt
     When I auto accept the page dialog
+      And I move out of the viewport
+    Then I expect a confirm box to have been opened
+      And I expect the confirm box text to not be "Show confirm prompt result"
+    When I auto accept the page dialog
       And I click the "#show-confirm-prompt" button
     Then I expect a confirm box to have been opened
       And I expect the confirm box text to contain "Show confirm prompt"

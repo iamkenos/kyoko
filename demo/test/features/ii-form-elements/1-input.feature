@@ -16,7 +16,9 @@ Feature: II. Form Elements - Input
       And I expect the "#input-text" field value to be empty
 
   Scenario: S02: Input element: Email
-    When I type "samporter" on the "#input-email" field
+    When I type on the "demo" page's fields:
+      | Field        | Value     |
+      | #input-email | samporter |
       And I press the "Tab" key
     Then I expect the "#input-email" field "class" attribute to contain "invalid"
       And I expect the "#input-email" field "class" attribute to be "validate invalid"

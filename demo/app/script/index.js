@@ -324,6 +324,22 @@ $(() => {
     $target.text(`X: ${x} | Y: ${y}`);
   }
 
+  function _mouse_leave_fn(event) {
+    const { clientX, clientY } = event;
+
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+
+    const leftEdge = clientX <= 0;
+    const rightEdge = clientX >= windowWidth;
+    const topEdge = clientY <= 0;
+    const bottomEdge = clientY >= windowHeight;
+
+    if (leftEdge || rightEdge || topEdge || bottomEdge) {
+      window.confirm('Are you sure you want to leave?');
+    }
+  }
+
   function _scroll_to_fn(event) {
     const $source = $('#scroll-to');
     const $target = $('#scroll-to-result');
@@ -372,4 +388,5 @@ $(() => {
   $('#move-to').on('mouseenter', _move_to_fn);
   $('#move-to').on('mouseleave', () => $($(this).data('target')).text(''));
   document.addEventListener('scroll', _scroll_to_fn, true);
+  document.addEventListener('mouseleave', _mouse_leave_fn, true);
 });
