@@ -17,7 +17,7 @@ export async function fill(this: Locator, ...args: FillArgs) {
   const isConditional = options?.conditional && !options?.force;
   if (isConditional) {
     const { timeout = 1500 } = options;
-    const canProceed = await this.given({ timeout }).displayed().poll();
+    const canProceed = await this.waitUntil({ timeout }).displayed().poll();
     if (!canProceed) return;
   }
 

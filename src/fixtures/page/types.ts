@@ -14,7 +14,6 @@ import type { GetByRoleCommand } from "./commands/get-by-role";
 import type { GetByTestIdCommand } from "./commands/get-by-test-id";
 import type { GetByTextCommand } from "./commands/get-by-text";
 import type { GetByTitleCommand } from "./commands/get-by-title";
-import type { GivenCommand } from "./commands/given";
 import type { LocatorCommand } from "./commands/locator";
 import type { RequestsInterceptorCommand } from "./commands/requests-interceptor";
 import type { ScrollToCommand } from "./commands/scroll-to";
@@ -22,6 +21,7 @@ import type { ScrollToBottomCommand } from "./commands/scroll-to-bottom";
 import type { ScrollToTopCommand } from "./commands/scroll-to-top";
 import type { SwitchToFrameCommand } from "./commands/switch-to-frame";
 import type { UrlFromBaseCommand } from "./commands/url-from-base";
+import type { WaitUntilCommand } from "./commands/wait-until";
 
 export interface Page extends PlaywrightPageType, PageClass {
   context: () => BrowserContext;
@@ -39,7 +39,6 @@ export interface Page extends PlaywrightPageType, PageClass {
   getByTestId(...args: Parameters<GetByTestIdCommand>): ReturnType<GetByTestIdCommand>;
   getByText(...args: Parameters<GetByTextCommand>): ReturnType<GetByTextCommand>;
   getByTitle(...args: Parameters<GetByTitleCommand>): ReturnType<GetByTitleCommand>;
-  given(...args: Parameters<GivenCommand>): ReturnType<GivenCommand>;
   locator(...args: Parameters<LocatorCommand>): ReturnType<LocatorCommand>;
   requestsInterceptor(...args: Parameters<RequestsInterceptorCommand>): ReturnType<RequestsInterceptorCommand>;
   scrollTo(...args: Parameters<ScrollToCommand>): ReturnType<ScrollToCommand>;
@@ -47,4 +46,5 @@ export interface Page extends PlaywrightPageType, PageClass {
   scrollToTop(...args: Parameters<ScrollToTopCommand>): ReturnType<ScrollToTopCommand>;
   switchToFrame(...args: Parameters<SwitchToFrameCommand>): ReturnType<SwitchToFrameCommand>;
   urlFromBase(...args: Parameters<UrlFromBaseCommand>): ReturnType<UrlFromBaseCommand>;
+  waitUntil(...args: Parameters<WaitUntilCommand>): ReturnType<WaitUntilCommand>;
 }

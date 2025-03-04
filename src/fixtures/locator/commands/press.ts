@@ -15,7 +15,7 @@ export async function press(this: Locator, ...args: PressArgs) {
   const isConditional = options?.conditional;
   if (isConditional) {
     const { timeout = 1500 } = options;
-    const canProceed = await this.given({ timeout }).displayed().poll();
+    const canProceed = await this.waitUntil({ timeout }).displayed().poll();
     if (!canProceed) return;
   }
 

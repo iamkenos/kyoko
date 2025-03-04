@@ -19,7 +19,6 @@ import type { GetByRoleCommand } from "./commands/get-by-role";
 import type { GetByTestIdCommand } from "./commands/get-by-test-id";
 import type { GetByTextCommand } from "./commands/get-by-text";
 import type { GetByTitleCommand } from "./commands/get-by-title";
-import type { GivenCommand } from "./commands/given";
 import type { HoverIntoViewCommand } from "./commands/hover-into-view";
 import type { IsFocusedCommand } from "./commands/is-focused";
 import type { IsSelectedCommand } from "./commands/is-selected";
@@ -32,6 +31,7 @@ import type { PressCommand } from "./commands/press";
 import type { ScrollIntoViewCommand } from "./commands/scroll-into-view";
 import type { SelectOptionCommand } from "./commands/select-option";
 import type { UploadFilesCommand } from "./commands/upload-files";
+import type { WaitUntilCommand } from "./commands/wait-until";
 
 export interface PlaywrightLocator extends BasePlaywrightLocator {
   _selector: string;
@@ -56,7 +56,6 @@ export interface Locator extends PlaywrightLocator, LocatorClass {
   getByTestId(...args: Parameters<GetByTestIdCommand>): ReturnType<GetByTestIdCommand>;
   getByText(...args: Parameters<GetByTextCommand>): ReturnType<GetByTextCommand>;
   getByTitle(...args: Parameters<GetByTitleCommand>): ReturnType<GetByTitleCommand>;
-  given(...args: Parameters<GivenCommand>): ReturnType<GivenCommand>;
   hoverIntoView(...args: Parameters<HoverIntoViewCommand>): ReturnType<HoverIntoViewCommand>;
   isFocused(...args: Parameters<IsFocusedCommand>): ReturnType<IsFocusedCommand>;
   isSelected(...args: Parameters<IsSelectedCommand>): ReturnType<IsSelectedCommand>;
@@ -70,6 +69,7 @@ export interface Locator extends PlaywrightLocator, LocatorClass {
   scrollIntoView(...args: Parameters<ScrollIntoViewCommand>): ReturnType<ScrollIntoViewCommand>;
   selectOption(...args: Parameters<SelectOptionCommand>): ReturnType<SelectOptionCommand>;
   uploadFiles(...args: Parameters<UploadFilesCommand>): ReturnType<UploadFilesCommand>;
+  waitUntil(...args: Parameters<WaitUntilCommand>): ReturnType<WaitUntilCommand>;
 }
 
 export type LocatorFilters = Parameters<Locator["locator"]>[1];
