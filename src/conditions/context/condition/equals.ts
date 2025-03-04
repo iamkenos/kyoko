@@ -1,8 +1,8 @@
-import { PageCondition } from "@conditions/page/page-condition";
+import { ExpectedCondition } from "@conditions/expected-condition";
 
 import type { ExpectedConditionKwargs } from "@conditions/types";
 
-export class Equals<T = any> extends PageCondition {
+export class Equals<T = any> extends ExpectedCondition {
   constructor(actual: T, expected: T, kwargs: ExpectedConditionKwargs) {
     super(kwargs);
     this.actual = actual;

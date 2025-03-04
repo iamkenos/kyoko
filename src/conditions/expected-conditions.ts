@@ -1,9 +1,13 @@
 import { expect } from "@playwright/test";
 
 import { changecase } from "@common/utils/string";
+import { ArrayContains } from "./context/condition/array-contains";
+import { ArrayEquals } from "./context/condition/array-equals";
+import { Equals } from "./context/condition/equals";
+import { FileExists } from "./context/condition/file-exists";
 
 import type { ExpectedCondition } from "./expected-condition";
-import type { ExpectedConditionOptions, ExpectedConditionsResult } from "./types";
+import type { ExpectedConditionKwargs, ExpectedConditionOptions, ExpectedConditionsResult } from "./types";
 
 export class ExpectedConditions {
   protected name: string;
@@ -66,6 +70,22 @@ export class ExpectedConditions {
   setName(name: string) {
     this.name = changecase.sentenceCase(name);
     return this;
+  }
+
+  arrayContains<T>(actual: Array<T>, expected: Array<T>, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new ArrayContains(actual, expected, kwargs));
+  }
+
+  arrayEquals<T>(actual: Array<T>, expected: Array<T>, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new ArrayEquals(actual, expected, kwargs));
+  }
+
+  equals<T = any>(actual: T, expected: T, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new Equals(actual, expected, kwargs));
+  }
+
+  fileExists(path: string, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new FileExists(path, kwargs));
   }
 
   async poll() {

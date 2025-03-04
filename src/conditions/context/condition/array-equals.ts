@@ -1,8 +1,8 @@
-import { PageCondition } from "@conditions/page/page-condition";
+import { ExpectedCondition } from "@conditions/expected-condition";
 
 import type { ExpectedConditionKwargs } from "@conditions/types";
 
-export class ArrayContains<T> extends PageCondition {
+export class ArrayEquals<T> extends ExpectedCondition {
   constructor(actual: Array<T>, expected: Array<T>, kwargs: ExpectedConditionKwargs) {
     super(kwargs);
     this.actual = actual;
@@ -11,7 +11,7 @@ export class ArrayContains<T> extends PageCondition {
 
   async evaluate() {
     try {
-      this.passed = this.expected.every((item: T) => this.actual.includes(item));
+      this.passed = JSON.stringify(this.actual) === JSON.stringify(this.expected);
     } catch (e) {
       this.actual = e.message;
     }

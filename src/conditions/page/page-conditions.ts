@@ -1,11 +1,7 @@
 import { ExpectedConditions } from "../expected-conditions";
-import { ArrayContains } from "./condition/array-contains";
-import { ArrayEquals } from "./condition/array-equals";
 import { DialogTextContains } from "./condition/dialog-text-contains";
 import { DialogTextEquals } from "./condition/dialog-text-equals";
 import { DomContentLoaded } from "./condition/dom-content-loaded";
-import { Equals } from "./condition/equals";
-import { FileExists } from "./condition/file-exists";
 import { SnapshotMatch } from "./condition/snapshot-match";
 import { TitleContains } from "./condition/title-contains";
 import { TitleEquals } from "./condition/title-equals";
@@ -28,14 +24,6 @@ export class PageConditions extends ExpectedConditions {
     this.page = page;
   }
 
-  arrayContains<T>(actual: Array<T>, expected: Array<T>, kwargs?: ExpectedConditionKwargs) {
-    return this.addCondition(new ArrayContains(actual, expected, kwargs));
-  }
-
-  arrayEquals<T>(actual: Array<T>, expected: Array<T>, kwargs?: ExpectedConditionKwargs) {
-    return this.addCondition(new ArrayEquals(actual, expected, kwargs));
-  }
-
   dialogTextContains(expected: string, kwargs?: ExpectedConditionKwargs) {
     return this.addCondition(new DialogTextContains(expected, kwargs));
   }
@@ -46,14 +34,6 @@ export class PageConditions extends ExpectedConditions {
 
   domContentLoaded(kwargs?: ExpectedConditionKwargs) {
     return this.addCondition(new DomContentLoaded(kwargs));
-  }
-
-  equals<T = any>(actual: T, expected: T, kwargs?: ExpectedConditionKwargs) {
-    return this.addCondition(new Equals(actual, expected, kwargs));
-  }
-
-  fileExists(path: string, kwargs?: ExpectedConditionKwargs) {
-    return this.addCondition(new FileExists(path, kwargs));
   }
 
   snapshotMatch(filename: string, kwargs?: ExpectedConditionKwargs & { options?: PageSnapshotOptions }) {

@@ -1,10 +1,10 @@
 import * as fs from "fs-extra";
 
-import { PageCondition } from "@conditions/page/page-condition";
+import { ExpectedCondition } from "@conditions/expected-condition";
 
 import type { ExpectedConditionKwargs } from "@conditions/types";
 
-export class FileExists extends PageCondition {
+export class FileExists extends ExpectedCondition {
   constructor(path: string, kwargs: ExpectedConditionKwargs) {
     super(kwargs);
     this.expected = true;

@@ -2,11 +2,11 @@ import type { ExpectedCondition } from "./expected-condition";
 
 export type { ExpectedCondition } from "./expected-condition";
 
-export type { ExpectedConditions } from "./expected-conditions";
-
 export type { LocatorCondition } from "./locator/locator-condition";
 
 export type { PageCondition } from "./page/page-condition";
+
+export { ExpectedConditions } from "./expected-conditions";
 
 export { LocatorConditions } from "./locator/locator-conditions";
 
