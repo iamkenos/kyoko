@@ -53,12 +53,18 @@ export class ExpectedConditions {
     };
   }
 
-  addCondition(condition: ExpectedCondition) {
-    const [index, locator, page] = ["index", "locator", "page"];
-    condition[index] = this.conditions.length;
-    condition[locator] = this[locator];
-    condition[page] = this[page];
-    this.conditions.push(condition);
+  addCondition(condition: ExpectedCondition | ExpectedConditions) {
+    const [idx, pg, loc, sel, kw, cd] = ["index", "page", "locator", "_selector", "kwargs", "conditions"];
+    if (condition instanceof ExpectedConditions) {
+      const conditions = condition[cd];
+      conditions.forEach((i: ExpectedCondition) => i[kw] = { ...(i[loc] ? { ...i[kw], locator: i[loc][sel] } : {}) });
+      this.conditions = this.conditions.concat(conditions);
+    } else {
+      condition[idx] = this.conditions.length;
+      condition[loc] = this[loc];
+      condition[pg] = this[pg];
+      this.conditions.push(condition);
+    }
     return this;
   }
 
