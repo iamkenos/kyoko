@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.1](https://github.com/iamkenos/kyoko/compare/v0.5.0...v0.5.1) (2025-03-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* renamed given to waitUntil
+
+### Features
+
+* allow adding expected conditions ([6d9daca](https://github.com/iamkenos/kyoko/commit/6d9daca758e158213ff29f0b0f807046622e758c))
+
+
+### Bug Fixes
+
+* component command type ([66f8ba0](https://github.com/iamkenos/kyoko/commit/66f8ba05332a9c6ee02db4b1121144859206f364))
+* move timeout to conditions class ([6b563ed](https://github.com/iamkenos/kyoko/commit/6b563ed06d48f323834b4d70bb0386898990e9e3))
+
+
+### Chore
+
+* update tsconfig ([ab557dd](https://github.com/iamkenos/kyoko/commit/ab557dd09e81b4ff7ba5fc97f919c502473149fe))
+
+
+### Refactor
+
+* moved non-page expected conditions out of page conditions ([28929ef](https://github.com/iamkenos/kyoko/commit/28929ef99bb0ae1673850fde5b0362f2dba1b351))
+* renamed given to waitUntil ([e76ecf0](https://github.com/iamkenos/kyoko/commit/e76ecf0e36759d8f74972f06311b03564572418e))
+
 ## [0.5.0](https://github.com/iamkenos/kyoko/compare/v0.4.7...v0.5.0) (2025-03-01)
 
 
