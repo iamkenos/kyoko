@@ -1,4 +1,5 @@
 import * as playwright from "@playwright/test";
+import * as pwe from "playwright-extra";
 import * as path from "path";
 import * as files from "@common/utils/files";
 
@@ -136,7 +137,11 @@ export abstract class World extends AllureWorld implements PrivateWorld {
   }
 
   async createBrowserContext() {
-    const browserType: playwright.BrowserType = playwright[this.config.browser];
+    const browserType: playwright.BrowserType = this.config.stealth ? pwe[this.config.browser] : playwright[this.config.browser];
+    if (this.config.stealth) {
+      const stealth = require("puppeteer-extra-plugin-stealth")();
+      (browserType as any).use(stealth);
+    }
     const browser = await browserType.launch(this.config.browserOptions) as any;
     const playwrightContext = await browser.newContext(this.config.contextOptions);
     const context = new BrowserContextClass(playwrightContext) as BrowserContext;

@@ -86,6 +86,11 @@ function getConfigSnapshotsDir(overrides: Partial<Config>) {
   return path.join(baseDir, SNAPSHOTS_DIR ? SNAPSHOTS_DIR : snapshotsDir);
 }
 
+function getStealth(overrides: Partial<Config>) {
+  const { stealth = false } = overrides;
+  return stealth;
+}
+
 function getConfigTimeout(overrides: Partial<Config>) {
   const { TIMEOUT } = process.env;
   const { timeout = 30000 } = overrides;
@@ -206,6 +211,7 @@ export function configure(overrides: Partial<Config> = {}) {
   const pages = getConfigPages(overrides);
   const resultsDir = getConfigResultsDir(overrides);
   const shouldUseVideoAttachment = getConfigShouldUseVideoAttachment(overrides);
+  const stealth = getStealth(overrides);
   const timeout = getConfigTimeout(overrides);
   const browserOptions = getConfigBrowserOptions(overrides);
   const contextOptions = getConfigContextOptions(overrides);
@@ -213,7 +219,7 @@ export function configure(overrides: Partial<Config> = {}) {
   const custom = {
     baseDir, baseURL, browser, browserOptions, contextOptions,
     debug, downloadsDir, headless, locale, logLevel, pages,
-    resultsDir, shouldUseVideoAttachment, snapshots, timeout
+    resultsDir, shouldUseVideoAttachment, snapshots, stealth, timeout
   };
 
   // cucumber options defaults
