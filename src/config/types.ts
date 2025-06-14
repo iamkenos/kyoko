@@ -30,8 +30,6 @@ export interface Config extends Omit<IConfiguration, "publishQuiet"> {
   snapshotsDir: string;
   /** Custom: Object containing properties of comparable files */
   snapshots: Snapshots;
-  /** Custom: Use playwright extra */
-  stealth: boolean;
   timeout: number;
   worldParameters: WorldParameters
 }

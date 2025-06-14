@@ -3,6 +3,8 @@ import * as pwe from "playwright-extra";
 import * as path from "path";
 import * as files from "@common/utils/files";
 
+import StealthPlugin from "puppeteer-extra-plugin-stealth";
+
 import { CucumberAllureWorld as AllureWorld } from "allure-cucumberjs";
 import { BrowserContext as BrowserContextClass } from "@fixtures/context/context";
 import { changecase } from "@common/utils/string";
@@ -43,6 +45,10 @@ export abstract class World extends AllureWorld implements PrivateWorld {
   /** The resolved Cucumber configuration object. */
   config: Config;
   logger: Logger;
+  /**
+   *
+   */
+  launcher: pwe.AugmentedBrowserLauncher;
   /** Playwright's BrowserContext instance with added custom commands and presets.
    * @see [BrowserContext](https://playwright.dev/docs/api/class-browsercontext)
    **/
@@ -136,13 +142,14 @@ export abstract class World extends AllureWorld implements PrivateWorld {
     return result instanceof Function ? result(...args) : result;
   }
 
+  private createLauncher() {
+    const launcher: pwe.AugmentedBrowserLauncher = pwe.addExtra(playwright[this.config.browser]);
+    launcher.use(StealthPlugin()); // enable stealth by default
+    return launcher;
+  }
+
   async createBrowserContext() {
-    const browserType: playwright.BrowserType = this.config.stealth ? pwe[this.config.browser] : playwright[this.config.browser];
-    if (this.config.stealth) {
-      const stealth = require("puppeteer-extra-plugin-stealth")();
-      (browserType as any).use(stealth);
-    }
-    const browser = await browserType.launch(this.config.browserOptions) as any;
+    const browser = await this.createLauncher().launch(this.config.browserOptions);
     const playwrightContext = await browser.newContext(this.config.contextOptions);
     const context = new BrowserContextClass(playwrightContext) as BrowserContext;
     context.setDefaultTimeout(this.config.timeout);
