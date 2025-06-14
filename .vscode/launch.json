@@ -11,7 +11,7 @@
       "console": "integratedTerminal",
       "outputCapture": "std",
       "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "/Users/a/.nvm/versions/node/v20.10.0/bin/npm",
       "runtimeArgs": ["run-script", "debug:demo"],
       "outFiles": [
         "${workspaceFolder}/**/*.ts",
@@ -20,8 +20,7 @@
       "env": {
         "HEADLESS": "false",
         "PARALLEL": "${input:parallel}",
-        "TAGS": "${input:tags}",
-        "PATHS": "${file}"
+        "TAGS": "${input:tags}"
       }
     }
   ],

@@ -7,6 +7,9 @@ import StealthPlugin from "puppeteer-extra-plugin-stealth";
 
 import { CucumberAllureWorld as AllureWorld } from "allure-cucumberjs";
 import { BrowserContext as BrowserContextClass } from "@fixtures/context/context";
+import { ContextPlugin } from "@plugins/context/context.plugin";
+import { PagePlugin } from "@plugins/page/page.plugin";
+import { LocatorPlugin } from "@plugins/locator/locator.plugin";
 import { changecase } from "@common/utils/string";
 import { Logger } from "./utils/logger";
 import { PageObject } from "./page-object";
@@ -144,6 +147,10 @@ export abstract class World extends AllureWorld implements PrivateWorld {
 
   private createLauncher() {
     const launcher: pwe.AugmentedBrowserLauncher = pwe.addExtra(playwright[this.config.browser]);
+    launcher.use(new ContextPlugin());
+    launcher.use(new PagePlugin());
+    launcher.use(new LocatorPlugin());
+
     launcher.use(StealthPlugin()); // enable stealth by default
     return launcher;
   }

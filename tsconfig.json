@@ -18,7 +18,8 @@
       "@conditions/*": ["src/conditions/*"],
       "@config/*": ["src/config/*"],
       "@core/*": ["src/core/*"],
-      "@fixtures/*": ["src/fixtures/*"]
+      "@fixtures/*": ["src/fixtures/*"],
+      "@plugins/*": ["src/plugins/*"]
     },
     "forceConsistentCasingInFileNames": true,
     "removeComments": false,
