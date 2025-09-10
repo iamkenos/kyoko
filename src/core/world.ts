@@ -1,4 +1,4 @@
-import * as playwright from "@playwright/test";
+import * as playwright from "playwright";
 import * as pwe from "playwright-extra";
 import * as path from "path";
 import * as files from "@common/utils/files";
@@ -6,22 +6,21 @@ import * as files from "@common/utils/files";
 import StealthPlugin from "puppeteer-extra-plugin-stealth";
 
 import { CucumberAllureWorld as AllureWorld } from "allure-cucumberjs";
-import { BrowserContext as BrowserContextClass } from "@fixtures/context/context";
 import { ContextPlugin } from "@plugins/context/context.plugin";
 import { PagePlugin } from "@plugins/page/page.plugin";
 import { LocatorPlugin } from "@plugins/locator/locator.plugin";
 import { changecase } from "@common/utils/string";
 import { Logger } from "./utils/logger";
-import { PageObject } from "./page-object";
+import { WebPage } from "./fixtures/web-page.fixture";
 
+import type { BrowserContext, Locator, Page } from "playwright";
 import type { IWorldOptions } from "@cucumber/cucumber";
-import type { BrowserContext, Locator, Page } from "@fixtures/types";
 import type { Config, WorldParameters } from "@config/types";
 
 interface Reporter extends Pick<AllureWorld, "attach" | "step" | "issue" | "link" | "description"> { }
 
 interface PrivateWorld {
-  findPageObject: <T = PageObject>(page: string, persist?: boolean) => T;
+  findPageObject: <T = WebPage>(page: string, persist?: boolean) => T;
   findPageObjectLocator: (page: string, element: string, index?: number) => Locator;
   findPageObjectProp: <T = any>(page: string, prop: string, fallback?: T) => T;
   createBrowserContext: () => void;
@@ -48,13 +47,6 @@ export abstract class World extends AllureWorld implements PrivateWorld {
   /** The resolved Cucumber configuration object. */
   config: Config;
   logger: Logger;
-  /**
-   *
-   */
-  launcher: pwe.AugmentedBrowserLauncher;
-  /** Playwright's BrowserContext instance with added custom commands and presets.
-   * @see [BrowserContext](https://playwright.dev/docs/api/class-browsercontext)
-   **/
   context: BrowserContext;
   /** Playwright's Page instance created from `this.context` with added custom commands and presets.
    * @see [Page](https://playwright.dev/docs/api/class-page)
@@ -99,7 +91,7 @@ export abstract class World extends AllureWorld implements PrivateWorld {
     files.fromGlob([path.join(path.dirname(__dirname), "fixtures/**/commands/*.js")]).filter(Boolean).forEach(file => require(file));
   }
 
-  findPageObject<T = PageObject>(page?: string, persist = false) {
+  findPageObject<T = WebPage>(page?: string, persist = false) {
     let pageObjectFile: PageObjectFile = this.pageObjectFile;
 
     if (page) {
@@ -126,14 +118,14 @@ export abstract class World extends AllureWorld implements PrivateWorld {
       throw new Error(`Unable to find an exported "${pageObjectFile.classname}" page object class from "${pageObjectFile.filepath}".`);
     }
 
-    const PageObj = module[clazz] as new () => PageObject;
+    const PageObj = module[clazz] as new () => WebPage;
     const pageObject = new PageObj();
     return pageObject as unknown as T;
   }
 
   findPageObjectLocator(page: string, element: string, index?: number) {
     let locator: Locator;
-    locator = this.findPageObjectProp<Locator>(page, element, this.page.locator(element));
+    locator = this.findPageObjectProp<Locator>(page, element, this.page.locator(element) as any); // TODO: remove any
     locator = index ? locator.nth(index - 1) : locator;
     return locator;
   }
@@ -157,8 +149,7 @@ export abstract class World extends AllureWorld implements PrivateWorld {
 
   async createBrowserContext() {
     const browser = await this.createLauncher().launch(this.config.browserOptions);
-    const playwrightContext = await browser.newContext(this.config.contextOptions);
-    const context = new BrowserContextClass(playwrightContext) as BrowserContext;
+    const context = await browser.newContext(this.config.contextOptions);
     context.setDefaultTimeout(this.config.timeout);
     return context;
   }

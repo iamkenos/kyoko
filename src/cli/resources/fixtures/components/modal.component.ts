@@ -1,4 +1,5 @@
-import { Component, LocatorFilters } from "@iamkenos/kyoko/core";
+import { LocatorFilters } from "playwright";
+import { WebComponent } from "@iamkenos/kyoko/core";
 import { ExpectedConditionKwargs, ExpectedConditionOptions, LocatorConditions } from "@iamkenos/kyoko/conditions";
 
 /**
@@ -7,7 +8,7 @@ import { ExpectedConditionKwargs, ExpectedConditionOptions, LocatorConditions } 
  * You can create complex web components with its own API and override built-in locator methods.
  * This pattern is particularly useful when working with applications built by design systems.
  */
-export class Modal extends Component {
+export class Modal extends WebComponent {
 
   constructor(filters?: LocatorFilters) {
     super("#ouibounce-modal", filters);

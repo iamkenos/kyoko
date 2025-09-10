@@ -1,11 +1,11 @@
 import { Count, MatchContext } from "@core/gherkin/enums";
 
+import type { Page } from "playwright";
 import type { PageSnapshotOptions } from "@config/types";
-import type { Page } from "@fixtures/page/types";
 import type { ExpectedConditionKwargs } from "@conditions/types";
-import type { PageObject } from "@core/page-object";
+import type { WebPage } from "@core/fixtures/web-page.fixture";
 
-export async function expectPageHasFullyLoaded(page: PageObject, kwargs?: ExpectedConditionKwargs) {
+export async function expectPageHasFullyLoaded(page: WebPage, kwargs?: ExpectedConditionKwargs) {
   await page.expect().loaded(kwargs).poll();
 }
 

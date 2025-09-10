@@ -231,7 +231,7 @@ defineParameterType({
   name: "resolved_url",
   regexp: /"([^"]*)?"/,
   transformer(this: World, url: string) {
-    return this.page.urlFromBase(url);
+    return this.page.resolvedUrlFrom(url);
   },
   useForSnippets: false
 });

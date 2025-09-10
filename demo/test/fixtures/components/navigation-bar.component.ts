@@ -1,8 +1,9 @@
-import { Component, LocatorFilters } from "@iamkenos/kyoko/core";
+import { LocatorFilters } from "playwright";
+import { WebComponent } from "@iamkenos/kyoko/core";
 
 import type { ExpectedConditionKwargs } from "@iamkenos/kyoko/conditions";
 
-export class NavigationBar extends Component {
+export class NavigationBar extends WebComponent {
 
   constructor(filters?: LocatorFilters) {
     super("//nav", filters);

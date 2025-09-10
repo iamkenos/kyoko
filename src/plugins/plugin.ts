@@ -5,7 +5,7 @@ import { PuppeteerExtraPlugin } from "puppeteer-extra-plugin";
 import { fromGlob } from "@common/utils/files";
 import { changecase } from "@common/utils/string";
 
-import type { Page } from "@playwright/test";
+import type { Page } from "playwright";
 
 export class CommandPlugin extends PuppeteerExtraPlugin {
   constructor(opts = {}) {
@@ -20,10 +20,11 @@ export class CommandPlugin extends PuppeteerExtraPlugin {
     const ext = ".js";
     const [plugin] = changecase.split(this.constructor.name).map(i => i.toLowerCase());
     const files = fromGlob([path.join(__dirname, plugin, "commands", `*${ext}`)]);
+    const commands = files.map(f => changecase.camelCase(path.basename(f, ext)));
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      const command = changecase.camelCase(path.basename(file, ext));
+      const command = commands[i];
       fixture[command] = require(file)[command]; // monkey-patch
     }
     return fixture;

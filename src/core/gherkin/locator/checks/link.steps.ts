@@ -4,9 +4,9 @@ import {
   HrefTargetContext
 } from "@core/gherkin/enums";
 
-import type { PageObject } from "@core/page-object";
+import type { WebPage } from "@core/fixtures/web-page.fixture";
 import type { World as This } from "@core/world";
-import type { Locator } from "@fixtures/locator/types";
+import type { Locator } from "playwright";
 
 import * as fn from "./link.glue";
 
@@ -219,7 +219,7 @@ Then(
  */
 Then(
   "I expect the {page_object_locator} element/button {to_or_to_not} point to the {page_object} page",
-  async function(this: This, locator: Locator, not: boolean, page: PageObject) {
+  async function(this: This, locator: Locator, not: boolean, page: WebPage) {
     await fn.expectLinkHrefEquals(locator, page.url, { not });
   }
 );
@@ -233,7 +233,7 @@ Then(
  */
 Then(
   "I expect the {link_locator} link {to_or_to_not} point to the {page_object} page",
-  async function(this: This, locator: Locator, not: boolean, page: PageObject) {
+  async function(this: This, locator: Locator, not: boolean, page: WebPage) {
     await fn.expectLinkHrefEquals(locator, page.url, { not });
   }
 );

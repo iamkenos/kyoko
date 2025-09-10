@@ -1,7 +1,7 @@
-import { PageObject } from "@iamkenos/kyoko/core";
+import { WebPage } from "@iamkenos/kyoko/core";
 import { NavigationBar } from "../../components/navigation-bar.component";
 
-export class DemoPage extends PageObject {
+export class DemoPage extends WebPage {
   url = "/index.html";
   title = "Demo Site";
 

@@ -4,7 +4,7 @@ import * as path from "path";
 import { PageCondition } from "@conditions/page/page-condition";
 
 import type { AllureCommandStepExecutable } from "allure-js-commons";
-import type { Locator } from "@fixtures/locator/types";
+import type { Locator } from "playwright";
 import type { ExpectedConditionKwargs } from "@conditions/types";
 import type { PageSnapshotOptions } from "@config/types";
 

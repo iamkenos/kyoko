@@ -5,7 +5,7 @@ import {
 } from "@core/gherkin/enums";
 
 import type { World as This } from "@core/world";
-import type { Locator } from "@fixtures/locator/types";
+import type { Locator } from "playwright";
 
 import * as fn from "./form.glue";
 

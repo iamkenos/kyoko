@@ -3,7 +3,7 @@ import {
   SelectOptionContext
 } from "@core/gherkin/enums";
 
-import type { Locator } from "@fixtures/locator/types";
+import type { Locator } from "playwright";
 import type { ExpectedConditionKwargs } from "@conditions/types";
 
 export async function expectElementIsSelected(locator: Locator, kwargs?: ExpectedConditionKwargs) {
@@ -13,7 +13,7 @@ export async function expectElementIsSelected(locator: Locator, kwargs?: Expecte
 }
 
 export async function expectDropdownOptionIsSelected(locator: Locator, expected: string | number, context: SelectOptionContext, kwargs?: ExpectedConditionKwargs) {
-  const options = await locator.dropdownOptions();
+  const options = await locator.getSelectOptions();
   const kwargz = { ...(kwargs || {}), selectContext: `By ${context}` };
 
   let option: Locator;

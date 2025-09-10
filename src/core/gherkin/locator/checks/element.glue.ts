@@ -4,7 +4,7 @@ import {
   SizeContext
 } from "@core/gherkin/enums";
 
-import type { Locator } from "@fixtures/locator/types";
+import type { Locator } from "playwright";
 import type { ExpectedConditionKwargs } from "@conditions/types";
 import type { LocatorSnapshotOptions } from "@config/types";
 

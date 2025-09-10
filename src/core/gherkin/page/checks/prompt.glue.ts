@@ -1,6 +1,6 @@
 import { MatchContext } from "@core/gherkin/enums";
 
-import type { Page } from "@fixtures/page/types";
+import type { Page } from "playwright";
 import type { ExpectedConditionKwargs } from "@conditions/types";
 
 export async function expectDialogWasOpened(page: Page, kwargs?: ExpectedConditionKwargs) {

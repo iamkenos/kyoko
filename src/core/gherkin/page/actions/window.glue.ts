@@ -1,11 +1,10 @@
 import { WindowDirection, WindowNavigation } from "@core/gherkin/enums";
 
-import type { BrowserContext } from "@fixtures/context/types";
-import type { Page } from "@fixtures/page/types";
-import type { PageObject } from "@core/page-object";
+import type { BrowserContext, Page } from "playwright";
+import type { WebPage } from "@core/fixtures/web-page.fixture";
 import type { World } from "@core/world";
 
-export async function navigate(page: PageObject) {
+export async function navigate(page: WebPage) {
   await page.navigate();
 }
 
@@ -61,7 +60,7 @@ export async function openInNewTab(context: BrowserContext, url: string) {
 
 export async function focusOnTheLastOpenedTab(world: World) {
   await world.page.expect().windowCountMoreThan(1).poll();
-  return world.context.lastPage();
+  return world.context.pages().at(-1);
 }
 
 export async function navigateDirection(page: Page, direction: WindowNavigation) {

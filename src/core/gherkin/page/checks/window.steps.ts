@@ -1,7 +1,7 @@
 import { Then } from "@cucumber/cucumber";
 import { Count, MatchContext } from "@core/gherkin/enums";
 
-import type { PageObject } from "@core/page-object";
+import type { WebPage } from "@core/fixtures/web-page.fixture";
 import type { World as This } from "@core/world";
 
 import * as fn from "./window.glue";
@@ -15,7 +15,7 @@ import * as fn from "./window.glue";
  */
 Then(
   "I expect {to_or_to_not} be on the {page_object} page/site/portal",
-  async function(this: This, not: boolean, page: PageObject) {
+  async function(this: This, not: boolean, page: WebPage) {
     await fn.expectPageHasFullyLoaded(page, { not });
   }
 );
@@ -28,7 +28,7 @@ Then(
  */
 Then(
   "I expect to still be on the {page_object} page/site/portal",
-  async function(this: This, page: PageObject) {
+  async function(this: This, page: WebPage) {
     await fn.expectPageHasFullyLoaded(page);
   }
 );
@@ -42,7 +42,7 @@ Then(
  */
 Then(
   "I expect {to_or_to_not} be back to the {page_object} page/site/portal",
-  async function(this: This, not: boolean, page: PageObject) {
+  async function(this: This, not: boolean, page: WebPage) {
     await fn.expectPageHasFullyLoaded(page, { not });
   }
 );

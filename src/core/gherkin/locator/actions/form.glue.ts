@@ -4,18 +4,17 @@ import {
   ToggleAction
 } from "@core/gherkin/enums";
 
-import type { Locator } from "@fixtures/locator/types";
-import type { Component } from "@fixtures/component/component";
+import type { Locator } from "playwright";
+import type { WebComponent } from "@core/fixtures/web-component.fixture";
 
-
-export async function clear(locator: Locator | Component) {
+export async function clear(locator: Locator | WebComponent) {
   await locator.clear();
 }
 
-export async function fill(locator: Locator | Component, value: string, action: SetValueAction) {
+export async function fill(locator: Locator | WebComponent, value: string, action: SetValueAction) {
   switch (action) {
     case SetValueAction.APPEND: {
-      await locator.fill(value, { append: true });
+      await locator.fill(value, { append: true } as any);
       break;
     }
     default: {
@@ -25,7 +24,7 @@ export async function fill(locator: Locator | Component, value: string, action: 
   }
 }
 
-export async function toggle(locator: Locator | Component, action: ToggleAction) {
+export async function toggle(locator: Locator | WebComponent, action: ToggleAction) {
   switch (action) {
     case ToggleAction.TICK: {
       await locator.check({ force: true });
@@ -38,7 +37,7 @@ export async function toggle(locator: Locator | Component, action: ToggleAction)
   }
 }
 
-export async function selectOption(locator: Locator | Component, option: string | number, context: SelectOptionContext) {
+export async function selectOption(locator: Locator | WebComponent, option: string | number, context: SelectOptionContext) {
   switch (context) {
     case SelectOptionContext.LABEL: {
       await locator.selectOption({ label: option as string }, { force: true });
@@ -55,10 +54,10 @@ export async function selectOption(locator: Locator | Component, option: string 
   }
 }
 
-export async function selectOptions(locator: Locator | Component, options: { [key: string]: string | number }[]) {
+export async function selectOptions(locator: Locator | WebComponent, options: { [key: string]: string | number }[]) {
   await locator.selectOption(options, { force: true });
 }
 
-export async function uploadFiles(locator: Locator | Component, filepath: string) {
+export async function uploadFiles(locator: Locator | WebComponent, filepath: string) {
   await locator.uploadFiles(filepath);
 }

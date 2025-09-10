@@ -23,7 +23,7 @@ import { Truthy } from "./condition/truthy";
 import { ValueContains } from "./condition/value-contains";
 import { ValueEquals } from "./condition/value-equals";
 
-import type { Locator } from "@fixtures/locator/types";
+import type { Locator } from "playwright";
 import type { LocatorSnapshotOptions } from "@config/types";
 import type { Axis, SizeContext } from "@core/gherkin/enums";
 import type { ExpectedConditionKwargs, ExpectedConditionOptions } from "../types";
