@@ -8,7 +8,7 @@ export class ComponentFixture {
   }
 
   static create<T extends ComponentFixture>({ prototype, selector, from, filters }: Args): T & Locator {
-    const parent = from || world.page.locator(selector, filters);
+    const parent = from || ctx.page.locator(selector, filters);
     const instance = new Proxy(prototype as any as T, {
       get(target, prop, receiver) {
         if (prop in target) {

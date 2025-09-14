@@ -15,15 +15,15 @@ import { WebPage } from "./fixtures/web-page.fixture";
 
 import type { BrowserContext, Locator, Page } from "playwright";
 import type { IWorldOptions } from "@cucumber/cucumber";
-import type { Config, WorldParameters } from "@config/types";
+import type { ContextParameters as BaseContextParameters, Config } from "@config/types";
 
 interface Reporter extends Pick<AllureWorld, "attach" | "step" | "issue" | "link" | "description"> { }
 
-interface PrivateWorld {
+interface PrivateContext {
   findPageObject: <T = WebPage>(page: string, persist?: boolean) => T;
   findPageObjectLocator: (page: string, element: string, index?: number) => Locator;
   findPageObjectProp: <T = any>(page: string, prop: string, fallback?: T) => T;
-  createBrowserContext: () => void;
+  createBrowser: () => void;
 }
 
 interface PageObjectFile {
@@ -34,20 +34,20 @@ interface PageObjectFile {
   locale: string;
 }
 
-export interface This<ParametersType = WorldParameters> extends Omit<World, keyof AllureWorld | keyof PrivateWorld> {
+export interface This<ContextParameters = BaseContextParameters> extends Omit<Context, keyof AllureWorld | keyof PrivateContext> {
   readonly reporter: Reporter;
-  readonly context: BrowserContext;
+  readonly browser: BrowserContext;
   readonly config: Config;
-  parameters: ParametersType;
+  parameters: ContextParameters;
 }
 
-export abstract class World extends AllureWorld implements PrivateWorld {
+export abstract class Context extends AllureWorld implements PrivateContext {
   private pageObjectsFiles: PageObjectFile[];
   private pageObjectFile: PageObjectFile;
   /** The resolved Cucumber configuration object. */
   config: Config;
   logger: Logger;
-  context: BrowserContext;
+  browser: BrowserContext;
   /** Playwright's Page instance created from `this.context` with added custom commands and presets.
    * @see [Page](https://playwright.dev/docs/api/class-page)
    */
@@ -66,7 +66,7 @@ export abstract class World extends AllureWorld implements PrivateWorld {
     this.setPageObjects();
     this.setReporter();
     this.loadCommands();
-    globalThis.world = this;
+    globalThis.ctx = this;
   }
 
   private setPageObjects() {
@@ -138,7 +138,7 @@ export abstract class World extends AllureWorld implements PrivateWorld {
   }
 
   private createLauncher() {
-    const launcher: pwe.AugmentedBrowserLauncher = pwe.addExtra(playwright[this.config.browser]);
+    const launcher: pwe.AugmentedBrowserLauncher = pwe.addExtra(playwright[this.config.browserOptions.instance]);
     launcher.use(new ContextPlugin());
     launcher.use(new PagePlugin());
     launcher.use(new LocatorPlugin());
@@ -147,10 +147,10 @@ export abstract class World extends AllureWorld implements PrivateWorld {
     return launcher;
   }
 
-  async createBrowserContext() {
-    const browser = await this.createLauncher().launch(this.config.browserOptions);
-    const context = await browser.newContext(this.config.contextOptions);
-    context.setDefaultTimeout(this.config.timeout);
-    return context;
+  async createBrowser() {
+    const launcher = await this.createLauncher().launch(this.config.browserOptions.launchArgs);
+    const browser = await launcher.newContext(this.config.browserOptions.browserContextArgs);
+    browser.setDefaultTimeout(this.config.timeout);
+    return browser;
   }
 }

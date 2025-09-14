@@ -1,6 +1,6 @@
 import { When } from "@cucumber/cucumber";
 
-import type { World as This } from "@core/world";
+import type { Context as This } from "@core/world";
 import type { Locator } from "playwright";
 
 import * as fn from "./window.glue";

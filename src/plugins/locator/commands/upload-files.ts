@@ -7,6 +7,6 @@ export async function uploadFiles(this: Locator, ...files: string[]) {
   await this.click();
 
   const fileChooser = await fileChooserPromise;
-  const mapped = files.length > 0 ? files.map(file => path.isAbsolute(file) ? file : path.join(world.config.baseDir, file)) : files;
+  const mapped = files.length > 0 ? files.map(file => path.isAbsolute(file) ? file : path.join(ctx.config.baseDir, file)) : files;
   await fileChooser.setFiles(mapped);
 }

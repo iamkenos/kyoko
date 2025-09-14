@@ -29,10 +29,10 @@ export class SnapshotMatch extends PageCondition {
   }
 
   async onFailure() {
-    const { outDir } = world.config.snapshots.images;
+    const { outDir } = ctx.config.snapshots.images;
     const attach = (title: string, filename: string) => {
       if (fs.existsSync(filename)) {
-        world.reporter.step(title, (step: AllureCommandStepExecutable) => step.attach(fs.readFileSync(filename), "image/png"));
+        ctx.reporter.step(title, (step: AllureCommandStepExecutable) => step.attach(fs.readFileSync(filename), "image/png"));
       }
     };
 
@@ -52,11 +52,11 @@ export class SnapshotMatch extends PageCondition {
 
   async evaluate() {
     try {
-      const { browser, snapshots } = world.config;
+      const { browserOptions, snapshots } = ctx.config;
       const { actualDir, expectedDir, diffDir, maxDiffPixelRatio, mask, skipCompare } = snapshots.images;
-      this.actualFilePath = path.join(actualDir, browser, this.filename);
-      this.diffFilePath = path.join(diffDir, browser, this.filename);
-      this.expectedFilePath = path.join(expectedDir, browser, this.filename);
+      this.actualFilePath = path.join(actualDir, browserOptions.instance, this.filename);
+      this.diffFilePath = path.join(diffDir, browserOptions.instance, this.filename);
+      this.expectedFilePath = path.join(expectedDir, browserOptions.instance, this.filename);
 
       const screenshotOptions = { mask: this.options?.mask || mask, fullPage: this.options?.fullPage };
       const comparatorOptions = { maxDiffPixelRatio: this.options?.maxDiffPixelRatio || maxDiffPixelRatio };

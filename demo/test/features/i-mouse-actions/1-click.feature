@@ -7,9 +7,6 @@ Feature: I. Mouse Actions - Click
 @debug
   Scenario: S01: Create element
     When I search for elements under the "Click Section" element
-
-  Scenario: S01: Create element
-    When I search for elements under the "Click Section" element
       And I click the "#create" button 3 times
       And I remove the element search restriction
     Then I expect the "#create-result" element to exist

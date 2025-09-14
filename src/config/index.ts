@@ -12,55 +12,76 @@ export * from "./types";
 type Config = NestedOmit<BaseConfig, "snapshots.images.outDir">;
 
 function loadEnv(baseDir: string) {
-  const { NODE_ENV } = process.env;
-  dotenv.config({ path: NODE_ENV ? path.join(baseDir, `.env.${NODE_ENV}`) : path.join(baseDir, ".env") });
+  const { NODE_ENV: CTX_ENV } = process.env;
+  dotenv.config({ path: CTX_ENV ? path.join(baseDir, `.env.${CTX_ENV}`) : path.join(baseDir, ".env") });
 }
 
 function getConfigBaseURL(overrides: Partial<Config>) {
-  const { BASE_URL } = process.env;
+  const { CTX_BASE_URL = "" } = process.env;
   const { baseURL = "" } = overrides;
-  return BASE_URL ? BASE_URL : baseURL;
+  return CTX_BASE_URL ? CTX_BASE_URL : baseURL;
 }
 
-function getConfigBrowser(overrides: Partial<Config>) {
-  const SUPPORTED_BROWSERS = ["chromium", "firefox", "webkit"];
-  const { BROWSER } = process.env;
-  const { browser = SUPPORTED_BROWSERS[0] } = overrides;
-  return BROWSER && SUPPORTED_BROWSERS.includes(BROWSER) ? BROWSER : browser;
+function getConfigBrowserOptions(overrides: Partial<Config>) {
+  const {
+    CTX_BROWSER_INSTANCE = "",
+    CTX_BROWSER_IS_HEADLESS = "",
+    CTX_BROWSER_RECORD_VIDEO = ""
+  } = process.env;
+  const baseURL = getConfigBaseURL(overrides);
+  const supportedBrowsers = ["chromium", "firefox", "webkit"];
+  const instance = supportedBrowsers.includes(CTX_BROWSER_INSTANCE.toLowerCase())
+    ? CTX_BROWSER_INSTANCE.toLowerCase()
+    : supportedBrowsers.includes((overrides.browserOptions?.instance ?? "").toLowerCase())
+      ? (overrides.browserOptions.instance).toLowerCase()
+      : supportedBrowsers[0];
+  const headless = CTX_BROWSER_IS_HEADLESS
+    ? CTX_BROWSER_IS_HEADLESS.toLowerCase() === "true"
+    : overrides.browserOptions?.headless ?? false;
+  const recordVideo = CTX_BROWSER_RECORD_VIDEO
+    ? CTX_BROWSER_RECORD_VIDEO.toLowerCase() === "true"
+    : overrides.browserOptions?.recordVideo ?? false;
+  const videosDir = path.join(getConfigResultsDir(overrides), "videos");
+  const launchArgs = {
+    headless,
+    ...overrides.browserOptions?.launchArgs
+  };
+  const browserContextArgs = {
+    baseURL, ignoreHTTPSErrors: false,
+    viewport: { width: 1675, height: 1020 },
+    recordVideo: recordVideo ? { dir: videosDir } : undefined,
+    ...overrides.browserOptions?.browserContextArgs
+  };
+
+  return { instance, headless, recordVideo, launchArgs, browserContextArgs };
 }
 
 function getConfigDebug(overrides: Partial<Config>) {
-  const { DEBUG } = process.env;
+  const { CTX_DEBUG = "" } = process.env;
   const { debug = false } = overrides;
-  return DEBUG ? DEBUG === "true" : debug;
+  return CTX_DEBUG ? CTX_DEBUG.toLowerCase() === "true" : debug;
 }
 
 function getConfigDownloadsDir(overrides: Partial<Config>) {
-  const { DOWNLOADS_DIR } = process.env;
+  const { CTX_DOWNLOADS_DIR = "" } = process.env;
   const { downloadsDir = "downloads/", baseDir } = overrides;
-  const directory = path.join(baseDir, DOWNLOADS_DIR ? DOWNLOADS_DIR : downloadsDir);
+  const directory = path.join(baseDir, CTX_DOWNLOADS_DIR ? CTX_DOWNLOADS_DIR : downloadsDir);
   fs.removeSync(directory);
   return directory;
 }
 
-function getConfigHeadless(overrides: Partial<Config>) {
-  const { HEADLESS } = process.env;
-  const { headless = false } = overrides;
-  return HEADLESS ? HEADLESS === "true" : headless;
-}
-
 function getConfigLocale(overrides: Partial<Config>) {
-  const { LOCALE } = process.env;
+  const { CTX_LOCALE = "" } = process.env;
   const { locale } = overrides;
-  return LOCALE ? LOCALE : locale;
+  return CTX_LOCALE ? CTX_LOCALE : locale;
 }
 
 function getConfigLogLevel(overrides: Partial<Config>) {
-  const { LOG_LEVEL } = process.env;
+  const { CTX_LOG_LEVEL = "" } = process.env;
   const { logLevel = "info" } = overrides;
   const debug = getConfigDebug(overrides);
-  process.env.LOG_LEVEL = debug ? "debug" : LOG_LEVEL ? LOG_LEVEL : logLevel;
-  return process.env.LOG_LEVEL;
+  process.env.CTX_LOG_LEVEL = debug ? "debug" : CTX_LOG_LEVEL ? CTX_LOG_LEVEL : logLevel;
+  return process.env.CTX_LOG_LEVEL;
 }
 
 function getConfigPages(overrides: Partial<Config>) {
@@ -69,46 +90,21 @@ function getConfigPages(overrides: Partial<Config>) {
 }
 
 function getConfigResultsDir(overrides: Partial<Config>) {
-  const { RESULTS_DIR } = process.env;
+  const { CTX_RESULTS_DIR } = process.env;
   const { resultsDir = "results/", baseDir } = overrides;
-  return path.join(baseDir, RESULTS_DIR ? RESULTS_DIR : resultsDir);
-}
-
-function getConfigShouldUseVideoAttachment(overrides: Partial<Config>) {
-  const { SHOULD_USE_VIDEO_ATTACHMENT } = process.env;
-  const { shouldUseVideoAttachment = false } = overrides;
-  return SHOULD_USE_VIDEO_ATTACHMENT ? SHOULD_USE_VIDEO_ATTACHMENT === "true" : shouldUseVideoAttachment;
+  return path.join(baseDir, CTX_RESULTS_DIR ? CTX_RESULTS_DIR : resultsDir);
 }
 
 function getConfigSnapshotsDir(overrides: Partial<Config>) {
-  const { SNAPSHOTS_DIR } = process.env;
+  const { CTX_SNAPSHOTS_DIR } = process.env;
   const { snapshotsDir = "snapshots/", baseDir } = overrides;
-  return path.join(baseDir, SNAPSHOTS_DIR ? SNAPSHOTS_DIR : snapshotsDir);
+  return path.join(baseDir, CTX_SNAPSHOTS_DIR ? CTX_SNAPSHOTS_DIR : snapshotsDir);
 }
 
 function getConfigTimeout(overrides: Partial<Config>) {
-  const { TIMEOUT } = process.env;
+  const { CTX_TIMEOUT } = process.env;
   const { timeout = 30000 } = overrides;
-  return +TIMEOUT ? +TIMEOUT : timeout;
-}
-
-function getConfigBrowserOptions(overrides: Partial<Config>) {
-  const { browserOptions } = overrides;
-  const headless = getConfigHeadless(overrides);
-  return { headless, ...browserOptions };
-}
-
-function getConfigContextOptions(overrides: Partial<Config>) {
-  const { contextOptions } = overrides;
-  const baseURL = getConfigBaseURL(overrides);
-  const shouldUseVideoAttachment = getConfigShouldUseVideoAttachment(overrides);
-  const dir = path.join(getConfigResultsDir(overrides), "videos");
-  return {
-    baseURL, ignoreHTTPSErrors: false,
-    viewport: { width: 1675, height: 1020 },
-    recordVideo: shouldUseVideoAttachment ? { dir } : undefined,
-    ...contextOptions
-  };
+  return +CTX_TIMEOUT ? +CTX_TIMEOUT : timeout;
 }
 
 function getConfigSnapshots(overrides: Partial<Config>) {
@@ -153,16 +149,16 @@ function getCukesFormatOptions() {
 }
 
 function getCukesParallel(overrides: Partial<Config>) {
-  const { PARALLEL } = process.env;
+  const { CTX_PARALLEL_WORKERS } = process.env;
   const { parallel = 0 } = overrides;
   const debug = getConfigDebug(overrides);
-  return debug ? 0 : PARALLEL ? +PARALLEL : parallel;
+  return debug ? 0 : CTX_PARALLEL_WORKERS ? +CTX_PARALLEL_WORKERS : parallel;
 }
 
 function getCukesPaths(overrides: Partial<Config>) {
-  const { PATHS } = process.env;
+  const { CTX_FEATURE_PATHS } = process.env;
   const { paths = ["features/"], baseDir } = overrides;
-  return PATHS ? [PATHS].filter(Boolean) : paths.map(i => path.join(baseDir, i));
+  return CTX_FEATURE_PATHS ? [CTX_FEATURE_PATHS].filter(Boolean) : paths.map(i => path.join(baseDir, i));
 }
 
 function getCukesRequire(overrides: Partial<Config>) {
@@ -176,9 +172,9 @@ function getCukesRequireModule() {
 }
 
 function getCukesTags(overrides: Partial<Config>) {
-  const { TAGS } = process.env;
+  const { CTX_FEATURE_TAGS } = process.env;
   const { tags } = overrides;
-  return TAGS ? TAGS : tags;
+  return CTX_FEATURE_TAGS ? CTX_FEATURE_TAGS : tags;
 }
 
 function getCukesWorldParameters(overrides: Partial<Config>) {
@@ -194,26 +190,22 @@ export function configure(overrides: Partial<Config> = {}) {
   const baseDir = path.dirname(callsites()[1].getFileName()).replace("file://", "");
   loadEnv(baseDir);
 
-  // custom options defaults
+  // custom options defaults and overrides
   overrides.baseDir = baseDir;
   const baseURL = getConfigBaseURL(overrides);
-  const browser = getConfigBrowser(overrides);
   const debug = getConfigDebug(overrides);
   const downloadsDir = getConfigDownloadsDir(overrides);
-  const headless = getConfigHeadless(overrides);
   const locale = getConfigLocale(overrides);
   const logLevel = getConfigLogLevel(overrides);
   const pages = getConfigPages(overrides);
   const resultsDir = getConfigResultsDir(overrides);
-  const shouldUseVideoAttachment = getConfigShouldUseVideoAttachment(overrides);
   const timeout = getConfigTimeout(overrides);
   const browserOptions = getConfigBrowserOptions(overrides);
-  const contextOptions = getConfigContextOptions(overrides);
   const snapshots = getConfigSnapshots(overrides);
   const custom = {
-    baseDir, baseURL, browser, browserOptions, contextOptions,
-    debug, downloadsDir, headless, locale, logLevel, pages,
-    resultsDir, shouldUseVideoAttachment, snapshots, timeout
+    baseDir, baseURL, browserOptions,
+    debug, downloadsDir, locale, logLevel, pages,
+    resultsDir, snapshots, timeout
   };
 
   // cucumber options defaults
@@ -233,7 +225,7 @@ export function configure(overrides: Partial<Config> = {}) {
   // assign the whole thing to world parameters so these can be accessible from cucumber's world context
   const { worldParameters, ...rest } = config;
   config.worldParameters = { config: { ...rest, ...custom }, ...worldParameters };
-  globalThis.world = { config: config.worldParameters.config } as any;
+  globalThis.ctx = { config: config.worldParameters.config } as any;
 
   return config;
 }

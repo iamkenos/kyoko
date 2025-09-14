@@ -2,7 +2,7 @@ import { Then } from "@cucumber/cucumber";
 import { Count, MatchContext } from "@core/gherkin/enums";
 
 import type { WebPage } from "@core/fixtures/web-page.fixture";
-import type { World as This } from "@core/world";
+import type { Context as This } from "@core/world";
 
 import * as fn from "./window.glue";
 

@@ -3,7 +3,7 @@ import { isURL } from "@common/utils/string";
 import type { Page } from "playwright";
 
 export function resolvedUrlFrom(this: Page, path: string) {
-  const withBaseURL = world.config.baseURL + path;
+  const withBaseURL = ctx.config.baseURL + path;
   const fullURL = isURL(withBaseURL);
   const pageURL = isURL(path);
   const url = [pageURL, fullURL].find(Boolean);

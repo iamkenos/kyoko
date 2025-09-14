@@ -18,9 +18,9 @@
         "${workspaceFolder}/build/**/*.js"
       ],
       "env": {
-        "HEADLESS": "false",
-        "PARALLEL": "${input:parallel}",
-        "TAGS": "${input:tags}"
+        "CTX_BROWSER_IS_HEADLESS": "false",
+        "CTX_PARALLEL_WORKERS": "${input:parallel}",
+        "CTX_FEATURE_TAGS": "${input:tags}"
       }
     }
   ],

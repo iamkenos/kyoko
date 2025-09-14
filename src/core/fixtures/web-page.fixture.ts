@@ -1,21 +1,20 @@
 import { Fixture } from "./fixture";
 import type { Page } from "playwright";
 import type { ExpectedConditionKwargs, ExpectedConditionOptions } from "@conditions/types";
-import type { Config, WorldParameters } from "@config/types";
+import type { Config, ContextParameters } from "@config/types";
 
-export abstract class WebPage<ParametersType = WorldParameters> extends Fixture<ParametersType> {
+export abstract class WebPage<Parameters = ContextParameters> extends Fixture<Parameters> {
   protected _page: Page;
   abstract url: string;
   abstract title: string;
 
   constructor() {
     super();
-    this.context = world.context;
-    this.page = world.page;
+    this.page = ctx.page;
   }
 
   get config() {
-    if (!this._config) { this._config = world.config; }
+    if (!this._config) { this._config = ctx.config; }
     return this._config;
   }
 
@@ -24,7 +23,7 @@ export abstract class WebPage<ParametersType = WorldParameters> extends Fixture<
   }
 
   get page() {
-    if (!this._page) { this._page = world.page; }
+    if (!this._page) { this._page = ctx.page; }
     return this._page;
   }
 

@@ -14,23 +14,23 @@ import {
   setWorldConstructor,
   Status
 } from "@cucumber/cucumber";
-import { This, World } from "@core/world";
+import { Context, This } from "@core/world";
 import { AnchorAttributes } from "@core/gherkin/enums";
 import { XPathBuilder } from "@core/utils/xpath-builder";
 
 import chalk from "chalk";
 
 setDefaultTimeout(process.env.DEBUG === "true" ? -1 : undefined);
-setWorldConstructor(World);
+setWorldConstructor(Context);
 
 /** Dont run tests but still show these in the formatter */
 Before({ tags: "@SKIP or @skip or @IGNORE or @ignore" }, () => Status.SKIPPED.toLowerCase());
 
 Before({ tags: "@PENDING or @pending" }, () => Status.PENDING.toLowerCase());
 
-Before({}, async function(this: World) {
-  this.context = await this.createBrowserContext();
-  this.page = await this.context.newPage();
+Before({}, async function(this: Context) {
+  this.browser = await this.createBrowser();
+  this.page = await this.browser.newPage();
 });
 
 BeforeStep({}, async function(this: This, params: ITestStepHookParameter) {
@@ -44,7 +44,7 @@ AfterStep({}, async function(this: This, params: ITestStepHookParameter) {
 
   if (result.status !== Status.PASSED) {
     if (this.page) {
-      if (!this.config.shouldUseVideoAttachment) {
+      if (!this.config.browserOptions.recordVideo) {
         const buffer = await this.page.screenshot({ fullPage: true });
         this.reporter.attach(buffer, "image/png");
       }
@@ -65,7 +65,7 @@ After({}, async function(this: This, params: ITestCaseHookParameter) {
 
   if (result.status !== Status.PASSED) {
     if (this.page) {
-      if (this.config.shouldUseVideoAttachment) {
+      if (this.config.browserOptions.recordVideo) {
         const path = await this.page.video().path();
         await teardown();
         this.reporter.attach(fs.readFileSync(path), "video/webm");
@@ -140,7 +140,7 @@ defineParameterType({
 defineParameterType({
   name: "to_or_to_not",
   regexp: /to( not)?/,
-  transformer(this: World, not: string) {
+  transformer(this: Context, not: string) {
     return !!not;
   },
   useForSnippets: false
@@ -173,8 +173,8 @@ defineParameterType({
 defineParameterType({
   name: "filepath",
   regexp: /"([^"]*)?"/,
-  transformer(this: World, filepath: string) {
-    return path.isAbsolute(filepath) ? filepath : path.join(world.config.baseDir, filepath);
+  transformer(this: Context, filepath: string) {
+    return path.isAbsolute(filepath) ? filepath : path.join(ctx.config.baseDir, filepath);
   },
   useForSnippets: false
 });
@@ -194,7 +194,7 @@ defineParameterType({
 defineParameterType({
   name: "link_locator",
   regexp: /(?:(\d+)(?:st|nd|rd|th) )?"([^"]*)?"/,
-  transformer(this: World, ...matches: string[]) {
+  transformer(this: Context, ...matches: string[]) {
     const [ordinal, link] = matches;
     const index = +ordinal || 1;
     const locator = this.page.locator(new XPathBuilder().textEquals(link).hasExactAttribute(AnchorAttributes.HREF).build()).nth(index -1);
@@ -212,7 +212,7 @@ defineParameterType({
 defineParameterType({
   name: "ordinal",
   regexp: /(\d+)(?:st|nd|rd|th)/,
-  transformer(this: World, ordinal: string) {
+  transformer(this: Context, ordinal: string) {
     return +ordinal || 0;
   },
   useForSnippets: false
@@ -221,7 +221,7 @@ defineParameterType({
 defineParameterType({
   name: "repeats",
   regexp: /(?: (\d+) times)?(?: again)?$/,
-  transformer(this: World, count: string) {
+  transformer(this: Context, count: string) {
     return +count || 1;
   },
   useForSnippets: false
@@ -230,7 +230,7 @@ defineParameterType({
 defineParameterType({
   name: "resolved_url",
   regexp: /"([^"]*)?"/,
-  transformer(this: World, url: string) {
+  transformer(this: Context, url: string) {
     return this.page.resolvedUrlFrom(url);
   },
   useForSnippets: false
@@ -239,7 +239,7 @@ defineParameterType({
 defineParameterType({
   name: "page_object_persisted",
   regexp: /"([^"]*)?"/,
-  transformer(this: World, page: string) {
+  transformer(this: Context, page: string) {
     return this.findPageObject(page, true);
   },
   useForSnippets: false
@@ -248,7 +248,7 @@ defineParameterType({
 defineParameterType({
   name: "page_object",
   regexp: /"([^"]*)?"/,
-  transformer(this: World, page: string) {
+  transformer(this: Context, page: string) {
     return this.findPageObject(page);
   },
   useForSnippets: false
@@ -257,7 +257,7 @@ defineParameterType({
 defineParameterType({
   name: "page_object_prop",
   regexp: /(?:"([^"]*)?" page's)? "([^"]*)?"|"([^"]*)?"/,
-  transformer(this: World, page: string, prop: string, justProp: string) {
+  transformer(this: Context, page: string, prop: string, justProp: string) {
     return this.findPageObjectProp(page, prop || justProp);
   },
   useForSnippets: false
@@ -266,7 +266,7 @@ defineParameterType({
 defineParameterType({
   name: "page_object_url",
   regexp: /(?:"([^"]*)?" page's)? url|url "([^"]*)?"/,
-  transformer(this: World, page: string, url: string) {
+  transformer(this: Context, page: string, url: string) {
     return url || this.findPageObject(page).url;
   },
   useForSnippets: false
@@ -275,7 +275,7 @@ defineParameterType({
 defineParameterType({
   name: "page_object_locator",
   regexp: /(?:"([^"]*)?" (?:page|component)'s )?(?:(\d+)(?:st|nd|rd|th) )?"([^"]*)?"/,
-  transformer(this: World, ...matches: string[]) {
+  transformer(this: Context, ...matches: string[]) {
     const [page, ordinal, selector] = matches;
     const index = +ordinal || 0;
     const locator = this.findPageObjectLocator(page, selector, index);
@@ -287,7 +287,7 @@ defineParameterType({
 defineParameterType({
   name: "page_object_locator_nested",
   regexp: /(?:"([^"]*)?" (?:page|component)'s )?(?:(\d+)(?:st|nd|rd|th) )?(?:"([^"]*)?'s" )?"([^"]*)?" (?:section|component|element|form|section|panel)/,
-  transformer(this: World, ...matches: string[]) {
+  transformer(this: Context, ...matches: string[]) {
     const [page, ordinal, selector, nested] = matches;
     const index = +ordinal || 0;
     const parent = selector ? this.findPageObjectLocator(page, selector, index) : undefined;
@@ -300,7 +300,7 @@ defineParameterType({
 defineParameterType({
   name: "the_page_object_title",
   regexp: /(?:the "([^"]*)?" page's)? title|"([^"]*)?"/,
-  transformer(this: World, page: string, title: string) {
+  transformer(this: Context, page: string, title: string) {
     return title || this.findPageObject(page).title;
   },
   useForSnippets: false
@@ -309,7 +309,7 @@ defineParameterType({
 defineParameterType({
   name: "the_page_object_url",
   regexp: /(?:the "([^"]*)?" page's)? url|"([^"]*)?"/,
-  transformer(this: World, page: string, url: string) {
+  transformer(this: Context, page: string, url: string) {
     return url || this.findPageObject(page).url;
   },
   useForSnippets: false

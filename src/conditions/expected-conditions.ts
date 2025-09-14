@@ -27,7 +27,7 @@ export class ExpectedConditions {
   constructor(options?: ExpectedConditionOptions) {
     this.name = changecase.capitalCase(this.constructor.name);
     this.conditions = [];
-    this.timeout = options?.timeout || world.config.timeout;
+    this.timeout = options?.timeout || ctx.config.timeout;
     this.interval = options?.interval || 250;
     this.soft = options?.soft;
   }

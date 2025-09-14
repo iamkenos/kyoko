@@ -5,7 +5,7 @@ import {
 } from "@core/gherkin/enums";
 
 import type { WebPage } from "@core/fixtures/web-page.fixture";
-import type { World as This } from "@core/world";
+import type { Context as This } from "@core/world";
 
 import * as fn from "./window.glue";
 
@@ -18,8 +18,8 @@ import * as fn from "./window.glue";
 Given(
   "I am on the {page_object_persisted} page/site/portal",
   async function(this: This, page: WebPage) {
-    if (!this.context) { this.context = await this.createBrowserContext(); }
-    if (!this.page) { this.page = await this.context.newPage(); }
+    if (!this.browser) { this.browser = await this.createBrowser(); }
+    if (!this.page) { this.page = await this.browser.newPage(); }
     await fn.navigate(page);
   }
 );
@@ -146,8 +146,8 @@ When(
 When(
   "I open the {page_object_url}",
   async function(this: This, url: string) {
-    if (!this.context) { this.context = await this.createBrowserContext(); }
-    if (!this.page) { this.page = await this.context.newPage(); }
+    if (!this.browser) { this.browser = await this.createBrowser(); }
+    if (!this.page) { this.page = await this.browser.newPage(); }
     await fn.open(this.page, url);
   }
 );
@@ -162,9 +162,9 @@ When(
 When(
   "I open the {page_object_url} on a new window/tab",
   async function(this: This, url: string) {
-    if (!this.context) { this.context = await this.createBrowserContext(); }
-    if (!this.page) { this.page = await this.context.newPage(); }
-    await fn.openInNewTab(this.context, url);
+    if (!this.browser) { this.browser = await this.createBrowser(); }
+    if (!this.page) { this.page = await this.browser.newPage(); }
+    await fn.openInNewTab(this.browser, url);
   }
 );
 

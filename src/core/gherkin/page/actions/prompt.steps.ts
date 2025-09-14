@@ -1,7 +1,7 @@
 import { When } from "@cucumber/cucumber";
 import { WindowPromptAction } from "@core/gherkin/enums";
 
-import type { World as This } from "@core/world";
+import type { Context as This } from "@core/world";
 
 import * as fn from "./prompt.glue";
 

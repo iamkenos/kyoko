@@ -26,18 +26,20 @@ export class Logger {
         return date.toISOString();
       },
       format(level, name, timestamp) {
+        const { CUCUMBER_WORKER_ID = "" } = process.env;
         const [, , , caller] = callsites();
+        const widPrefix = CUCUMBER_WORKER_ID ? `[${CUCUMBER_WORKER_ID}] ` : "";
         const file = caller.toString();
         const func = caller.getFunctionName();
         const fn = func ? ` ${file.substring(0, file.indexOf("(")).trim()}:` : "";
-        return `${chalk.gray(timestamp)} ${COLORS[level.toUpperCase()](level)}${chalk.magenta(fn)}`;
+        return `${chalk.gray(widPrefix + timestamp)} ${COLORS[level.toUpperCase()](level)}${chalk.magenta(fn)}`;
       }
     });
   }
 
   private getLogger(name: string) {
     this.logger = log.getLogger(name);
-    this.logger.setLevel(process.env.LOG_LEVEL as any);
+    this.logger.setLevel(process.env.CTX_LOG_LEVEL as log.LogLevelDesc);
     return this;
   }
 

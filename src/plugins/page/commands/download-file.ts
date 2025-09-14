@@ -6,7 +6,7 @@ export async function downloadFile(this: Page, trigger: (() => Promise<void>), n
   let filename: string, filepath: string;
 
   try {
-    const { downloadsDir } = world.config;
+    const { downloadsDir } = ctx.config;
     const event = this.waitForEvent("download");
     await trigger();
 

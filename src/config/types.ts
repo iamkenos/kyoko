@@ -1,20 +1,24 @@
 import type { IConfiguration } from "@cucumber/cucumber/lib/configuration";
 import type { BrowserContextOptions, LaunchOptions, Locator } from "playwright";
 
-export type WorldParameters = { [key: string]: any };
+export type ContextParameters = { [key: string]: any };
 
 export interface Config extends Omit<IConfiguration, "publishQuiet"> {
   /** Custom: The base directory where most config paths will be resolved from */
   baseDir: string;
   baseURL: string;
-  browser: "chromium" | "firefox" | "webkit" ;
-  browserOptions: Omit<LaunchOptions, "headless">;
-  contextOptions: Omit<BrowserContextOptions, "baseURL">;
+  browserOptions: Partial<{
+    instance: "chromium" | "firefox" | "webkit";
+    launchArgs: Omit<LaunchOptions, "headless">;
+    browserContextArgs: Omit<BrowserContextOptions, "baseURL">;
+    headless: boolean;
+    /** Custom: Whether to attach a video on test failure. If false, attach a full page screenshot instead. Defaults to true  */
+    recordVideo: boolean;
+  }>;
   /** Custom: Whether to run in debug mode or not */
   debug: boolean;
   /** Custom: Directory to store browser downloads in, relative to the config file */
   downloadsDir: string;
-  headless: boolean;
   /** Custom: The active locale. Used as primary context for reading page object classes */
   locale: string;
   /** Custom: Level of logging verbosity */
@@ -23,14 +27,12 @@ export interface Config extends Omit<IConfiguration, "publishQuiet"> {
   pages: string[];
   /** Custom: Directory to store the reports in, relative to the config file */
   resultsDir: string;
-  /** Custom: Whether to attach a video on test failure. If false, attach a full page screenshot instead. Defaults to true  */
-  shouldUseVideoAttachment: boolean;
   /** Custom: Directory to store the snapshots in, relative to the config file */
   snapshotsDir: string;
   /** Custom: Object containing properties of comparable files */
   snapshots: Snapshots;
   timeout: number;
-  worldParameters: WorldParameters
+  worldParameters: ContextParameters
 }
 
 type SnapshotDirectories = {

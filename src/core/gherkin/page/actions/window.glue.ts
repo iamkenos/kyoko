@@ -2,7 +2,7 @@ import { WindowDirection, WindowNavigation } from "@core/gherkin/enums";
 
 import type { BrowserContext, Page } from "playwright";
 import type { WebPage } from "@core/fixtures/web-page.fixture";
-import type { World } from "@core/world";
+import type { Context } from "@core/world";
 
 export async function navigate(page: WebPage) {
   await page.navigate();
@@ -12,12 +12,12 @@ export async function leaveViewport(page: Page) {
   await page.locator("html").dispatchEvent("mouseleave");
 }
 
-export async function closeLastOpenedPage(world: World) {
-  return await world.context.closeLastPage();
+export async function closeLastOpenedPage(world: Context) {
+  return await world.browser.closeLastPage();
 }
 
-export async function closeOtherPages(world: World) {
-  return await world.context.closeOtherPages();
+export async function closeOtherPages(world: Context) {
+  return await world.browser.closeOtherPages();
 }
 
 export async function press(page: Page, key: string) {
@@ -58,9 +58,9 @@ export async function openInNewTab(context: BrowserContext, url: string) {
   await newPage.goto(url);
 }
 
-export async function focusOnTheLastOpenedTab(world: World) {
+export async function focusOnTheLastOpenedTab(world: Context) {
   await world.page.expect().windowCountMoreThan(1).poll();
-  return world.context.pages().at(-1);
+  return world.browser.pages().at(-1);
 }
 
 export async function navigateDirection(page: Page, direction: WindowNavigation) {
