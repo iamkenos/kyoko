@@ -13,9 +13,9 @@
         "common",
         "conditions",
         "config",
-        "core",
         "deps",
-        "demo"
+        "demo",
+        "fixtures"
       ]
     ]
   }

@@ -30,3 +30,10 @@ Then(
     await this.demoPage.navBar().expectNavBarItemExists(text, { not });
   }
 );
+
+Then(
+  "I expect the navigation item {input_string} {to_or_to_not} match the snapshot {input_string}",
+  async function(this: This, text: string, not: boolean, filename: string) {
+    await this.demoPage.navBar().navItem(text).expect().snapshotMatch(filename, { not }).poll();
+  }
+);

@@ -4,6 +4,7 @@ import type { Frame, Locator, Page } from "playwright";
 
 import type { centerPoint } from "./command/center-point";
 import type { clickUntil } from "./command/click-until";
+import type { component } from "./command/component";
 import type { doUntil } from "./command/do-until";
 import type { dragAndDrop } from "./command/drag-and-drop";
 import type { expect } from "./command/expect";
@@ -84,6 +85,7 @@ export class LocatorCommands extends CommandsPlugin {
 export interface ILocatorCommands {
   centerPoint(...args: Parameters<typeof centerPoint>): ReturnType<typeof centerPoint>;
   clickUntil(...args: Parameters<typeof clickUntil>): ReturnType<typeof clickUntil>;
+  component(...args: Parameters<typeof component>): ReturnType<typeof component>;
   doUntil(...args: Parameters<typeof doUntil>): ReturnType<typeof doUntil>;
   dragAndDrop(...args: Parameters<typeof dragAndDrop>): ReturnType<typeof dragAndDrop>;
   expect(...args: Parameters<typeof expect>): ReturnType<typeof expect>;
