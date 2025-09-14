@@ -4,7 +4,7 @@ Feature: I. Mouse Actions - Click
     Given I am on the "demo" site
       And I click the "I. Mouse Actions" navigation item
       And I expect the section header "I. Mouse Actions" to exist
-@debug
+
   Scenario: S01: Create element
     When I search for elements under the "Click Section" element
       And I click the "#create" button 3 times

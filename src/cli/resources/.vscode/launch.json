@@ -18,10 +18,10 @@
         "${workspaceFolder}/node_modules/@iamkenos/kyoko/build/**/*.js"
       ],
       "env": {
-        "HEADLESS": "false",
-        "PARALLEL": "${input:parallel}",
-        "TAGS": "${input:tags}",
-        "PATHS": "${file}"
+        "CTX_BROWSER_IS_HEADLESS": "false",
+        "CTX_PARALLEL_WORKERS": "${input:parallel}",
+        "CTX_FEATURE_TAGS": "${input:tags}",
+        "CTX_FEATURE_PATHS": "${file}"
       }
     }
   ],

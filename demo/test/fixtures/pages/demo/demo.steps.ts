@@ -1,8 +1,8 @@
 import { Before, Then, When } from "@cucumber/cucumber";
-import { World } from "@iamkenos/kyoko/core";
+import { Context } from "@iamkenos/kyoko";
 import { DemoPage } from "./demo.page";
 
-export interface This extends World {
+export interface This extends Context {
   demoPage: DemoPage;
 }
 

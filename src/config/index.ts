@@ -5,7 +5,7 @@ import callsites from "callsites";
 import dotenv from "dotenv";
 
 import type { Config as BaseConfig } from "./types";
-import type { NestedOmit } from "../common/types";
+import type { NestedOmit } from "../utils/types";
 
 export * from "./types";
 
@@ -139,7 +139,7 @@ function getCukesFormat(overrides: Partial<Config>) {
     "summary",
     `"html":"${resultsDir}report.html"`,
     `"json":"${resultsDir}report.json"`,
-    `"file://${path.join(__dirname, "../core/utils/reporter.js")}":"${resultsDir}allure/report.json"`,
+    `"file://${path.join(__dirname, "../plugins/allure/reporter.js")}":"${resultsDir}allure/report.json"`,
     ...format
   ];
 }
@@ -163,8 +163,11 @@ function getCukesPaths(overrides: Partial<Config>) {
 
 function getCukesRequire(overrides: Partial<Config>) {
   const { require = ["fixtures/**/*.{steps,glue}.ts"], baseDir } = overrides;
-  return [path.join(__dirname, "../core/gherkin/**/*.{steps,glue}.js")]
-    .concat(require.map(i => path.join(baseDir, i)));
+  return [
+    path.join(__dirname, "../plugins/gherkin/hooks.js"),
+    path.join(__dirname, "../plugins/gherkin/parameters.js"),
+    path.join(__dirname, "../plugins/gherkin/**/*.{steps,glue}.js")
+  ].concat(require.map(i => path.join(baseDir, i)));
 }
 
 function getCukesRequireModule() {

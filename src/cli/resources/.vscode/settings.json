@@ -1,6 +1,7 @@
 {
   "cucumber.glue": [
-    "node_modules/@iamkenos/kyoko/src/core/gherkin/**/*.{steps,glue}.ts",
+    "node_modules/@iamkenos/kyoko/src/plugins/gherkin/*.ts",
+    "node_modules/@iamkenos/kyoko/src/plugins/gherkin/**/*.{steps,glue}.ts",
     "fixtures/**/*.{steps,glue}.ts"
   ],
   "editor.formatOnSave": true,

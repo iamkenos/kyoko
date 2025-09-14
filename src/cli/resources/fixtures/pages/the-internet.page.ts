@@ -1,7 +1,7 @@
-import { WebPage } from "@iamkenos/kyoko/core";
+import { PageObject } from "@iamkenos/kyoko";
 import type { Parameters } from "./the-internet.steps";
 
-export class TheInternetPage extends WebPage<Parameters> {
+export class TheInternetPage extends PageObject<Parameters> {
   url = "/";
   title = "The Internet";
 

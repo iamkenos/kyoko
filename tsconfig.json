@@ -14,12 +14,11 @@
     "paths": {
       "@iamkenos/kyoko": ["src/index"],
       "@iamkenos/kyoko/*": ["src/*"],
-      "@common/*": ["src/common/*"],
       "@conditions/*": ["src/conditions/*"],
       "@config/*": ["src/config/*"],
       "@core/*": ["src/core/*"],
-      "@fixtures/*": ["src/fixtures/*"],
-      "@plugins/*": ["src/plugins/*"]
+      "@plugins/*": ["src/plugins/*"],
+      "@utils/*": ["src/utils/*"]
     },
     "forceConsistentCasingInFileNames": true,
     "removeComments": false,

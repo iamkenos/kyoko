@@ -1,5 +1,9 @@
 {
-  "cucumber.glue": ["{demo,src}/**/*.{steps,glue}.ts"],
+  "cucumber.glue": [
+    "demo/**/*.{steps,glue}.ts",
+    "src/plugins/gherkin/*.ts",
+    "src/plugins/gherkin/**/*.{steps,glue}.ts"
+  ],
   "cucumberautocomplete.steps": ["{demo,src}/**/*.{steps,glue}.{js,ts}"],
   "cucumberautocomplete.formatConfOverride": { "And": 3, "But": 3 },
   "cucumberautocomplete.onTypeFormat": true,
