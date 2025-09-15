@@ -83,6 +83,7 @@ export class LocatorCommands extends CommandsPlugin {
 }
 
 export interface ILocatorCommands {
+  _selector: string;
   centerPoint(...args: Parameters<typeof centerPoint>): ReturnType<typeof centerPoint>;
   clickUntil(...args: Parameters<typeof clickUntil>): ReturnType<typeof clickUntil>;
   component(...args: Parameters<typeof component>): ReturnType<typeof component>;
