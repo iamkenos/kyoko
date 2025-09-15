@@ -1,70 +1,22 @@
-import { ComponentFixture } from "@plugins/fixture/component/component.fixture";
+import type { Frame, Locator } from "playwright";
 
-import type { ElementHandle, Locator } from "playwright";
-
-type Values = null|string|ElementHandle|ReadonlyArray<string>|{
-  /**
-   * Matches by `option.value`. Optional.
-   */
-  value?: string;
-
-  /**
-   * Matches by `option.label`. Optional.
-   */
-  label?: string;
-
-  /**
-   * Matches by the index. Optional.
-   */
-  index?: number;
-}|ReadonlyArray<ElementHandle>|ReadonlyArray<{
-  /**
-   * Matches by `option.value`. Optional.
-   */
-  value?: string;
-
-  /**
-   * Matches by `option.label`. Optional.
-   */
-  label?: string;
-
-  /**
-   * Matches by the index. Optional.
-   */
-  index?: number;
-}>
-
-type Options = {
-  /**
-   * Whether to bypass the [actionability](https://playwright.dev/docs/actionability) checks. Defaults to `false`.
-   */
-  force?: boolean;
-
-  /**
-   * Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You
-   * can opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as
-   * navigating to inaccessible pages. Defaults to `false`.
-   */
-  noWaitAfter?: boolean;
-
-  /**
-   * Maximum time in milliseconds. Defaults to `0` - no timeout. The default value can be changed via `actionTimeout`
-   * option in the config, or by using the
-   * [browserContext.setDefaultTimeout(timeout)](https://playwright.dev/docs/api/class-browsercontext#browser-context-set-default-timeout)
-   * or [page.setDefaultTimeout(timeout)](https://playwright.dev/docs/api/class-page#page-set-default-timeout) methods.
-   */
-  timeout?: number;
-
+type BaseArgs = Parameters<Frame["selectOption"]>
+type CustomOptions = {
   /** Whether to use partial, case-insensitive match when selecting options by label or value. Defaults to `false`. */
   caseInsensitive?: boolean;
-
-  /** Whether to proceed normally and ignore the command if element is visible. Ignored if `force` is set to `true`. Defaults to `false`. */
+  /** Whether to proceed normally and ignore the command if element is not displayed. Ignored if `force` is set to `true`. Defaults to `false`. */
   conditional?: boolean;
 }
+type Extended<T extends any[]> =
+  T extends [infer _, infer Values, (infer Options)?, ...infer Rest]
+    ? [Values, Options & CustomOptions, ...Rest]
+    : never;
+type Args = Extended<BaseArgs>;
 
-export async function selectOption(this: Locator, values: Values, options?: Options) {
-  const selectOption = async(...args) => ComponentFixture.proto(this).selectOption.apply(this, args);
-  // const [val, options] = args;
+export async function selectOption(this: Locator, ...args: Args) {
+  const [values, options] = args;
+  const source: any = this.page().locator(this._selector);
+  const frame: Frame = source._frame;
 
   const isConditional = options?.conditional && !options?.force;
   if (isConditional) {
@@ -104,8 +56,8 @@ export async function selectOption(this: Locator, values: Values, options?: Opti
         break;
       }
     }
-    return selectOption(newval, options);
+    return frame.selectOption(this._selector, newval, options);
   } else {
-    return selectOption(values, options);
+    return frame.selectOption(this._selector, values, options);
   }
 }

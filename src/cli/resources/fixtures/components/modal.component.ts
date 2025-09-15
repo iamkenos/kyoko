@@ -1,4 +1,3 @@
-import { LocatorFilters } from "playwright";
 import { Component, ExpectedConditionKwargs, ExpectedConditionOptions, LocatorConditions } from "@iamkenos/kyoko";
 
 /**
@@ -9,8 +8,8 @@ import { Component, ExpectedConditionKwargs, ExpectedConditionOptions, LocatorCo
  */
 export class Modal extends Component {
 
-  constructor(filters?: LocatorFilters) {
-    super("#ouibounce-modal", filters);
+  constructor() {
+    super("#ouibounce-modal");
   }
 
   title = () => this.locator("//*[contains(@class,'modal-title')]");

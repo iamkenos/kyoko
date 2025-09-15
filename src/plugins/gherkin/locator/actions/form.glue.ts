@@ -5,13 +5,12 @@ import {
 } from "@plugins/gherkin/enums";
 
 import type { Locator } from "playwright";
-import type { Component } from "@plugins/fixture/component/component.fixture";
 
-export async function clear(locator: Locator | Component) {
+export async function clear(locator: Locator) {
   await locator.clear();
 }
 
-export async function fill(locator: Locator | Component, value: string, action: SetValueAction) {
+export async function fill(locator: Locator, value: string, action: SetValueAction) {
   switch (action) {
     case SetValueAction.APPEND: {
       await locator.fill(value, { append: true });
@@ -24,7 +23,7 @@ export async function fill(locator: Locator | Component, value: string, action: 
   }
 }
 
-export async function toggle(locator: Locator | Component, action: ToggleAction) {
+export async function toggle(locator: Locator, action: ToggleAction) {
   switch (action) {
     case ToggleAction.TICK: {
       await locator.check({ force: true });
@@ -37,7 +36,7 @@ export async function toggle(locator: Locator | Component, action: ToggleAction)
   }
 }
 
-export async function selectOption(locator: Locator | Component, option: string | number, context: SelectOptionContext) {
+export async function selectOption(locator: Locator, option: string | number, context: SelectOptionContext) {
   switch (context) {
     case SelectOptionContext.LABEL: {
       await locator.selectOption({ label: option as string }, { force: true });
@@ -54,10 +53,10 @@ export async function selectOption(locator: Locator | Component, option: string 
   }
 }
 
-export async function selectOptions(locator: Locator | Component, options: { [key: string]: string | number }[]) {
+export async function selectOptions(locator: Locator, options: { [key: string]: string | number }[]) {
   await locator.selectOption(options, { force: true });
 }
 
-export async function uploadFiles(locator: Locator | Component, filepath: string) {
+export async function uploadFiles(locator: Locator, filepath: string) {
   await locator.uploadFiles(filepath);
 }

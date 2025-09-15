@@ -219,7 +219,7 @@ defineParameterType({
   transformer(this: Context, ...matches: string[]) {
     const [page, ordinal, selector, nested] = matches;
     const index = +ordinal || 0;
-    const parent = selector ? this.findPageObjectLocator(page, selector, index) : undefined;
+    const parent = this.findPageObjectLocator(page, selector, index);
     const locator = parent ? parent.locator(this.findPageObjectLocator(page, nested)) : this.findPageObjectLocator(page, nested, index);
     return locator;
   },

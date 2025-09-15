@@ -1,7 +1,6 @@
 import type { Locator } from "playwright";
-import type { Component } from "@plugins/fixture/component/component.fixture";
 
-export async function hoverIntoView(this: Locator | Component, options?: { position?: { x: number, y: number } }) {
+export async function hoverIntoView(this: Locator, options?: { position?: { x: number, y: number } }) {
   const hasOffset = options?.position;
   const page = this.page();
   await this.scrollIntoView();

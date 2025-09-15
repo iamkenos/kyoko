@@ -11,7 +11,7 @@
       "console": "integratedTerminal",
       "outputCapture": "std",
       "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "/Users/a/.nvm/versions/node/v20.10.0/bin/npm",
+      "runtimeExecutable": "npm",
       "runtimeArgs": ["run-script", "debug:demo"],
       "outFiles": [
         "${workspaceFolder}/**/*.ts",
@@ -19,7 +19,7 @@
       ],
       "env": {
         "CTX_DEBUG": "true",
-        "CTX_BROWSER_IS_HEADLESS": "false",
+        "CTX_BROWSER_IS_HEADLESS": "${input:headless}",
         "CTX_PARALLEL_WORKERS": "${input:parallel}",
         "CTX_FEATURE_TAGS": "${input:tags}"
       }
@@ -37,6 +37,12 @@
       "type": "promptString",
       "default": "",
       "description": "Browsers running in parallel"
+    },
+    {
+      "id": "headless",
+      "type": "promptString",
+      "default": "true",
+      "description": "Should run in headless?"
     }
   ]
 }

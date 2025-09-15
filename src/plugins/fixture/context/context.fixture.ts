@@ -112,6 +112,7 @@ export abstract class Context extends AllureContext implements PrivateContext {
 
   findPageObjectLocator(page: string, element: string, index?: number) {
     let locator: Locator;
+    if (!element) { return this.browser.locator as Locator; }
     locator = this.findPageObjectProp<Locator>(page, element, this.page.locator(element));
     locator = index ? locator.nth(index - 1) : locator;
     locator = this.browser.locator ? this.browser.locator.locator(locator) : locator;

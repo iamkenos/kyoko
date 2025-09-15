@@ -2,6 +2,7 @@ import { ExpectedConditions } from "../expected-conditions";
 import { AttributeContains } from "./condition/attribute-contains";
 import { AttributeEquals } from "./condition/attribute-equals";
 import { AttributeExists } from "./condition/attribute-exists";
+import { AxisLocationContains } from "./condition/axis-location-contains";
 import { AxisLocationEquals } from "./condition/axis-location-equals";
 import { Checked } from "./condition/checked";
 import { CountEquals } from "./condition/count-equals";
@@ -46,6 +47,10 @@ export class LocatorConditions<T extends Locator = Locator> extends ExpectedCond
 
   attributeExists(attribute: string, kwargs?: ExpectedConditionKwargs) {
     return this.addCondition(new AttributeExists(attribute, kwargs));
+  }
+
+  axisLocationContains(axis: Axis, expected: number, kwargs?: ExpectedConditionKwargs) {
+    return this.addCondition(new AxisLocationContains(axis, expected, kwargs));
   }
 
   axisLocationEquals(axis: Axis, expected: number, kwargs?: ExpectedConditionKwargs) {

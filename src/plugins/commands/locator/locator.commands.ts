@@ -25,7 +25,7 @@ export class LocatorCommands extends CommandsPlugin {
     super(opts);
   }
 
-  private getPageOrFrameLocatorFunctionsToPatch(target: Page | Frame | Locator) {
+  static getPageOrFrameLocatorFunctionsToPatch(target: Page | Frame | Locator) {
     return [
       target?.frameLocator?.name,
       target?.locator?.name,
@@ -39,8 +39,8 @@ export class LocatorCommands extends CommandsPlugin {
     ].filter(Boolean);
   }
 
-  private getLocatorFunctionstoPatch(target: Locator) {
-    const rest = this.getPageOrFrameLocatorFunctionsToPatch(target);
+  static getLocatorFunctionstoPatch(target: Locator) {
+    const rest = LocatorCommands.getPageOrFrameLocatorFunctionsToPatch(target);
     return [
       ...rest,
       target?.and?.name,
@@ -53,7 +53,7 @@ export class LocatorCommands extends CommandsPlugin {
   }
 
   private deeplyPatchLocator(target: Locator) {
-    const targetFns = this.getLocatorFunctionstoPatch(target);
+    const targetFns = LocatorCommands.getLocatorFunctionstoPatch(target);
     for (const fn of targetFns) {
       const patched = this.addCommandsTo(target);
       const descendant = target[fn].bind(patched);
@@ -67,7 +67,7 @@ export class LocatorCommands extends CommandsPlugin {
   }
 
   private patchLocatorsOnPageOrFrame(target: Page | Frame) {
-    const targetFns = this.getPageOrFrameLocatorFunctionsToPatch(target);
+    const targetFns = LocatorCommands.getPageOrFrameLocatorFunctionsToPatch(target);
     for (const fn of targetFns) {
       const unpatched = target[fn].bind(target);
       target[fn] = (...args: any[]) => {
@@ -86,7 +86,7 @@ export interface ILocatorCommands {
   _selector: string;
   centerPoint(...args: Parameters<typeof centerPoint>): ReturnType<typeof centerPoint>;
   clickUntil(...args: Parameters<typeof clickUntil>): ReturnType<typeof clickUntil>;
-  component(...args: Parameters<typeof component>): ReturnType<typeof component>;
+  component<T>(...args: Parameters<typeof component<T>>): ReturnType<typeof component<T>>;
   doUntil(...args: Parameters<typeof doUntil>): ReturnType<typeof doUntil>;
   dragAndDrop(...args: Parameters<typeof dragAndDrop>): ReturnType<typeof dragAndDrop>;
   expect(...args: Parameters<typeof expect>): ReturnType<typeof expect>;

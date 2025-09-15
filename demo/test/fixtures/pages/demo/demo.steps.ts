@@ -20,14 +20,14 @@ When(
 Then(
   "I expect the navigation item {input_string} {to_or_to_not} be selected",
   async function(this: This, text: string, not: boolean) {
-    await this.demoPage.navBar().expectNavBarItemIsSelected(text, { not });
+    await this.demoPage.navBar().expect().active(text, { not }).poll();
   }
 );
 
 Then(
   "I expect the section header {input_string} {to_or_to_not} exist",
   async function(this: This, text: string, not?: boolean) {
-    await this.demoPage.navBar().expectNavBarItemExists(text, { not });
+    await this.demoPage.navBar().navItem(text).expect().exists({ not }).poll();
   }
 );
 

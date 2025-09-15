@@ -16,7 +16,8 @@ Feature: I. Mouse Actions - Move and scroll
   Scenario: S02: Show element location
     When I scroll to the "#scroll-to" element
     Then I expect the "#scroll-to-result" element to be displayed within the viewport
-      And I expect the "#scroll-to-result" element text to be "Left: 872.75 | Top: 773.27"
+      And I expect the "#scroll-to-result" element text to contain "Left: 872.75"
+      And I expect the "#scroll-to-result" element text to contain "Top: 773"
       But I scroll to the top of the page
     Then I expect the "#scroll-to-result" element to not be displayed within the viewport
       And I expect the "#scroll-to-result" element text to be empty

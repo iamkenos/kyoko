@@ -1,18 +1,16 @@
-import { LocatorFilters } from "playwright";
-import { Component, ExpectedConditionKwargs } from "@iamkenos/kyoko";
+import { Component, ExpectedConditionKwargs, ExpectedConditionOptions, LocatorConditions } from "@iamkenos/kyoko";
 
 
 export class NavigationBar extends Component {
 
-  constructor(filters?: LocatorFilters) {
-    super("//nav", filters);
+  constructor() {
+    super("//nav");
   }
 
   navItem = (text: string) => this.locator("//ul/li", { hasText: text });
 
-  private selectedCondition(text: string, kwargs?: ExpectedConditionKwargs) {
-    const locator = this.navItem(text);
-    return locator.expect().attributeEquals("class", "active", kwargs);
+  override expect(options?: ExpectedConditionOptions) {
+    return new NavigationBarConditions(this, options);
   }
 
   async clickItem(text: string) {
@@ -20,15 +18,15 @@ export class NavigationBar extends Component {
     await locator.expect().displayed().poll();
 
     await locator.hoverIntoView();
-    await locator.clickUntil(this.selectedCondition(text), { delay: 500 });
+    await locator.clickUntil(this.expect().active(text), { delay: 500 });
   }
+}
 
-  async expectNavBarItemIsSelected(text: string, kwargs?: ExpectedConditionKwargs) {
-    await this.selectedCondition(text, kwargs).poll();
-  }
 
-  async expectNavBarItemExists(text: string, kwargs?: ExpectedConditionKwargs) {
-    const locator = this.navItem(text);
-    await locator.expect().exists(kwargs).poll();
+class NavigationBarConditions extends LocatorConditions<NavigationBar> {
+
+  active(text: string, kwargs?: ExpectedConditionKwargs) {
+    const locator = this.locator.navItem(text);
+    return locator.expect().attributeEquals("class", "active", kwargs);
   }
 }

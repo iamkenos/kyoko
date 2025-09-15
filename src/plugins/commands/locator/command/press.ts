@@ -1,34 +1,20 @@
-import { ComponentFixture } from "@plugins/fixture/component/component.fixture";
+import type { Frame, Locator } from "playwright";
 
-import type { Locator } from "playwright";
-
-type Options = {
-  /**
-   * Time to wait between `keydown` and `keyup` in milliseconds. Defaults to 0.
-   */
-  delay?: number;
-
-  /**
-   * Actions that initiate navigations are waiting for these navigations to happen and for pages to start loading. You
-   * can opt out of waiting via setting this flag. You would only need this option in the exceptional cases such as
-   * navigating to inaccessible pages. Defaults to `false`.
-   */
-  noWaitAfter?: boolean;
-
-  /**
-   * Maximum time in milliseconds. Defaults to `0` - no timeout. The default value can be changed via `actionTimeout`
-   * option in the config, or by using the
-   * [browserContext.setDefaultTimeout(timeout)](https://playwright.dev/docs/api/class-browsercontext#browser-context-set-default-timeout)
-   * or [page.setDefaultTimeout(timeout)](https://playwright.dev/docs/api/class-page#page-set-default-timeout) methods.
-   */
-  timeout?: number;
-
-  /** Whether to proceed normally and ignore the command if element is visible. Ignored if `force` is set to `true`. Defaults to `false`. */
+type BaseArgs = Parameters<Frame["press"]>
+type CustomOptions = {
+  /** Whether to proceed normally and ignore the command if element is not displayed. Ignored if `force` is set to `true`. Defaults to `false`. */
   conditional?: boolean;
 }
+type Extended<T extends any[]> =
+  T extends [infer _, infer Key, (infer Options)?, ...infer Rest]
+    ? [Key, Options & CustomOptions, ...Rest]
+    : never;
+type Args = Extended<BaseArgs>;
 
-export async function press(this: Locator, key: string, options?: Options) {
-  const press = async(...args) => ComponentFixture.proto(this).press.apply(this, args);
+export async function press(this: Locator, ...args: Args) {
+  const [key, options] = args;
+  const source: any = this.page().locator(this._selector);
+  const frame: Frame = source._frame;
 
   const isConditional = options?.conditional;
   if (isConditional) {
@@ -37,5 +23,5 @@ export async function press(this: Locator, key: string, options?: Options) {
     if (!canProceed) return;
   }
 
-  await press(key, options);
+  await frame.press(this._selector, key, options);
 }

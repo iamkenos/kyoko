@@ -58,9 +58,9 @@ Then(
  * I expect the "locator" component location at y axis to not be 11.21
  */
 Then(
-  "I expect the {page_object_locator} element/field/button/component/section/panel location at {x_or_y} axis {to_or_to_not} be {float}",
-  async function(this: Context, locator: Locator, axis: Axis, not: boolean, expected: number) {
-    await fn.expectElementAxisLocationEquals(locator, axis, expected, { not });
+  "I expect the {page_object_locator} element/field/button/component/section/panel location at {x_or_y} axis {to_or_to_not} {be_or_contain} {float}",
+  async function(this: Context, locator: Locator, axis: Axis, not: boolean, context: MatchContext, expected: number) {
+    await fn.expectElementAxisLocationMatches(locator, axis, expected, context, { not });
   }
 );
 

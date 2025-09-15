@@ -27,5 +27,5 @@
     "target": "ESNext"
   },
   "include": ["./**/**.ts", "./**/**.js"],
-  "exclude": ["node_modules", "build", "src/fixtures/**"]
+  "exclude": ["node_modules", "build"]
 }

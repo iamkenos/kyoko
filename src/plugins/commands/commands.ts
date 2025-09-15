@@ -25,7 +25,7 @@ export class CommandsPlugin extends PuppeteerExtraPlugin {
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       const command = commands[i];
-      fixture[command] = require(file)[command]; // monkey-patch
+      fixture[command] = require(file)[command].bind(fixture); // monkey-patch; use bind so `this` wont lose context
     }
     return fixture;
   }

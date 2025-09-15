@@ -1,7 +1,6 @@
 import type { Locator } from "playwright";
-import type { Component } from "@plugins/fixture/component/component.fixture";
 
-export async function dragAndDrop(this: Locator, target: Locator | Component) {
+export async function dragAndDrop(this: Locator, target: Locator) {
   const page = this.page();
   await this.hoverIntoView();
   await page.mouse.down();

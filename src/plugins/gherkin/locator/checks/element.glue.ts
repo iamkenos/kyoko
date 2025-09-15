@@ -35,10 +35,25 @@ export async function expectElementAttributeExists(locator: Locator, attribute: 
     .attributeExists(attribute, kwargs).poll();
 }
 
-export async function expectElementAxisLocationEquals(locator: Locator, axis: Axis, expected: number, kwargs?: ExpectedConditionKwargs) {
-  await locator.expect()
+export async function expectElementAxisLocationMatches(locator: Locator, axis: Axis, expected: number, context?: MatchContext, kwargs?: ExpectedConditionKwargs) {
+  const expectElementAxisLocationContains = async() => await locator.expect()
+    .setName(expectElementAxisLocationContains.name)
+    .axisLocationContains(axis, expected, kwargs).poll();
+  const expectElementAxisLocationEquals = async() => await locator.expect()
     .setName(expectElementAxisLocationEquals.name)
     .axisLocationEquals(axis, expected, kwargs).poll();
+
+  switch (context) {
+    case MatchContext.CONTAIN:
+    case MatchContext.PARTIAL: {
+      await expectElementAxisLocationContains();
+      break;
+    }
+    default: {
+      await expectElementAxisLocationEquals();
+      break;
+    }
+  }
 }
 
 export async function expectElementCountEquals(locator: Locator, expected: number, kwargs?: ExpectedConditionKwargs) {

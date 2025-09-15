@@ -34,7 +34,7 @@ Feature: III. Browser Context - Browser windows
       And I expect the url to contain the "iframe" page's url
       And I expect the url to be "/iframe.html"
       And I expect the url to contain "/iframe"
-@debug
+
   Scenario: S03: Snapshot comparison
     Then I expect the navigation item "III. Browser Context" to match the snapshot "iii-browser-context/3-browser-windows/nav-item"
     When I click the "#open-new-window" button

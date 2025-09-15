@@ -66,8 +66,6 @@ export class SnapshotMatch extends PageCondition {
 
       const hasExpectedSnapshot = fs.existsSync(this.expectedFilePath);
       if (hasExpectedSnapshot) {
-        /** @see https://github.com/microsoft/playwright/blob/main/packages/playwright-core/src/client/page.ts#L65 */
-        /** @see https://github.com/microsoft/playwright/blob/main/packages/protocol/src/channels.ts#L1922 */
         result = await (this.page as any)._expectScreenshot({ expected: fs.readFileSync(this.expectedFilePath), ...resultOptions });
       } else {
         result = await (this.page as any)._expectScreenshot(resultOptions);

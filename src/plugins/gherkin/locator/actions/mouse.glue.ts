@@ -2,9 +2,8 @@
 import { ClickAction } from "@plugins/gherkin/enums";
 
 import type { Locator } from "playwright";
-import type { Component } from "@plugins/fixture/component/component.fixture";
 
-export async function click(locator: Locator | Component, action?: ClickAction, clickCount?: number) {
+export async function click(locator: Locator, action?: ClickAction, clickCount?: number) {
   switch (action) {
     case ClickAction.FORCE: {
       await locator.click({ clickCount, force: true });
@@ -29,19 +28,19 @@ export async function click(locator: Locator | Component, action?: ClickAction, 
   }
 }
 
-export async function dragAndDrop(source: Locator | Component, target: Locator | Component) {
+export async function dragAndDrop(source: Locator, target: Locator) {
   await source.dragAndDrop(target);
 }
 
-export async function focus(locator: Locator | Component) {
+export async function focus(locator: Locator) {
   await locator.focus();
 }
 
-export async function hoverIntoView(locator: Locator | Component, options?: Parameters<Locator["hoverIntoView"]>[0]) {
+export async function hoverIntoView(locator: Locator, options?: Parameters<Locator["hoverIntoView"]>[0]) {
   await locator.hoverIntoView(options);
 }
 
-export async function scrollIntoView(locator: Locator | Component) {
+export async function scrollIntoView(locator: Locator) {
   await locator.scrollIntoView();
 }
 
