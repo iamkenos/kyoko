@@ -30,7 +30,7 @@ export class CommandsPlugin extends PuppeteerExtraPlugin {
     return fixture;
   }
 
-  protected applyOnPageAndFrames(target: Page, callback: Function) {
+  protected applyOnPageAndFrames(target: Page, callback: (target: any) => void) {
     callback(target);
 
     for (const frame of target.frames()) {

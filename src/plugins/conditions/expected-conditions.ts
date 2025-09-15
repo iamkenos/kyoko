@@ -20,7 +20,7 @@ export class ExpectedConditions {
 
   private interval: number;
 
-  private action: Function;
+  private action: () => Promise<void>;
 
   private soft: boolean;
 
@@ -68,7 +68,7 @@ export class ExpectedConditions {
     return this;
   }
 
-  setAction(action: Function) {
+  setAction(action: () => Promise<void>) {
     this.action = action;
     return this;
   }
@@ -97,7 +97,7 @@ export class ExpectedConditions {
   async poll() {
     try {
       await expect.poll(async() => {
-        this.action !== undefined && await this.action();
+        if (this.action !== undefined) { await this.action(); }
         await this.evaluateAll();
         return this.result.passed;
       }, { intervals: [this.interval], timeout: this.timeout + 250 }).toBe(true);

@@ -14,7 +14,7 @@ export function isURL(str: string) {
   try {
     const url = new URL(str);
     return url.href.replace(/([^:]\/)\/+/g, "$1");
-  } catch (e) {
+  } catch (_) {
     return false;
   }
 }
@@ -24,7 +24,7 @@ export function isJSON(str: string) {
   try {
     const result = JSON.parse(str);
     return result instanceof Array || result instanceof Object;
-  } catch (e) {
+  } catch (_) {
     return false;
   }
 }

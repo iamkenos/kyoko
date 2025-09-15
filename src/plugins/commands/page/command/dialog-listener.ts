@@ -14,5 +14,9 @@ export function dialogListener(
     dialog[options.action](fnArg);
   };
   this.dialog = { handled: false, message: undefined };
-  options.once ? this.once("dialog", listener) : this.on("dialog", listener);
+  if (options.once) {
+    this.once("dialog", listener);
+  } else {
+    this.on("dialog", listener);
+  }
 }

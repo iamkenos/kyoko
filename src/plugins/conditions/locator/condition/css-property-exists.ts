@@ -11,7 +11,7 @@ export class CssPropertyExists extends LocatorCondition {
 
   async evaluate() {
     try {
-      const style: Object = await this.locator.evaluate((node: HTMLElement) => getComputedStyle(node));
+      const style: object = await this.locator.evaluate((node: HTMLElement) => getComputedStyle(node));
       this.actual = !!Object.values(style).find(i => i === this.kwargs.property);
       this.passed = this.actual === this.expected;
     } catch (e) {

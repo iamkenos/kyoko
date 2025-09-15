@@ -12,5 +12,9 @@ export function handleDialog(
     dialog[options.action](...args);
   };
   this.dialog = { handled: false, message: undefined };
-  options.once ? this.once("dialog", handler) : this.on("dialog", handler);
+  if (options.once) {
+    this.once("dialog", handler);
+  } else {
+    this.on("dialog", handler);
+  }
 }

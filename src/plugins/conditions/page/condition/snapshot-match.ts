@@ -74,8 +74,8 @@ export class SnapshotMatch extends PageCondition {
         this.createFile(this.expectedFilePath, result.actual);
       }
 
-      result.actual && this.createFile(this.actualFilePath, result.actual);
-      result.diff && this.createFile(this.diffFilePath, result.diff);
+      if (result.actual) { this.createFile(this.actualFilePath, result.actual); }
+      if (result.diff) { this.createFile(this.diffFilePath, result.diff); }
       result.diffPixelRatio = this.getPixelDiff(result?.errorMessage);
 
       const isSame = !result.errorMessage ? true : result.diffPixelRatio <= comparatorOptions.maxDiffPixelRatio;
