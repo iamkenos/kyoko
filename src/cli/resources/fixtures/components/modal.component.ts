@@ -21,6 +21,8 @@ export class Modal extends Component {
   }
 
   async close() {
+    // This class also has access to the logger instance
+    this.logger.info("Closing modal...");
     await this.footer().click();
   }
 }

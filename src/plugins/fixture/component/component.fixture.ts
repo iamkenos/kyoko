@@ -37,4 +37,6 @@ export class ComponentFixture {
 }
 
 type ConstructFrom<T> = { Component: Constructor<T>, source: Locator }
-export const Component: new(selector: string) => Locator = ComponentFixture as any;
+type Component = Omit<ComponentFixture, "create">
+export type ComponentCommand<T> = Omit<T, "logger">
+export const Component: new(selector: string) => Locator & Component = ComponentFixture as any;
