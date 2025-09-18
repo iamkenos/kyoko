@@ -1,6 +1,6 @@
 import type { BrowserContext } from "playwright";
 
-import type { Context } from "./context/context.fixture";
+import type { IContext as Context } from "./context/context.fixture";
 import type { Config, ContextParameters } from "@config/types";
 
 export abstract class Fixture<Parameters = ContextParameters> {

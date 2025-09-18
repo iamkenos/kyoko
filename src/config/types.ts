@@ -3,7 +3,7 @@ import type { BrowserContextOptions, LaunchOptions, Locator } from "playwright";
 
 export type ContextParameters = { [key: string]: any };
 
-export interface Config extends Omit<IConfiguration, "publishQuiet"> {
+export interface Config extends IConfiguration {
   /** Custom: The base directory where most config paths will be resolved from */
   baseDir: string;
   baseURL: string;
@@ -31,6 +31,7 @@ export interface Config extends Omit<IConfiguration, "publishQuiet"> {
   snapshots: Snapshots;
   timeout: number;
   worldParameters: ContextParameters
+  formatOptions: IConfiguration["formatOptions"] & { environmentInfo?: { [key: string]: string } }
 }
 
 type SnapshotDirectories = {

@@ -1,4 +1,5 @@
 import { expect } from "@playwright/test";
+import { AssertionError } from "assert";
 
 import { changecase } from "@utils/string";
 import { ArrayContains } from "./context/condition/array-contains";
@@ -105,8 +106,17 @@ export class ExpectedConditions {
       if (this.result) {
         if (!this.soft) {
           const failures = this.result.evaluations.filter(e => !e.passed);
-          for (let i = 0; i < failures.length; i++) { await failures[i].onFailure(); }
-          throw new Error(this.result.message);
+          for (let i = 0; i < failures.length; i++) {
+            try { await failures[i].onFailure(); } catch (_) { continue; }
+          }
+
+          const ec = changecase.sentenceCase(ExpectedConditions.name).toLowerCase();
+          const isBroken = !this.result.message.includes(ec);
+          if (isBroken) {
+            throw new Error(this.result.message);
+          } else {
+            throw new AssertionError({ message: this.result.message });
+          }
         }
       } else {
         throw new Error(`Unhandled exception: ${e}`);

@@ -13,7 +13,7 @@ import {
   Status
 } from "@cucumber/cucumber";
 import { ContentType } from "allure-js-commons";
-import { Context } from "@plugins/fixture/context/context.fixture";
+import { Context, IContext } from "@plugins/fixture/context/context.fixture";
 
 import chalk from "chalk";
 
@@ -25,29 +25,24 @@ Before({ tags: "@SKIP or @skip or @IGNORE or @ignore" }, () => Status.SKIPPED.to
 
 Before({ tags: "@PENDING or @pending" }, () => Status.PENDING.toLowerCase());
 
-Before({}, async function(this: Context) {
-  this.browser = await this.createBrowser();
-  this.page = await this.browser.newPage();
-});
-
 BeforeStep({}, async function(this: Context, params: ITestStepHookParameter) {
   const { pickleStep, gherkinDocument } = params;
   const step = object.deepSearch(gherkinDocument, "id", pickleStep.astNodeIds[0]);
   this.logger.info(`${chalk.green.dim.bold(step.keyword.trim())} ${chalk.green.dim(step.text)}`);
 });
 
-AfterStep({}, async function(this: Context, params: ITestStepHookParameter) {
+AfterStep({}, async function(this: IContext, params: ITestStepHookParameter) {
   const { result } = params;
 
   if (result.status !== Status.PASSED) {
     if (this.page) {
-      const buffer = await this.page.screenshot({ fullPage: true });
-      await this.reporter.attachment("Screenshot", buffer, ContentType.PNG);
+      const buffer: any = await this.page.screenshot({ fullPage: true });
+      await this.reporter.addAttachment(buffer, { mediaType: ContentType.PNG, fileName: "Screenshot" });
     }
   }
 });
 
-After({}, async function(this: Context, params: ITestCaseHookParameter) {
+After({}, async function(this: IContext, params: ITestCaseHookParameter) {
   const { result } = params;
 
   const teardown = async() => {
@@ -62,8 +57,9 @@ After({}, async function(this: Context, params: ITestCaseHookParameter) {
     if (this.page) {
       if (this.config.browserOptions.recordVideo) {
         const path = await this.page.video().path();
+        const attachment: any = fs.readFileSync(path);
         await teardown();
-        await this.reporter.attachment("Recording", fs.readFileSync(path), ContentType.WEBM);
+        await this.reporter.addAttachment(attachment, { mediaType: ContentType.WEBM, fileName: "Recording" });
       }
     }
   }

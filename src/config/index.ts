@@ -155,7 +155,7 @@ function getCukesFormat(overrides: Partial<Config>) {
 function getCukesFormatOptions(overrides: Partial<Config>) {
   const { baseDir } = overrides;
   const { formatOptions = {} }: any = overrides;
-  const { resultsDir: baseResultsDir = "results/", ...rest } = formatOptions ;
+  const { resultsDir: baseResultsDir = "results/", environmentInfo, ...rest } = formatOptions ;
   const resultsDir = path.join(baseDir, baseResultsDir);
   const allureDir = getAllureDir(resultsDir);
 
@@ -166,7 +166,8 @@ function getCukesFormatOptions(overrides: Partial<Config>) {
     environmentInfo: {
       "OS": os.platform(),
       "OS Version": os.version(),
-      "Node Version": process.version
+      "Node Version": process.version,
+      ...environmentInfo
     },
     ...rest
   };

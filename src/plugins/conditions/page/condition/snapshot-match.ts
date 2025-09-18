@@ -33,7 +33,9 @@ export class SnapshotMatch extends PageCondition {
     const { outDir } = ctx.config.snapshots.images;
     const attach = async(title: string, filename: string) => {
       if (fs.existsSync(filename)) {
-        await ctx.reporter.step(title, async(_: StepContext) => await ctx.reporter.attachment(filename, fs.readFileSync(filename), ContentType.PNG));
+        await ctx.reporter.step(title, async(_: StepContext) => {
+          await ctx.reporter.addAttachment(fs.readFileSync(filename) as any, { mediaType: ContentType.PNG, fileName: filename });
+        });
       }
     };
 
@@ -61,10 +63,11 @@ export class SnapshotMatch extends PageCondition {
 
       const screenshotOptions = { mask: this.options?.mask || mask, fullPage: this.options?.fullPage };
       const comparatorOptions = { maxDiffPixelRatio: this.options?.maxDiffPixelRatio || maxDiffPixelRatio };
-      const resultOptions = { screenshotOptions, comparatorOptions, locator: this.locator };
+      const resultOptions = { screenshotOptions, comparatorOptions, locator: this.locator, timeout: 0 };
       const isSkip = skipCompare || this.options?.skipCompare;
       let result: { actual?: Buffer, diff?: Buffer, errorMessage?: string, diffPixelRatio: number };
 
+      this.expected = `Within ${comparatorOptions.maxDiffPixelRatio} ratio difference.`;
       const hasExpectedSnapshot = fs.existsSync(this.expectedFilePath);
       if (hasExpectedSnapshot) {
         result = await (this.page as any)._expectScreenshot({ expected: fs.readFileSync(this.expectedFilePath), ...resultOptions });
@@ -78,7 +81,6 @@ export class SnapshotMatch extends PageCondition {
       result.diffPixelRatio = this.getPixelDiff(result?.errorMessage);
 
       const isSame = !result.errorMessage ? true : result.diffPixelRatio <= comparatorOptions.maxDiffPixelRatio;
-      this.expected = `Within ${comparatorOptions.maxDiffPixelRatio} ratio difference.`;
       this.actual = result.errorMessage || this.expected;
       this.passed = isSkip ? true : isSame;
       this.not = isSkip ? false : this.not;

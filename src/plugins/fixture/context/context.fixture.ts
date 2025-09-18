@@ -34,8 +34,17 @@ interface PageObjectFile {
   locale: string;
 }
 
-export interface IContext<ContextParameters = BaseContextParameters> extends Omit<Context, keyof PrivateContext> {
-  readonly reporter: typeof allure;
+type Attachment<T> =
+  T extends [infer Readable, infer Options, ...infer _]
+    ? [Readable, Options]
+    : never;
+
+type Reporter = Omit<typeof allure, "attachment"> & {
+  addAttachment: (...args: Attachment<Parameters<World["attach"]>>) => Promise<void>
+}
+
+export interface IContext<ContextParameters = BaseContextParameters> extends Omit<Context & World, keyof PrivateContext | keyof World> {
+  readonly reporter: Reporter;
   readonly browser: BrowserContext;
   readonly config: Config;
   parameters: ContextParameters;
@@ -52,24 +61,40 @@ export abstract class Context extends World implements PrivateContext {
    * @see [Page](https://playwright.dev/docs/api/class-page)
    */
   page: Page;
-  /** The AllureJS Cucumber reporter interface, restricted to the bare essential methods.
-   * @see [allure-cucumberjs](https://github.com/allure-framework/allure-js/blob/master/packages/allure-cucumberjs/README.md)
-   */
-  reporter: typeof allure;
+  reporter: Reporter;
 
   constructor(options: IWorldOptions) {
     // immutably remove config from parameters so it's not carried over as clutter as these are accessible from ctx.config
     const { config, ...parameters } = options.parameters;
     super({ ...options, parameters });
     this.config = config;
+    this.setLogger();
+    this.setPageObjects();
+    this.setReporter();
+    globalThis.ctx = this as any;
+  }
+
+  private setLogger() {
     this.logger = new Logger("kyoko");
+  }
+
+  private setPageObjects() {
     this.pageObjectsFiles = files.fromGlob(this.config.pages).map(file => {
       const rex = /(.+).page(?:.([a-z]{2}))?.ts|js/;
       const [basename, name, locale] = path.basename(file).match(rex);
       return { name, locale, basename, classname: changecase.pascalCase(`${name}Page`), filepath: file };
     });
-    this.reporter = allure;
-    globalThis.ctx = this;
+  }
+
+  private setReporter() {
+    const boundAttach = this.attach.bind(this);
+    this.reporter = allure as any;
+    Object.defineProperty(this.reporter, "addAttachment", {
+      configurable: true, writable: true,
+      value: async(...args: any[]) => {
+        boundAttach(...args);
+      }
+    });
   }
 
   findPageObject<T = PageObject>(page?: string, persist = false) {
