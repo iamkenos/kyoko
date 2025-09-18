@@ -19,7 +19,7 @@
 
 ## About
 
-[Playwright](https://playwright.dev/) & [CucumberJS](https://cucumber.io/docs/installation/javascript/) mixed with presets and additional features:
+[Playwright](https://playwright.dev/) & [CucumberJS](https://cucumber.io/docs/installation/javascript/) mixed with presets and plugins:
 
 - write tests with [TypeScript](https://www.typescriptlang.org/docs/handbook/modules.html) and [Cucumber](https://cucumber.io/docs/guides/overview/)
 - gherkin statements that can be used out of the box powered by [cucumber expressions](https://github.com/cucumber/cucumber-expressions)
@@ -35,7 +35,7 @@
 
 ## Requirements
 
-- NodeJS ≥ 20.10.0 or ≤ LTS
+- NodeJS ≥ 22.19.0 or ≤ LTS
 - JRE ≥ 8
 
 ## Get Started
