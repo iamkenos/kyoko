@@ -1,5 +1,6 @@
 import * as fs from "fs-extra";
 import * as path from "path";
+import * as os from "node:os";
 
 import callsites from "callsites";
 import dotenv from "dotenv";
@@ -23,6 +24,7 @@ function getConfigBaseURL(overrides: Partial<Config>) {
 }
 
 function getConfigBrowserOptions(overrides: Partial<Config>) {
+  const { resultsDir } = getCukesFormatOptions(overrides);
   const {
     CTX_BROWSER_INSTANCE = "",
     CTX_BROWSER_IS_HEADLESS = "",
@@ -41,7 +43,7 @@ function getConfigBrowserOptions(overrides: Partial<Config>) {
   const recordVideo = CTX_BROWSER_RECORD_VIDEO
     ? CTX_BROWSER_RECORD_VIDEO.toLowerCase() === "true"
     : overrides.browserOptions?.recordVideo ?? false;
-  const videosDir = path.join(getConfigResultsDir(overrides), "videos");
+  const videosDir = path.join(resultsDir, "videos");
   const launchArgs = {
     headless,
     ...overrides.browserOptions?.launchArgs
@@ -89,12 +91,6 @@ function getConfigPages(overrides: Partial<Config>) {
   return pages.map(i => path.join(baseDir, i));
 }
 
-function getConfigResultsDir(overrides: Partial<Config>) {
-  const { CTX_RESULTS_DIR } = process.env;
-  const { resultsDir = "results/", baseDir } = overrides;
-  return path.join(baseDir, CTX_RESULTS_DIR ? CTX_RESULTS_DIR : resultsDir);
-}
-
 function getConfigSnapshotsDir(overrides: Partial<Config>) {
   const { CTX_SNAPSHOTS_DIR } = process.env;
   const { snapshotsDir = "snapshots/", baseDir } = overrides;
@@ -131,21 +127,40 @@ function getConfigSnapshots(overrides: Partial<Config>) {
   return snapshotOptions;
 }
 
+function getAllureDir(resultsDir: string) {
+  return path.join(resultsDir, "allure");
+}
+
 function getCukesFormat(overrides: Partial<Config>) {
-  const resultsDir = getConfigResultsDir(overrides);
+  const { resultsDir } = getCukesFormatOptions(overrides);
   const { format = [] } = overrides;
   fs.removeSync(resultsDir);
+
+  const allureDir = getAllureDir(resultsDir);
   return [
     "summary",
-    `"html":"${resultsDir}report.html"`,
-    `"json":"${resultsDir}report.json"`,
-    `"file://${path.join(__dirname, "../plugins/allure/reporter.js")}":"${resultsDir}allure/report.json"`,
+    `"html":"${path.join(resultsDir, "report.html")}"`,
+    `"json":"${path.join(resultsDir, "report.json")}"`,
+    `"allure-cucumberjs/reporter":"${path.join(allureDir, "report.json")}"`,
     ...format
   ];
 }
 
-function getCukesFormatOptions() {
-  return { snippetInterface: "async-await", printAttachments: false };
+function getCukesFormatOptions(overrides: Partial<Config>) {
+  const { baseDir } = overrides;
+  const { formatOptions = { resultsDir: "results/" } as any } = overrides;
+  const resultsDir = path.join(baseDir, formatOptions.resultsDir);
+
+  return {
+    snippetInterface: "async-await",
+    printAttachments: false,
+    resultsDir: getAllureDir(resultsDir),
+    environmentInfo: {
+      os: `${os.platform()} ${os.version()}`,
+      node_version: process.version
+    },
+    ...formatOptions
+  };
 }
 
 function getCukesParallel(overrides: Partial<Config>) {
@@ -201,21 +216,19 @@ export function configure(overrides: Partial<Config> = {}) {
   const locale = getConfigLocale(overrides);
   const logLevel = getConfigLogLevel(overrides);
   const pages = getConfigPages(overrides);
-  const resultsDir = getConfigResultsDir(overrides);
   const timeout = getConfigTimeout(overrides);
   const browserOptions = getConfigBrowserOptions(overrides);
   const snapshots = getConfigSnapshots(overrides);
   const custom = {
     baseDir, baseURL, browserOptions,
-    debug, downloadsDir, locale, logLevel, pages,
-    resultsDir, snapshots, timeout
+    debug, downloadsDir, locale, logLevel, pages, snapshots, timeout
   };
 
   // cucumber options defaults
   const config = {
     ...overrides,
     format: getCukesFormat(overrides),
-    formatOptions: getCukesFormatOptions(),
+    formatOptions: getCukesFormatOptions(overrides),
     parallel: getCukesParallel(overrides),
     paths: getCukesPaths(overrides),
     require: getCukesRequire(overrides),

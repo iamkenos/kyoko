@@ -25,8 +25,6 @@ export interface Config extends Omit<IConfiguration, "publishQuiet"> {
   logLevel: "trace" | "debug" | "info" | "warn" | "error" | "silent";
   /** Custom: Array of globs pointing to your page object files, relative to the config file */
   pages: string[];
-  /** Custom: Directory to store the reports in, relative to the config file */
-  resultsDir: string;
   /** Custom: Directory to store the snapshots in, relative to the config file */
   snapshotsDir: string;
   /** Custom: Object containing properties of comparable files */

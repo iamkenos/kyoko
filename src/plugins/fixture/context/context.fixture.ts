@@ -1,3 +1,6 @@
+import "allure-cucumberjs";
+
+import * as allure from "allure-js-commons";
 import * as playwright from "playwright";
 import * as pwe from "playwright-extra";
 import * as path from "path";
@@ -5,7 +8,7 @@ import * as files from "@utils/files";
 
 import StealthPlugin from "puppeteer-extra-plugin-stealth";
 
-import { CucumberAllureWorld as AllureContext } from "allure-cucumberjs";
+import { IWorldOptions, World } from "@cucumber/cucumber";
 import { BrowserCommands } from "@plugins/commands/browser/browser.commands";
 import { PageCommands } from "@plugins/commands/page/page.commands";
 import { LocatorCommands } from "@plugins/commands/locator/locator.commands";
@@ -13,11 +16,8 @@ import { PageObject } from "@plugins/fixture/page/page.fixture";
 import { changecase } from "@utils/string";
 import { Logger } from "@utils/logger";
 
-import type { IWorldOptions } from "@cucumber/cucumber";
 import type { BrowserContext, Locator, Page } from "playwright";
 import type { ContextParameters as BaseContextParameters, Config } from "@config/types";
-
-interface Reporter extends Pick<AllureContext, "attach" | "step" | "issue" | "link" | "description"> { }
 
 interface PrivateContext {
   findPageObject: <T = PageObject>(page: string, persist?: boolean) => T;
@@ -34,14 +34,14 @@ interface PageObjectFile {
   locale: string;
 }
 
-export interface IContext<ContextParameters = BaseContextParameters> extends Omit<Context, keyof AllureContext | keyof PrivateContext> {
-  readonly reporter: Reporter;
+export interface IContext<ContextParameters = BaseContextParameters> extends Omit<Context, keyof PrivateContext> {
+  readonly reporter: typeof allure;
   readonly browser: BrowserContext;
   readonly config: Config;
   parameters: ContextParameters;
 }
 
-export abstract class Context extends AllureContext implements PrivateContext {
+export abstract class Context extends World implements PrivateContext {
   private pageObjectsFiles: PageObjectFile[];
   private pageObjectFile: PageObjectFile;
   /** The resolved Cucumber configuration object. */
@@ -55,7 +55,7 @@ export abstract class Context extends AllureContext implements PrivateContext {
   /** The AllureJS Cucumber reporter interface, restricted to the bare essential methods.
    * @see [allure-cucumberjs](https://github.com/allure-framework/allure-js/blob/master/packages/allure-cucumberjs/README.md)
    */
-  reporter: Reporter;
+  reporter: typeof allure;
 
   constructor(options: IWorldOptions) {
     // immutably remove config from parameters so it's not carried over as clutter as these are accessible from ctx.config
@@ -68,13 +68,7 @@ export abstract class Context extends AllureContext implements PrivateContext {
       const [basename, name, locale] = path.basename(file).match(rex);
       return { name, locale, basename, classname: changecase.pascalCase(`${name}Page`), filepath: file };
     });
-    this.reporter = {
-      attach: this.attach,
-      step: super.step,
-      issue: super.issue,
-      link: super.link,
-      description: super.description
-    };
+    this.reporter = allure;
     globalThis.ctx = this;
   }
 

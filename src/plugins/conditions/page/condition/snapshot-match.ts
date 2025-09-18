@@ -1,9 +1,10 @@
 import * as fs from "fs-extra";
 import * as path from "path";
 
+import { ContentType } from "allure-js-commons";
 import { PageCondition } from "@plugins/conditions/page/page-condition";
 
-import type { AllureCommandStepExecutable } from "allure-js-commons";
+import type { StepContext } from "allure-js-commons";
 import type { Locator } from "playwright";
 import type { ExpectedConditionKwargs } from "@plugins/conditions/types";
 import type { PageSnapshotOptions } from "@config/types";
@@ -30,15 +31,15 @@ export class SnapshotMatch extends PageCondition {
 
   async onFailure() {
     const { outDir } = ctx.config.snapshots.images;
-    const attach = (title: string, filename: string) => {
+    const attach = async(title: string, filename: string) => {
       if (fs.existsSync(filename)) {
-        ctx.reporter.step(title, (step: AllureCommandStepExecutable) => step.attach(fs.readFileSync(filename), "image/png"));
+        await ctx.reporter.step(title, async(_: StepContext) => await ctx.reporter.attachment(filename, fs.readFileSync(filename), ContentType.PNG));
       }
     };
 
-    attach(`expected: ${path.relative(outDir, this.expectedFilePath)}`, this.expectedFilePath);
-    attach(`actual: ${path.relative(outDir, this.actualFilePath)}`, this.actualFilePath);
-    attach(`difference: ${path.relative(outDir, this.diffFilePath)}`, this.diffFilePath);
+    await attach(`expected: ${path.relative(outDir, this.expectedFilePath)}`, this.expectedFilePath);
+    await attach(`actual: ${path.relative(outDir, this.actualFilePath)}`, this.actualFilePath);
+    await attach(`difference: ${path.relative(outDir, this.diffFilePath)}`, this.diffFilePath);
   }
 
   private getPixelDiff(error: string) {

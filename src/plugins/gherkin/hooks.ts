@@ -12,6 +12,7 @@ import {
   setWorldConstructor,
   Status
 } from "@cucumber/cucumber";
+import { ContentType } from "allure-js-commons";
 import { Context } from "@plugins/fixture/context/context.fixture";
 
 import chalk from "chalk";
@@ -40,10 +41,8 @@ AfterStep({}, async function(this: Context, params: ITestStepHookParameter) {
 
   if (result.status !== Status.PASSED) {
     if (this.page) {
-      if (!this.config.browserOptions.recordVideo) {
-        const buffer = await this.page.screenshot({ fullPage: true });
-        this.reporter.attach(buffer, "image/png");
-      }
+      const buffer = await this.page.screenshot({ fullPage: true });
+      await this.reporter.attachment("Screenshot", buffer, ContentType.PNG);
     }
   }
 });
@@ -64,7 +63,7 @@ After({}, async function(this: Context, params: ITestCaseHookParameter) {
       if (this.config.browserOptions.recordVideo) {
         const path = await this.page.video().path();
         await teardown();
-        this.reporter.attach(fs.readFileSync(path), "video/webm");
+        await this.reporter.attachment("Recording", fs.readFileSync(path), ContentType.WEBM);
       }
     }
   }
