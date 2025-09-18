@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.6.0](https://github.com/iamkenos/kyoko/compare/v0.5.2...v0.6.0) (2025-09-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* file and folder structure
+
+### Features
+
+* **fixtures:** expose logger on component ([a2fa00b](https://github.com/iamkenos/kyoko/commit/a2fa00b488d8d402c5010db41a0c64bfd1f7a950))
+* plugins ([4007edc](https://github.com/iamkenos/kyoko/commit/4007edce22db9981b098afe496f70ea312cf27e8))
+
+
+### Bug Fixes
+
+* cucumber, allure, playwright api mismatches ([92decb9](https://github.com/iamkenos/kyoko/commit/92decb947ce8001ab54d8d793138eb0689ce903d))
+* **fixtures:** component prototype ([98093f2](https://github.com/iamkenos/kyoko/commit/98093f267ad01432d60b08caf500317870444213))
+* **fixtures:** revert component prototype, proxy breaks ([0876aeb](https://github.com/iamkenos/kyoko/commit/0876aeb5b7b7bf640be40b9878f7dacb97c6fe04))
+* recurse issue on modal demo ([c361e74](https://github.com/iamkenos/kyoko/commit/c361e747ffb62033e68044774b08e80c57bd7d3f))
+
+
+### Refactor
+
+* file and folder structure ([125609e](https://github.com/iamkenos/kyoko/commit/125609ea89cedd13f5362cff04a88342a4fe4a7a))
+* **fixtures:** eureka, component works! ([1c42b8a](https://github.com/iamkenos/kyoko/commit/1c42b8ad0fb51a24ce169bc5bcd6365a275d9c86))
+* rework fixtures into plugins using playwright extras ([8d4f56c](https://github.com/iamkenos/kyoko/commit/8d4f56c6f50271387ca4d59613a70a63fac50ca6))
+* use ctx over world for shared context references ([d29a44e](https://github.com/iamkenos/kyoko/commit/d29a44eb76fd2edbb2f661fc30513cb5f9b0e21f))
+* use pwe dropin by default, enable stealth by default ([e0fb880](https://github.com/iamkenos/kyoko/commit/e0fb880bbc761b2b164e996fe78d9d5b3c4184a3))
+
+
+### Chore
+
+* **deps:** cucumber, playwright, allure updates ([923905e](https://github.com/iamkenos/kyoko/commit/923905e0aee542c0dd6bb5087d86989050ce07ca))
+* **deps:** remaining dependency bumps ([3200275](https://github.com/iamkenos/kyoko/commit/3200275fbf6af5940bb3a3135308e380585fe4b9))
+* **deps:** revert yargs ([ffe86ef](https://github.com/iamkenos/kyoko/commit/ffe86ef4e2c874f9e35492b992e9becaedcaf2d4))
+* **deps:** typescript and eslint updates ([e6d958e](https://github.com/iamkenos/kyoko/commit/e6d958e2428fec350ff5bc111b2ef40d35adaf53))
+
 ### [0.5.2](https://github.com/iamkenos/kyoko/compare/v0.5.1...v0.5.2) (2025-06-09)
 
 
