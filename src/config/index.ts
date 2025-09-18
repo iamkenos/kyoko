@@ -3,7 +3,7 @@ import * as path from "path";
 import * as os from "node:os";
 
 import callsites from "callsites";
-import dotenv from "dotenv";
+import dotenv from "@dotenvx/dotenvx";
 
 import type { Config as BaseConfig } from "./types";
 import type { NestedOmit } from "../utils/types";
@@ -14,7 +14,11 @@ type Config = NestedOmit<BaseConfig, "snapshots.images.outDir">;
 
 function loadEnv(baseDir: string) {
   const { NODE_ENV: CTX_ENV } = process.env;
-  dotenv.config({ path: CTX_ENV ? path.join(baseDir, `.env.${CTX_ENV}`) : path.join(baseDir, ".env") });
+  const envFile = CTX_ENV ? path.join(baseDir, `.env.${CTX_ENV}`) : path.join(baseDir, ".env");
+
+  if (fs.existsSync(envFile)) {
+    dotenv.config({ path: envFile });
+  }
 }
 
 function getConfigBaseURL(overrides: Partial<Config>) {
@@ -132,34 +136,39 @@ function getAllureDir(resultsDir: string) {
 }
 
 function getCukesFormat(overrides: Partial<Config>) {
-  const { resultsDir } = getCukesFormatOptions(overrides);
+  const { baseDir } = overrides;
   const { format = [] } = overrides;
+  const { resultsDir: allureResultsDir } = getCukesFormatOptions(overrides);
+  const [baseResultsDir] = path.relative(baseDir, allureResultsDir).split(path.sep);
+  const resultsDir = path.join(baseDir, baseResultsDir);
   fs.removeSync(resultsDir);
 
-  const allureDir = getAllureDir(resultsDir);
   return [
     "summary",
     `"html":"${path.join(resultsDir, "report.html")}"`,
     `"json":"${path.join(resultsDir, "report.json")}"`,
-    `"allure-cucumberjs/reporter":"${path.join(allureDir, "report.json")}"`,
+    `"allure-cucumberjs/reporter":"${path.join(allureResultsDir, "_")}"`,
     ...format
   ];
 }
 
 function getCukesFormatOptions(overrides: Partial<Config>) {
   const { baseDir } = overrides;
-  const { formatOptions = { resultsDir: "results/" } as any } = overrides;
-  const resultsDir = path.join(baseDir, formatOptions.resultsDir);
+  const { formatOptions = {} }: any = overrides;
+  const { resultsDir: baseResultsDir = "results/", ...rest } = formatOptions ;
+  const resultsDir = path.join(baseDir, baseResultsDir);
+  const allureDir = getAllureDir(resultsDir);
 
   return {
     snippetInterface: "async-await",
     printAttachments: false,
-    resultsDir: getAllureDir(resultsDir),
+    resultsDir: allureDir,
     environmentInfo: {
-      os: `${os.platform()} ${os.version()}`,
-      node_version: process.version
+      "OS": os.platform(),
+      "OS Version": os.version(),
+      "Node Version": process.version
     },
-    ...formatOptions
+    ...rest
   };
 }
 
