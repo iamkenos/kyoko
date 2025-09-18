@@ -30,7 +30,7 @@ export class Modal extends Component {
 
 class ModalConditions extends LocatorConditions<Modal> {
 
-  override textEquals(expected: string, kwargs?: ExpectedConditionKwargs) {
+  bodyTextEquals(expected: string, kwargs?: ExpectedConditionKwargs) {
     return this.addCondition(this.locator.body().expect().textEquals(expected, kwargs));
   }
 }

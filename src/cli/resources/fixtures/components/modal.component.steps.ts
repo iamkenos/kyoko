@@ -13,7 +13,7 @@ When(
 Then(
   "I expect the modal component text {to_or_to_not} be:",
   async function(this: This, not: boolean, text: string) {
-    await this.page.component(Modal).expect().textEquals(text, { not }).poll();
+    await this.page.component(Modal).expect().bodyTextEquals(text, { not }).poll();
   }
 );
 
