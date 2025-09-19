@@ -2,6 +2,7 @@ build/
 node_modules/
 results/
 samples/
+.allure/
 **/snapshots/**/actual
 **/snapshots/**/diff
 *.tgz
