@@ -1,25 +1,31 @@
-import { Then, When } from "@cucumber/cucumber";
+import { defineParameterType, Then, When } from "@cucumber/cucumber";
 import { Modal } from "./modal.component";
 
-import type { This } from "../pages/the-internet.steps";
+import type { Context } from "../pages/the-internet.steps";
+
+defineParameterType({
+  name: "modal_component",
+  regexp: /modal component/,
+  transformer(this: Context) { return this.page.component(Modal); }
+});
 
 When(
-  "I close the modal component",
-  async function(this: This) {
-    await this.page.component(Modal).close();
+  "I close the {modal_component}",
+  async function(this: Context, component: Modal) {
+    await component.close();
   }
 );
 
 Then(
-  "I expect the modal component text {to_or_to_not} be:",
-  async function(this: This, not: boolean, text: string) {
-    await this.page.component(Modal).expect().bodyTextEquals(text, { not }).poll();
+  "I expect the {modal_component} text {to_or_to_not} be:",
+  async function(this: Context, component: Modal, not: boolean, text: string) {
+    await component.expect().bodyTextEquals(text, { not }).poll();
   }
 );
 
 Then(
-  "I expect the modal component {to_or_to_not} be displayed",
-  async function(this: This, not: boolean) {
-    await this.page.component(Modal).expect().displayed({ not }).poll();
+  "I expect the {modal_component} {to_or_to_not} be displayed",
+  async function(this: Context, component: Modal, not: boolean) {
+    await component.expect().displayed({ not }).poll();
   }
 );

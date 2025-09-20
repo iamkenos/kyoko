@@ -23,6 +23,26 @@
         "CTX_PARALLEL_WORKERS": "${input:parallel}",
         "CTX_FEATURE_TAGS": "${input:tags}"
       }
+    },
+    {
+      "name": "debug test:init",
+      "type": "node",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run-script", "debug:init"],
+      "outFiles": [
+        "${workspaceFolder}/**/*.ts",
+        "${workspaceFolder}/build/**/*.js"
+      ],
+      "env": {
+        "CTX_DEBUG": "true",
+        "CTX_BROWSER_IS_HEADLESS": "${input:headless}",
+        "CTX_PARALLEL_WORKERS": "${input:parallel}",
+        "CTX_FEATURE_TAGS": "${input:tags}"
+      }
     }
   ],
   "inputs": [

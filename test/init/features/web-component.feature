@@ -1,4 +1,8 @@
-Feature: Exit Intent
+Feature: Web Component
+  Examples of using the component fixture and creating custom parameter types, steps, and component methods.
+  The scenarios below interact with the following fixtures:
+    • 'exit-intent' page object - found on the ExitIntentPage class
+    • Modal class
 
   Background:
     Given I am on the "exit-intent" page

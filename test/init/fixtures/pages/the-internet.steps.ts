@@ -1,5 +1,5 @@
 import { Before, Then, When } from "@cucumber/cucumber";
-import { Context } from "@iamkenos/kyoko";
+import { Context as BaseContext } from "@iamkenos/kyoko";
 
 import { TheInternetPage } from "./the-internet.page";
 import { ExitIntentPage } from "./exit-intent/exit-intent.page";
@@ -20,14 +20,14 @@ export interface Parameters {
 }
 
 /** Extend the `Context` type so you can access inherited properties from `this`. */
-export interface This extends Context<Parameters> {
+export interface Context extends BaseContext<Parameters> {
   theInternetPage: TheInternetPage;
   exitIntentPage: ExitIntentPage;
   loginPage: LoginPage;
   securePage: SecurePage;
 }
 
-Before({}, async function(this: This) {
+Before({}, async function(this: Context) {
   this.theInternetPage = new TheInternetPage();
   this.exitIntentPage = new ExitIntentPage();
   this.loginPage = new LoginPage();
@@ -36,21 +36,21 @@ Before({}, async function(this: This) {
 
 When(
   "I set the something parameter to {input_string}",
-  async function(this: This, value: string) {
+  async function(this: Context, value: string) {
     this.parameters.something = value;
   }
 );
 
 When(
   "I update the something parameter from the page",
-  async function(this: This) {
+  async function(this: Context) {
     this.theInternetPage.updateParameters();
   }
 );
 
 Then(
   "I expect the something parameter value {to_or_to_not} be {input_string}",
-  async function(this: This, not: boolean, value: string) {
+  async function(this: Context, not: boolean, value: string) {
     await this.page.expect().equals(this.parameters.something, value, { not }).poll();
   }
 );
