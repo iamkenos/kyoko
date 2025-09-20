@@ -19,13 +19,13 @@
     "postbuild:mv:tsconfig": "shx mv ./build/cli/resources/tsconfig.test.json ./build/cli/resources/tsconfig.json",
     "pack": "npm run build && npm pack",
     "lint": "eslint ./",
-    "serve:demo": "http-server ./demo/app -s",
+    "serve:demo": "http-server ./test/demo/app -s",
     "pretest:demo": "playwright install --with-deps chromium",
-    "test:demo": "start-test serve:demo 8080 cucumber:demo",
+    "test:demo": "start-test serve:demo 8080 run:demo",
+    "run:demo": "cucumber-js -c test/demo/cucumber.js",
+    "prereport:demo": "allure -q generate test/demo/results/allure/ -c -o test/demo/results/allure/html/",
+    "report:demo": "allure open test/demo/results/allure/html/",
     "debug:demo": "npm run test:demo",
-    "prereport:demo": "allure -q generate demo/test/results/allure/ -c -o demo/test/results/allure/html/",
-    "report:demo": "allure open demo/test/results/allure/html/",
-    "cucumber:demo": "cucumber-js -c demo/test/cucumber.js",
     "test:unit": "echo TODO"
   },
   "keywords": [
