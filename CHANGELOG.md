@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.7.0](https://github.com/iamkenos/kyoko/compare/v0.6.0...v0.7.0) (2025-09-21)
+
+
+### Features
+
+* **commands:** update init examples writeup and file names ([2e49c4f](https://github.com/iamkenos/kyoko/commit/2e49c4fc568173c18a589b937ea0cb22a42e0952))
+
+
+### Bug Fixes
+
+* component command overrides ([f3ffa33](https://github.com/iamkenos/kyoko/commit/f3ffa33bdd200e5a02e48cbf85d70c36ad53c0cb))
+
+
+### Refactor
+
+* move demo tests location ([9b28e7c](https://github.com/iamkenos/kyoko/commit/9b28e7c3540e7601153a779073c4ff69c8f9477f))
+* move init resources location ([81b2c42](https://github.com/iamkenos/kyoko/commit/81b2c42f9340673279c547b191aa063462550864))
+
 ## [0.6.0](https://github.com/iamkenos/kyoko/compare/v0.5.2...v0.6.0) (2025-09-18)
 
 
