@@ -55,16 +55,16 @@ export class ExpectedConditions {
   }
 
   addCondition(condition: ExpectedCondition | ExpectedConditions) {
-    const [idx, pg, loc, sel, kw, cd] = ["index", "page", "locator", "_selector", "kwargs", "conditions"];
-    if (condition instanceof ExpectedConditions) {
-      const conditions = condition[cd];
+    const [idx, pg, loc, sel, kw, cds] = ["index", "page", "locator", "_selector", "kwargs", "conditions"];
+    if (cds in condition) {
+      const conditions = condition[cds];
       conditions.forEach((i: ExpectedCondition) => i[kw] = { ...(i[loc] ? { ...i[kw], locator: i[loc][sel] } : {}) });
       this.conditions = this.conditions.concat(conditions);
     } else {
       condition[idx] = this.conditions.length;
       condition[loc] = this[loc];
       condition[pg] = this[pg];
-      this.conditions.push(condition);
+      this.conditions.push(condition as ExpectedCondition);
     }
     return this;
   }

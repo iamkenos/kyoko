@@ -29,7 +29,7 @@
   "include": [
     "./**/**.ts",
     "./**/**.js",
-    "test/init/cucumber.mjs",
+    "test/init/cucumber.js",
     "test/demo/cucumber.mjs"
   ],
   "exclude": ["node_modules", "build"]

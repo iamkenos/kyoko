@@ -1,5 +1,4 @@
-import { LocatorCommands } from "@plugins/commands/locator/locator.commands";
-import { component } from "@plugins/commands/locator/command/component";
+import { ComponentCommands } from "@plugins/commands/component/component.commands";
 import { Logger } from "@utils/logger";
 import { propertiesOf } from "@utils/object";
 
@@ -16,7 +15,8 @@ export class ComponentFixture {
 
   static create<T>({ Component, source }: ConstructFrom<T>): T {
     const instance: ComponentFixture = new Component() as any;
-    const chain = LocatorCommands.getLocatorFunctionstoPatch(Object.getPrototypeOf(source)).concat(component.name.toLowerCase());
+    const chain = ComponentCommands.getComponentFunctionstoPatch(Object.getPrototypeOf(source));
+
     const propsToRetain = propertiesOf(instance);
     const propsToDefine = propertiesOf(source).filter(p => !propsToRetain.includes(p));
     propsToDefine.forEach(p => {
@@ -37,6 +37,5 @@ export class ComponentFixture {
 }
 
 type ConstructFrom<T> = { Component: Constructor<T>, source: Locator }
-type Component = Omit<ComponentFixture, "create">
-export type ComponentCommand<T> = Omit<T, "logger">
-export const Component: new(selector: string) => Locator & Component = ComponentFixture as any;
+export type Component<T> = Omit<T, "logger">
+export const Component: new(selector: string) => Locator & ComponentFixture = ComponentFixture as any;

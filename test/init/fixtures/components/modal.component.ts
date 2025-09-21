@@ -21,8 +21,6 @@ export class Modal extends Component {
   }
 
   async close() {
-    // This class also has access to the logger instance
-    this.logger.info("Closing modal...");
     await this.footer().click();
   }
 }
@@ -30,7 +28,7 @@ export class Modal extends Component {
 
 class ModalConditions extends LocatorConditions<Modal> {
 
-  bodyTextEquals(expected: string, kwargs?: ExpectedConditionKwargs) {
+  textEquals(expected: string, kwargs?: ExpectedConditionKwargs) {
     return this.addCondition(this.locator.body().expect().textEquals(expected, kwargs));
   }
 }

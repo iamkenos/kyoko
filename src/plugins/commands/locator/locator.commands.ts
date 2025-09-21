@@ -25,7 +25,7 @@ export class LocatorCommands extends CommandsPlugin {
     super(opts);
   }
 
-  static getPageOrFrameLocatorFunctionsToPatch(target: Page | Frame | Locator) {
+  private static getPageOrFrameLocatorFunctionsToPatch(target: Page | Frame | Locator) {
     return [
       target?.frameLocator?.name,
       target?.locator?.name,
@@ -39,7 +39,7 @@ export class LocatorCommands extends CommandsPlugin {
     ].filter(Boolean);
   }
 
-  static getLocatorFunctionstoPatch(target: Locator) {
+  protected static getLocatorFunctionstoPatch(target: Locator) {
     const rest = LocatorCommands.getPageOrFrameLocatorFunctionsToPatch(target);
     return [
       ...rest,
@@ -55,12 +55,16 @@ export class LocatorCommands extends CommandsPlugin {
   private deeplyPatchLocator(target: Locator) {
     const targetFns = LocatorCommands.getLocatorFunctionstoPatch(target);
     for (const fn of targetFns) {
-      const patched = this.addCommandsTo(target);
-      const descendant = target[fn].bind(patched);
-      target[fn] = (...args: any[]) => {
-        const locator = descendant(...args);
-        return this.deeplyPatchLocator(locator); // patch recursively
-      };
+      try {
+        const patched = this.addCommandsTo(target);
+        const descendant = target[fn].bind(patched);
+        target[fn] = (...args: any[]) => {
+          const locator = descendant(...args);
+          return this.deeplyPatchLocator(locator); // patch recursively
+        };
+      } catch (_) {
+        continue;
+      }
     }
 
     return target;

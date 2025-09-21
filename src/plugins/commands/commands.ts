@@ -25,7 +25,11 @@ export class CommandsPlugin extends PuppeteerExtraPlugin {
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       const command = commands[i];
-      fixture[command] = require(file)[command].bind(fixture); // monkey-patch; use bind so `this` wont lose context
+      const isCommandNotExisting = !(command in fixture);
+      const isCommandOverriden = fixture.constructor.name.toLowerCase() === plugin;
+      if (isCommandNotExisting || isCommandOverriden) {
+        fixture[command] = require(file)[command]; // monkey-patch
+      }
     }
     return fixture;
   }
