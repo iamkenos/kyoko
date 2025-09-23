@@ -26,11 +26,6 @@
     "sourceMap": true,
     "target": "ESNext"
   },
-  "include": [
-    "./**/**.ts",
-    "./**/**.js",
-    "test/init/cucumber.js",
-    "test/demo/cucumber.mjs"
-  ],
+  "include": ["./**/**.ts", "./**/**.js", "test/*/cucumber.js"],
   "exclude": ["node_modules", "build"]
 }
