@@ -23,6 +23,8 @@ jobs:
         run: npm run build
       - name: Run feature tests
         run: npm run test:demo
+      - name: Generate report
+        run: npm run report:demo
       - name: Upload Artifact
         if: ${{ failure() }}
         uses: actions/upload-artifact@v4
