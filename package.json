@@ -1,6 +1,6 @@
 {
   "name": "@iamkenos/kyoko",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Playwright & CucumberJS mixed with presets and additional features.",
   "bin": {
     "kyoko": "bin/kyoko.js"

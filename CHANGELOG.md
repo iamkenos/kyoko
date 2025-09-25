@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.8.0](https://github.com/iamkenos/kyoko/compare/v0.7.0...v0.8.0) (2025-09-25)
+
+
+### Chore
+
+* add generate report step on ft yml ([52d5760](https://github.com/iamkenos/kyoko/commit/52d576066d3f2356c0d686f3689c1b256a938e6a))
+* generate allure as single file ([e7e2bc9](https://github.com/iamkenos/kyoko/commit/e7e2bc992f604d34540c391b8e9a7e04b905a4c2))
+* use single file on init reports ([eaeab79](https://github.com/iamkenos/kyoko/commit/eaeab7964eb9656971d75cf4cc44e51f12666bf3))
+
+
+### Refactor
+
+* **config:** rework logger class and remove logger prop from config ([0220d1f](https://github.com/iamkenos/kyoko/commit/0220d1faad7064568380690e7b9384f44dd19307))
+* remove support for custom env vars... ([32cff28](https://github.com/iamkenos/kyoko/commit/32cff289b7f4e6cb926d20fe64231df26181465f))
+
 ## [0.7.0](https://github.com/iamkenos/kyoko/compare/v0.6.0...v0.7.0) (2025-09-21)
 
 
