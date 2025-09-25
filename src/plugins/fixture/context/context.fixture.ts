@@ -14,10 +14,11 @@ import { PageCommands } from "@plugins/commands/page/page.commands";
 import { LocatorCommands } from "@plugins/commands/locator/locator.commands";
 import { PageObject } from "@plugins/fixture/page/page.fixture";
 import { changecase } from "@utils/string";
-import { Logger } from "@utils/logger";
+import { Logger as DefaultLogger } from "@utils/logger";
 
+import type { Logger } from "loglevel";
 import type { BrowserContext, Locator, Page } from "playwright";
-import type { ContextParameters as BaseContextParameters, Config } from "@config/types";
+import type { Config as BaseConfig, ContextParameters as BaseContextParameters } from "@config/types";
 
 interface PrivateContext {
   findPageObject: <T = PageObject>(page: string, persist?: boolean) => T;
@@ -43,6 +44,8 @@ type Reporter = Omit<typeof allure, "attachment"> & {
   addAttachment: (...args: Attachment<Parameters<World["attach"]>>) => Promise<void>
 }
 
+type Config = Omit<BaseConfig, "logger">;
+
 export interface IContext<ContextParameters = BaseContextParameters> extends Omit<Context & World, keyof PrivateContext | keyof World> {
   readonly reporter: Reporter;
   readonly browser: BrowserContext;
@@ -66,16 +69,18 @@ export abstract class Context extends World implements PrivateContext {
   constructor(options: IWorldOptions) {
     // immutably remove config from parameters so it's not carried over as clutter as these are accessible from ctx.config
     const { config, ...parameters } = options.parameters;
+    const { logger, ...configurations } = config;
     super({ ...options, parameters });
-    this.config = config;
-    this.setLogger();
+    this.config = configurations;
+    this.setLogger(logger);
     this.setPageObjects();
     this.setReporter();
     globalThis.ctx = this as any;
   }
 
-  private setLogger() {
-    this.logger = new Logger("kyoko");
+  private setLogger(logger: Logger) {
+    const defaultLogger: Logger = new DefaultLogger("kyoko", this.config.debug ? "debug" : "info") as any;
+    this.logger = logger ?? defaultLogger;
   }
 
   private setPageObjects() {

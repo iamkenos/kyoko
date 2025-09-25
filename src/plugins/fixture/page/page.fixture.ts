@@ -2,7 +2,7 @@ import { Fixture } from "@plugins/fixture/fixture";
 
 import type { Page } from "playwright";
 import type { ExpectedConditionKwargs, ExpectedConditionOptions } from "@plugins/conditions/types";
-import type { Config, ContextParameters } from "@config/types";
+import type { ContextParameters } from "@config/types";
 
 export abstract class PageObject<Parameters = ContextParameters> extends Fixture<Parameters> {
   protected _page: Page;
@@ -12,15 +12,6 @@ export abstract class PageObject<Parameters = ContextParameters> extends Fixture
   constructor() {
     super();
     this.page = ctx.page;
-  }
-
-  get config() {
-    if (!this._config) { this._config = ctx.config; }
-    return this._config;
-  }
-
-  set config(config: Config) {
-    this._config = config;
   }
 
   get page() {

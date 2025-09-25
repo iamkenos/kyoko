@@ -3,7 +3,6 @@ import * as path from "path";
 import * as os from "node:os";
 
 import callsites from "callsites";
-import dotenv from "@dotenvx/dotenvx";
 
 import type { Config as BaseConfig } from "./types";
 import type { NestedOmit } from "../utils/types";
@@ -12,41 +11,20 @@ export * from "./types";
 
 type Config = NestedOmit<BaseConfig, "snapshots.images.outDir">;
 
-function loadEnv(baseDir: string) {
-  const { NODE_ENV: CTX_ENV } = process.env;
-  const envFile = CTX_ENV ? path.join(baseDir, `.env.${CTX_ENV}`) : path.join(baseDir, ".env");
-
-  if (fs.existsSync(envFile)) {
-    dotenv.config({ path: envFile });
-  }
-}
-
 function getConfigBaseURL(overrides: Partial<Config>) {
-  const { CTX_BASE_URL = "" } = process.env;
   const { baseURL = "" } = overrides;
-  return CTX_BASE_URL ? CTX_BASE_URL : baseURL;
+  return baseURL;
 }
 
 function getConfigBrowserOptions(overrides: Partial<Config>) {
   const { resultsDir } = getCukesFormatOptions(overrides);
-  const {
-    CTX_BROWSER_INSTANCE = "",
-    CTX_BROWSER_IS_HEADLESS = "",
-    CTX_BROWSER_RECORD_VIDEO = ""
-  } = process.env;
   const baseURL = getConfigBaseURL(overrides);
   const supportedBrowsers = ["chromium", "firefox", "webkit"];
-  const instance = supportedBrowsers.includes(CTX_BROWSER_INSTANCE.toLowerCase())
-    ? CTX_BROWSER_INSTANCE.toLowerCase()
-    : supportedBrowsers.includes((overrides.browserOptions?.instance ?? "").toLowerCase())
-      ? (overrides.browserOptions.instance).toLowerCase()
-      : supportedBrowsers[0];
-  const headless = CTX_BROWSER_IS_HEADLESS
-    ? CTX_BROWSER_IS_HEADLESS.toLowerCase() === "true"
-    : overrides.browserOptions?.headless ?? false;
-  const recordVideo = CTX_BROWSER_RECORD_VIDEO
-    ? CTX_BROWSER_RECORD_VIDEO.toLowerCase() === "true"
-    : overrides.browserOptions?.recordVideo ?? false;
+  const instance = supportedBrowsers.includes((overrides.browserOptions?.instance ?? "").toLowerCase())
+    ? (overrides.browserOptions.instance).toLowerCase()
+    : supportedBrowsers[0];
+  const headless = overrides.browserOptions?.headless ?? false;
+  const recordVideo = overrides.browserOptions?.recordVideo ?? false;
   const videosDir = path.join(resultsDir, "videos");
   const launchArgs = {
     headless,
@@ -63,31 +41,25 @@ function getConfigBrowserOptions(overrides: Partial<Config>) {
 }
 
 function getConfigDebug(overrides: Partial<Config>) {
-  const { CTX_DEBUG = "" } = process.env;
   const { debug = false } = overrides;
-  return CTX_DEBUG ? CTX_DEBUG.toLowerCase() === "true" : debug;
+  return debug;
 }
 
 function getConfigDownloadsDir(overrides: Partial<Config>) {
-  const { CTX_DOWNLOADS_DIR = "" } = process.env;
   const { downloadsDir = "downloads/", baseDir } = overrides;
-  const directory = path.join(baseDir, CTX_DOWNLOADS_DIR ? CTX_DOWNLOADS_DIR : downloadsDir);
+  const directory = path.join(baseDir, downloadsDir);
   fs.removeSync(directory);
   return directory;
 }
 
 function getConfigLocale(overrides: Partial<Config>) {
-  const { CTX_LOCALE = "" } = process.env;
   const { locale } = overrides;
-  return CTX_LOCALE ? CTX_LOCALE : locale;
+  return locale;
 }
 
-function getConfigLogLevel(overrides: Partial<Config>) {
-  const { CTX_LOG_LEVEL = "" } = process.env;
-  const { logLevel = "info" } = overrides;
-  const debug = getConfigDebug(overrides);
-  process.env.CTX_LOG_LEVEL = debug ? "debug" : CTX_LOG_LEVEL ? CTX_LOG_LEVEL : logLevel;
-  return process.env.CTX_LOG_LEVEL;
+function getConfigLogger(overrides: Partial<Config>) {
+  const { logger } = overrides;
+  return logger;
 }
 
 function getConfigPages(overrides: Partial<Config>) {
@@ -96,15 +68,13 @@ function getConfigPages(overrides: Partial<Config>) {
 }
 
 function getConfigSnapshotsDir(overrides: Partial<Config>) {
-  const { CTX_SNAPSHOTS_DIR } = process.env;
   const { snapshotsDir = "snapshots/", baseDir } = overrides;
-  return path.join(baseDir, CTX_SNAPSHOTS_DIR ? CTX_SNAPSHOTS_DIR : snapshotsDir);
+  return path.join(baseDir, snapshotsDir);
 }
 
 function getConfigTimeout(overrides: Partial<Config>) {
-  const { CTX_TIMEOUT } = process.env;
   const { timeout = 30000 } = overrides;
-  return +CTX_TIMEOUT ? +CTX_TIMEOUT : timeout;
+  return timeout;
 }
 
 function getConfigSnapshots(overrides: Partial<Config>) {
@@ -174,16 +144,14 @@ function getCukesFormatOptions(overrides: Partial<Config>) {
 }
 
 function getCukesParallel(overrides: Partial<Config>) {
-  const { CTX_PARALLEL_WORKERS } = process.env;
   const { parallel = 0 } = overrides;
   const debug = getConfigDebug(overrides);
-  return debug ? 0 : CTX_PARALLEL_WORKERS ? +CTX_PARALLEL_WORKERS : parallel;
+  return debug ? 0 : parallel;
 }
 
 function getCukesPaths(overrides: Partial<Config>) {
-  const { CTX_FEATURE_PATHS } = process.env;
   const { paths = ["features/"], baseDir } = overrides;
-  return CTX_FEATURE_PATHS ? [CTX_FEATURE_PATHS].filter(Boolean) : paths.map(i => path.join(baseDir, i));
+  return paths.map(i => path.join(baseDir, i));
 }
 
 function getCukesRequire(overrides: Partial<Config>) {
@@ -200,9 +168,8 @@ function getCukesRequireModule() {
 }
 
 function getCukesTags(overrides: Partial<Config>) {
-  const { CTX_FEATURE_TAGS } = process.env;
   const { tags } = overrides;
-  return CTX_FEATURE_TAGS ? CTX_FEATURE_TAGS : tags;
+  return tags;
 }
 
 function getCukesWorldParameters(overrides: Partial<Config>) {
@@ -216,7 +183,6 @@ function getCukesWorldParameters(overrides: Partial<Config>) {
  */
 export function configure(overrides: Partial<Config> = {}) {
   const baseDir = path.dirname(callsites()[1].getFileName()).replace("file://", "");
-  loadEnv(baseDir);
 
   // custom options defaults and overrides
   overrides.baseDir = baseDir;
@@ -224,7 +190,7 @@ export function configure(overrides: Partial<Config> = {}) {
   const debug = getConfigDebug(overrides);
   const downloadsDir = getConfigDownloadsDir(overrides);
   const locale = getConfigLocale(overrides);
-  const logLevel = getConfigLogLevel(overrides);
+  const logLevel = getConfigLogger(overrides);
   const pages = getConfigPages(overrides);
   const timeout = getConfigTimeout(overrides);
   const browserOptions = getConfigBrowserOptions(overrides);

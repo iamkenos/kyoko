@@ -1,13 +1,13 @@
 import type { BrowserContext } from "playwright";
 
 import type { IContext as Context } from "./context/context.fixture";
-import type { Config, ContextParameters } from "@config/types";
+import type { ContextParameters } from "@config/types";
 
 export abstract class Fixture<Parameters = ContextParameters> {
-  protected _reporter: Context["reporter"];
-  protected _logger: Context["logger"];
-  protected _browser: BrowserContext;
-  protected _config: Config;
+  private _config: Context["config"];
+  private _reporter: Context["reporter"];
+  private _logger: Context["logger"];
+  private _browser: BrowserContext;
   protected parameters: Parameters;
 
   constructor() {
@@ -16,6 +16,15 @@ export abstract class Fixture<Parameters = ContextParameters> {
     this.browser = ctx.browser;
     this.config = ctx.config;
     this.parameters = ctx.parameters as any;
+  }
+
+  get config() {
+    if (!this._config) { this._config = ctx.config; }
+    return this._config;
+  }
+
+  set config(config: Context["config"]) {
+    this._config = config;
   }
 
   get reporter() {
@@ -43,14 +52,5 @@ export abstract class Fixture<Parameters = ContextParameters> {
 
   set browser(browser: BrowserContext) {
     this._browser = browser;
-  }
-
-  get config() {
-    if (!this._config) { this._config = ctx.config; }
-    return this._config;
-  }
-
-  set config(config: Config) {
-    this._config = config;
   }
 }

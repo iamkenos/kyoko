@@ -26,6 +26,7 @@
     "test:demo": "start-test serve:demo 8080 run:demo",
     "run:demo": "cucumber-js -c test/demo/cucumber.js",
     "report:demo": "allure generate --single-file test/demo/results/allure/ -c -o test/demo/results/allure/html/",
+    "debug:demo": "npm run test:demo",
     "pretest:init": "npm run pretest:demo",
     "test:init": "cucumber-js -c test/init/cucumber.js",
     "report:init": "allure generate --single-file test/init/results/allure/ -c -o test/init/results/allure/html/",

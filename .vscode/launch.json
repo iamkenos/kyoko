@@ -18,10 +18,10 @@
         "${workspaceFolder}/build/**/*.js"
       ],
       "env": {
-        "CTX_DEBUG": "true",
-        "CTX_BROWSER_IS_HEADLESS": "${input:headless}",
-        "CTX_PARALLEL_WORKERS": "${input:parallel}",
-        "CTX_FEATURE_TAGS": "${input:tags}"
+        "DEBUG": "true",
+        "HEADLESS": "${input:headless}",
+        "PARALLEL": "${input:parallel}",
+        "TAGS": "${input:tags}"
       }
     },
     {
@@ -38,10 +38,10 @@
         "${workspaceFolder}/build/**/*.js"
       ],
       "env": {
-        "CTX_DEBUG": "true",
-        "CTX_BROWSER_IS_HEADLESS": "${input:headless}",
-        "CTX_PARALLEL_WORKERS": "${input:parallel}",
-        "CTX_FEATURE_TAGS": "${input:tags}"
+        "DEBUG": "true",
+        "HEADLESS": "${input:headless}",
+        "PARALLEL": "${input:parallel}",
+        "TAGS": "${input:tags}"
       }
     }
   ],

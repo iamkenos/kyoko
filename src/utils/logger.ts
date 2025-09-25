@@ -14,9 +14,9 @@ const COLORS = {
 export class Logger {
   private logger: log.Logger;
 
-  constructor(name: string) {
+  constructor(name: string, level: log.LogLevelDesc) {
     this.applyFormatter();
-    return this.getLogger(name);
+    return this.getLogger(name, level);
   }
 
   private applyFormatter(): void {
@@ -25,7 +25,7 @@ export class Logger {
       timestampFormatter(date) {
         return date.toISOString();
       },
-      format(level, name, timestamp) {
+      format(level, _, timestamp) {
         const { CUCUMBER_WORKER_ID = "" } = process.env;
         const [, , , caller] = callsites();
         const widPrefix = CUCUMBER_WORKER_ID ? `[${CUCUMBER_WORKER_ID}] ` : "";
@@ -37,9 +37,9 @@ export class Logger {
     });
   }
 
-  private getLogger(name: string) {
+  private getLogger(name: string, level: log.LogLevelDesc) {
     this.logger = log.getLogger(name);
-    this.logger.setLevel(process.env.CTX_LOG_LEVEL as log.LogLevelDesc);
+    this.logger.setLevel(level);
     return this;
   }
 
