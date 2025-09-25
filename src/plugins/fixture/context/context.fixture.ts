@@ -69,18 +69,16 @@ export abstract class Context extends World implements PrivateContext {
   constructor(options: IWorldOptions) {
     // immutably remove config from parameters so it's not carried over as clutter as these are accessible from ctx.config
     const { config, ...parameters } = options.parameters;
-    const { logger, ...configurations } = config;
     super({ ...options, parameters });
-    this.config = configurations;
-    this.setLogger(logger);
+    this.config = config;
+    this.setLogger();
     this.setPageObjects();
     this.setReporter();
     globalThis.ctx = this as any;
   }
 
-  private setLogger(logger: Logger) {
-    const defaultLogger: Logger = new DefaultLogger("kyoko", this.config.debug ? "debug" : "info") as any;
-    this.logger = logger ?? defaultLogger;
+  private setLogger() {
+    this.logger = new DefaultLogger("kyoko", this.config.debug ? "debug" : "info").logger;
   }
 
   private setPageObjects() {

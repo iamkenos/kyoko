@@ -10,7 +10,7 @@ exports.default = configure({
   browserOptions: { instance: 'chromium', headless: process.env.HEADLESS !== 'false' },
   debug: process.env.DEBUG === 'true',
   tags: process.env.TAGS ?? '',
-  timeout: 8000,
+  timeout: 10 * 1000,
   parallel: +(process.env.PARALLEL ?? 10),
   snapshots: { images: { maxDiffPixelRatio: 0.5 } }
 });

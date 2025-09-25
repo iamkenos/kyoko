@@ -12,11 +12,11 @@ const COLORS = {
 };
 
 export class Logger {
-  private logger: log.Logger;
+  logger: log.Logger;
 
   constructor(name: string, level: log.LogLevelDesc) {
     this.applyFormatter();
-    return this.getLogger(name, level);
+    return this.init(name, level);
   }
 
   private applyFormatter(): void {
@@ -27,7 +27,7 @@ export class Logger {
       },
       format(level, _, timestamp) {
         const { CUCUMBER_WORKER_ID = "" } = process.env;
-        const [, , , caller] = callsites();
+        const caller = callsites()[2];
         const widPrefix = CUCUMBER_WORKER_ID ? `[${CUCUMBER_WORKER_ID}] ` : "";
         const file = caller.toString();
         const func = caller.getFunctionName();
@@ -37,41 +37,9 @@ export class Logger {
     });
   }
 
-  private getLogger(name: string, level: log.LogLevelDesc) {
+  private init(name: string, level: log.LogLevelDesc) {
     this.logger = log.getLogger(name);
     this.logger.setLevel(level);
     return this;
-  }
-
-  setLevel(...args: Parameters<log.Logger["setLevel"]>) {
-    this.logger.setLevel(...args);
-  }
-
-  disableAll(...args: Parameters<log.Logger["disableAll"]>) {
-    this.logger.disableAll(...args);
-  }
-
-  enableAll(...args: Parameters<log.Logger["enableAll"]>) {
-    this.logger.enableAll(...args);
-  }
-
-  error(...msg: any[]) {
-    this.logger.error(...msg);
-  }
-
-  warn(...msg: any[]) {
-    this.logger.warn(...msg);
-  }
-
-  info(...msg: any[]) {
-    this.logger.info(...msg);
-  }
-
-  debug(...msg: any[]) {
-    this.logger.debug(...msg);
-  }
-
-  trace(...msg: any[]) {
-    this.logger.trace(...msg);
   }
 }

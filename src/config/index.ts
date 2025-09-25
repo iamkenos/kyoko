@@ -57,11 +57,6 @@ function getConfigLocale(overrides: Partial<Config>) {
   return locale;
 }
 
-function getConfigLogger(overrides: Partial<Config>) {
-  const { logger } = overrides;
-  return logger;
-}
-
 function getConfigPages(overrides: Partial<Config>) {
   const { pages = ["fixtures/pages/**/*.page{,.*}.ts"], baseDir } = overrides;
   return pages.map(i => path.join(baseDir, i));
@@ -190,14 +185,13 @@ export function configure(overrides: Partial<Config> = {}) {
   const debug = getConfigDebug(overrides);
   const downloadsDir = getConfigDownloadsDir(overrides);
   const locale = getConfigLocale(overrides);
-  const logLevel = getConfigLogger(overrides);
   const pages = getConfigPages(overrides);
   const timeout = getConfigTimeout(overrides);
   const browserOptions = getConfigBrowserOptions(overrides);
   const snapshots = getConfigSnapshots(overrides);
   const custom = {
     baseDir, baseURL, browserOptions,
-    debug, downloadsDir, locale, logLevel, pages, snapshots, timeout
+    debug, downloadsDir, locale, pages, snapshots, timeout
   };
 
   // cucumber options defaults
@@ -217,7 +211,6 @@ export function configure(overrides: Partial<Config> = {}) {
   // assign the whole thing to world parameters so these can be accessible from cucumber's world context
   const { worldParameters, ...rest } = config;
   config.worldParameters = { config: { ...rest, ...custom }, ...worldParameters };
-  globalThis.ctx = { config: config.worldParameters.config } as any;
 
   return config;
 }

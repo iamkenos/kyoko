@@ -1,6 +1,5 @@
 import type { IConfiguration } from "@cucumber/cucumber/lib/configuration";
 import type { BrowserContextOptions, LaunchOptions, Locator } from "playwright";
-import type { Logger } from "loglevel";
 
 export type ContextParameters = { [key: string]: any };
 
@@ -22,8 +21,6 @@ export interface Config extends IConfiguration {
   downloadsDir: string;
   /** Custom: The active locale. Used as primary context for reading page object classes */
   locale: string;
-  /** Custom: The logger you want to use */
-  logger: Logger;
   /** Custom: Array of globs pointing to your page object files, relative to the config file */
   pages: string[];
   /** Custom: Directory to store the snapshots in, relative to the config file */

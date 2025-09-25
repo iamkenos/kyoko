@@ -1,7 +1,7 @@
 import { ComponentCommands } from "@plugins/commands/component/component.commands";
-import { Logger } from "@utils/logger";
 import { propertiesOf } from "@utils/object";
 
+import type { Logger } from "loglevel";
 import type { Locator } from "playwright";
 import type { Constructor } from "@utils/types";
 
