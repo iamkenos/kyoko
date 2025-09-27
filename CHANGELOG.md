@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.9.1](https://github.com/iamkenos/kyoko/compare/v0.9.0...v0.9.1) (2025-09-27)
+
+
+### Bug Fixes
+
+* add create browser and page back on before hook ([a430ce8](https://github.com/iamkenos/kyoko/commit/a430ce84957672759aef1e8e42c9b5223382007b))
+
 ## [0.9.0](https://github.com/iamkenos/kyoko/compare/v0.8.0...v0.9.0) (2025-09-27)
 
 
