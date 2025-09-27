@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.9.0](https://github.com/iamkenos/kyoko/compare/v0.8.0...v0.9.0) (2025-09-27)
+
+
+### Features
+
+* **commands:** locator.previous ([840f992](https://github.com/iamkenos/kyoko/commit/840f9926143909bdaffb3945a2d6b74d330dd87b))
+
+
+### Bug Fixes
+
+* attach docstrings for allure2 ([2480245](https://github.com/iamkenos/kyoko/commit/24802458b1515355c4193b93d8ce8cae70dfc8c1))
+
 ## [0.8.0](https://github.com/iamkenos/kyoko/compare/v0.7.0...v0.8.0) (2025-09-25)
 
 
