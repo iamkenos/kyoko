@@ -29,6 +29,16 @@ BeforeStep({}, async function(this: Context, params: ITestStepHookParameter) {
   const { pickleStep, gherkinDocument } = params;
   const step = object.deepSearch(gherkinDocument, "id", pickleStep.astNodeIds[0]);
   this.logger.info(`${chalk.green.dim.bold(step.keyword.trim())} ${chalk.green.dim(step.text)}`);
+
+  const { argument } = pickleStep;
+  if (argument) {
+    const { docString } = argument;
+    if (docString) {
+      const buffer: any = docString.content;
+      // needed for allure2
+      this.reporter.addAttachment(buffer, { mediaType: ContentType.TEXT, fileName: "DocString" });
+    }
+  }
 });
 
 AfterStep({}, async function(this: IContext, params: ITestStepHookParameter) {
