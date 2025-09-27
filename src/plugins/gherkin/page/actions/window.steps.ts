@@ -18,8 +18,6 @@ import * as fn from "./window.glue";
 Given(
   "I am on the {page_object_persisted} page/site/portal",
   async function(this: Context, page: PageObject) {
-    if (!this.browser) { this.browser = await this.createBrowser(); }
-    if (!this.page) { this.page = await this.browser.newPage(); }
     await fn.navigate(page);
   }
 );
@@ -146,8 +144,6 @@ When(
 When(
   "I open the {page_object_url}",
   async function(this: Context, url: string) {
-    if (!this.browser) { this.browser = await this.createBrowser(); }
-    if (!this.page) { this.page = await this.browser.newPage(); }
     await fn.open(this.page, url);
   }
 );
@@ -162,8 +158,6 @@ When(
 When(
   "I open the {page_object_url} on a new window/tab",
   async function(this: Context, url: string) {
-    if (!this.browser) { this.browser = await this.createBrowser(); }
-    if (!this.page) { this.page = await this.browser.newPage(); }
     await fn.openInNewTab(this.browser, url);
   }
 );

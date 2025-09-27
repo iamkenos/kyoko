@@ -25,6 +25,11 @@ Before({ tags: "@SKIP or @skip or @IGNORE or @ignore" }, () => Status.SKIPPED.to
 
 Before({ tags: "@PENDING or @pending" }, () => Status.PENDING.toLowerCase());
 
+Before({}, async function(this: Context) {
+  this.browser = await this.createBrowser();
+  this.page = await this.browser.newPage();
+});
+
 BeforeStep({}, async function(this: Context, params: ITestStepHookParameter) {
   const { pickleStep, gherkinDocument } = params;
   const step = object.deepSearch(gherkinDocument, "id", pickleStep.astNodeIds[0]);
