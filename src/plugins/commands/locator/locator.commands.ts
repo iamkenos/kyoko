@@ -15,6 +15,7 @@ import type { isFocused } from "./command/is-focused";
 import type { isSelected } from "./command/is-selected";
 import type { location } from "./command/location";
 import type { press } from "./command/press";
+import type { previous } from "./command/previous";
 import type { scrollIntoView } from "./command/scroll-into-view";
 import type { selectOption } from "./command/select-option";
 import type { uploadFiles } from "./command/upload-files";
@@ -101,9 +102,9 @@ export interface ILocatorCommands {
   isSelected(...args: Parameters<typeof isSelected>): ReturnType<typeof isSelected>;
   location(...args: Parameters<typeof location>): ReturnType<typeof location>;
   press(...args: Parameters<typeof press>): ReturnType<typeof press>;
+  previous(...args: Parameters<typeof previous>): ReturnType<typeof previous>;
   scrollIntoView(...args: Parameters<typeof scrollIntoView>): ReturnType<typeof scrollIntoView>;
   selectOption(...args: Parameters<typeof selectOption>): ReturnType<typeof selectOption>;
-  press(...args: Parameters<typeof press>): ReturnType<typeof press>;
   expect(...args: Parameters<typeof expect>): ReturnType<typeof expect>;
   uploadFiles(...args: Parameters<typeof uploadFiles>): ReturnType<typeof uploadFiles>;
   waitUntil(...args: Parameters<typeof waitUntil>): ReturnType<typeof waitUntil>;
