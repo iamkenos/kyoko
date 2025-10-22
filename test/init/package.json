@@ -5,7 +5,7 @@
   "scripts": {
     "pretest": "playwright install --with-deps chromium",
     "test": "cucumber-js -c cucumber.js",
-    "report": "allure --single-file generate results/allure/ -c -o results/allure/html/"
+    "report": "allure generate --single-file results/allure/ -c -o results/allure/html/"
   },
   "dependencies": {
     "@iamkenos/kyoko": "*"

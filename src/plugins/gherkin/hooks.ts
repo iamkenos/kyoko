@@ -72,8 +72,8 @@ After({}, async function(this: IContext, params: ITestCaseHookParameter) {
     if (this.page) {
       if (this.config.browserOptions.recordVideo) {
         const path = await this.page.video().path();
-        const attachment: any = fs.readFileSync(path);
         await teardown();
+        const attachment: any = fs.readFileSync(path);
         await this.reporter.addAttachment(attachment, { mediaType: ContentType.WEBM, fileName: "Recording" });
       }
     }

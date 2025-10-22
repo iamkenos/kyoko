@@ -69,9 +69,14 @@ defineParameterType({
 defineParameterType({
   name: "to_or_to_not",
   regexp: /to( not)?/,
-  transformer(this: Context, not: string) {
-    return !!not;
-  },
+  transformer(this: Context, not: string) { return !!not; },
+  useForSnippets: false
+});
+
+defineParameterType({
+  name: "should_or_should_not",
+  regexp: /should( not)?/,
+  transformer(this: Context, not: string) { return !!not; },
   useForSnippets: false
 });
 

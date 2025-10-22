@@ -16,5 +16,6 @@ exports.default = configure({
   tags: process.env.TAGS ?? '',
   timeout: 10 * 1000,
   parallel: +(process.env.PARALLEL ?? 5),
-  snapshots: { images: { maxDiffPixelRatio: 0.5 } }
+  snapshots: { images: { maxDiffPixelRatio: 0.5 } },
+  paths: process.env.PATHS ? [process.env.PATHS] : undefined
 });
